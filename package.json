@@ -1,0 +1,26 @@
+{
+  "name": "react-smartform",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
+    "@babel/preset-typescript": "^7.10.1",
+    "@testing-library/react": "^10.2.1",
+    "@types/react": "^16.9.36",
+    "@types/yup": "^0.29.3",
+    "jest": "^26.0.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-hook-form": "^5.7.2",
+    "ts-jest": "^26.1.0",
+    "yup": "^0.29.1"
+  }
+}
