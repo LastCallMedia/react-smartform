@@ -1,22 +1,30 @@
 import React from 'react'
-import ReactVisitor from "../react";
+import ReactSchemaVisitor from "../react";
 import ReactInputVisitor from "./Input.react";
+import {Schema} from "../types";
 import {render} from '@testing-library/react'
 import {useFormContext, FormContext} from "react-hook-form";
 import SmartForm from "../SmartForm";
 
 describe('Input', function() {
-    const visitor = new ReactVisitor([
+    const visitor = new ReactSchemaVisitor([
         new ReactInputVisitor(),
     ]);
+    const renderSchema = (schema: Schema) => render(<SmartForm visitor={visitor} schema={schema} />)
 
     it('Should render', () => {
-        const schema = [
+        const {container} = renderSchema([
             {type: 'input', name: 'mynumber', inputType: 'number'},
             {type: 'input', name: 'mytext', inputType: 'text'},
-        ];
-        const {container} = render(<SmartForm visitor={visitor} schema={schema} />)
+        ])
         expect(container.querySelectorAll('input[type="number"][name="mynumber"]')).toHaveLength(1);
         expect(container.querySelectorAll('input[type="text"][name="mytext"]')).toHaveLength(1);
-    })
+    });
+
+    it('Should optionally render with a placeholder', () => {
+        const {getByPlaceholderText} = renderSchema([
+            {type: 'input', name: 'mytext', placeholder: true},
+        ])
+        expect(getByPlaceholderText('placeholder.mytext')).not.toBeNull();
+    });
 });

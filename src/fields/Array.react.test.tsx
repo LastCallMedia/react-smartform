@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import ReactVisitor from "../react";
+import ReactSchemaVisitor from "../react";
 import ReactArrayVisitor from "./Array.react";
 import ReactInputVisitor from "./Input.react";
 import SmartForm from "../SmartForm";
 import {Schema} from "../types";
 
 describe('Array', function() {
-    const visitor = new ReactVisitor([
+    const visitor = new ReactSchemaVisitor([
         new ReactArrayVisitor(),
         new ReactInputVisitor()
     ]);

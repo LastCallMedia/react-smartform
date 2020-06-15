@@ -9,6 +9,7 @@ export type FieldName = string|number
 export interface FieldConfig {
     name: FieldName
     type: string
+    [k: string]: unknown
 }
 
 /**
@@ -29,10 +30,10 @@ export interface Visitor {
  * A field visitor is controlled by a Visitor, and knows how to visit a single field and do
  * something productive with it.
  */
-export interface FieldVisitor {
-    visits(): string[]
-    visit(config: FieldConfig, parent: Visitor): unknown
-}
+// export interface FieldVisitor {
+//     visits(): string[]
+//     visit(config: FieldConfig, parent: Visitor): unknown
+// }
 
 
 

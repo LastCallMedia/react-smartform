@@ -17,6 +17,7 @@ export default class ReactInputVisitor implements ReactFieldVisitor<InputConfig>
                 <input
                     id={id}
                     name={name}
+                    placeholder={config.placeholder ? makeElementLabel(context.parents.concat(config.name), 'placeholder'): undefined}
                     type={config.inputType || 'text'}
                     ref={context.form.register()}
                 />

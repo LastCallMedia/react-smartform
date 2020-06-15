@@ -1,4 +1,4 @@
-import ReactVisitor from "../react";
+import ReactSchemaVisitor from "../react";
 import ReactContainerVisitor from "./Container.react";
 import ReactInputVisitor from "./Input.react";
 import {Schema} from "../types";
@@ -7,7 +7,7 @@ import SmartForm from "../SmartForm";
 import React from "react";
 
 describe('Container', function() {
-    const visitor = new ReactVisitor([
+    const visitor = new ReactSchemaVisitor([
         new ReactContainerVisitor(),
         new ReactInputVisitor()
     ]);

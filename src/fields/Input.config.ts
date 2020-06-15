@@ -5,7 +5,9 @@ type Validations = PatternValidation
 
 export default interface InputConfig extends FieldConfig {
     name: string
-    inputType: string
+    type: 'input'
+    placeholder?: boolean
+    inputType?: string
     required?: boolean
-    validations: Validations[]
+    validations?: Validations[]
 }
