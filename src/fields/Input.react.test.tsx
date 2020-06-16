@@ -3,7 +3,6 @@ import ReactSchemaVisitor from "../react";
 import ReactInputVisitor from "./Input.react";
 import {Schema} from "../types";
 import {render} from '@testing-library/react'
-import {useFormContext, FormContext} from "react-hook-form";
 import SmartForm from "../SmartForm";
 
 describe('Input', function() {

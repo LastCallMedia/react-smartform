@@ -9,6 +9,7 @@ export type FieldName = string|number
 export interface FieldConfig {
     name: FieldName
     type: string
+    when?: string
     [k: string]: unknown
 }
 

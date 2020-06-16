@@ -2,10 +2,11 @@ import React from "react";
 import {FieldConfig, FieldName, Schema} from "./types";
 import {FormContextValues} from "react-hook-form";
 import {makeElementName} from "./util";
+import ReactVisibilityDecorator from "./fields/Visibility.react";
 
 export interface ReactFieldVisitor<C extends FieldConfig = FieldConfig> {
     visits(): string[]
-    visit(element: C, context: ReactFieldVisitorContext): React.ReactElement
+    visit(element: C, context: ReactFieldVisitorContext): React.ReactElement|void
 }
 
 export interface ReactSchemaVisitorContext {
@@ -35,11 +36,11 @@ export default class ReactSchemaVisitor {
         const key = parents.length === 0 ? 'root' : makeElementName(parents)
         return (
             <React.Fragment key={key}>
-                {schema.map(field => this.visitField(field, context))}
+                {schema.map(field => this.visitField(field, context)).filter(e => !!e)}
             </React.Fragment>
         )
     }
-    visitField(field: FieldConfig, context: ReactSchemaVisitorContext): React.ReactElement {
+    visitField(field: FieldConfig, context: ReactSchemaVisitorContext): React.ReactElement|void {
         const visitor = this.visitors.get(field.type)
         if(!visitor) {
             throw new Error(`Unable to find registered element type: ${field.type}`)
