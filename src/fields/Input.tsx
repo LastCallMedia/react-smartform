@@ -2,16 +2,12 @@ import {FieldConfig, FieldHandler, ReactFieldHandlerContext, YupFieldHandlerCont
 import {makeElementId, makeElementLabel, makeElementName} from "../util";
 import React from "react";
 
-type PatternValidation = {pattern: string, message: string}
-type Validations = PatternValidation
-
 export default interface InputConfig extends FieldConfig {
     name: string
     type: 'input'
     placeholder?: boolean
     inputType?: string
     required?: boolean
-    validations?: Validations[]
 }
 
 
@@ -41,11 +37,6 @@ export default class InputHandler implements FieldHandler<InputConfig> {
         let schema = context.yup.string()
         if(config.required) {
             schema = schema.required()
-        }
-        for(const validation of config.validations ?? []) {
-            if(validation.pattern) {
-                schema = schema.matches(new RegExp(validation.pattern), validation.message);
-            }
         }
         return schema
     }
