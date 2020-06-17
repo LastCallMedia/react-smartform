@@ -42,3 +42,4 @@ export function resolveFieldName(currentPath: (string|number)[], relativePath: s
     })
     return makeElementName(current)
 }
+
