@@ -1,22 +1,33 @@
-import {FieldConfig} from "../types";
-import {YupFieldVisitor, YupFieldVisitorContext} from "../yup";
-import * as yup from 'yup'
-import {parse, eval as evalExpr} from 'expression-eval'
-import {Expression, BinaryExpression, LogicalExpression, CallExpression, Identifier, Literal} from 'jsep'
-import set from 'lodash/set'
-import get from 'lodash/get'
+import React from 'react';
+import {FieldHandler, FieldConfig, ReactFieldHandlerContext, YupFieldHandlerContext} from "../types";
+import {compile, eval as evalExpr, parse} from "expression-eval";
+import {resolveFieldName} from "../util";
+import * as yup from "yup";
+import set from "lodash/set";
+import {BinaryExpression, CallExpression, Expression, Identifier, Literal, LogicalExpression} from "jsep";
+import get from "lodash/get";
 
+export default class VisibilityDecorator implements FieldHandler {
+    inner: FieldHandler
 
-export default class YupVisibilityDecorator implements YupFieldVisitor {
-    inner: YupFieldVisitor
-    constructor(inner: YupFieldVisitor) {
+    constructor(inner: FieldHandler) {
         this.inner = inner
     }
-    visits(): string[] {
-        return this.inner.visits();
+
+    handles(): string[] {
+        return this.inner.handles()
     }
-    visit(config: FieldConfig, context: YupFieldVisitorContext): yup.Schema<any> {
-        let schema = this.inner.visit(config, context);
+
+    getReactElement(config: FieldConfig, context: ReactFieldHandlerContext): React.ReactElement {
+        if(config.when) {
+            if(!compile(config.when)(getReactEvalContext(context))) {
+                return <React.Fragment key={config.name}></React.Fragment>
+            }
+        }
+        return this.inner.getReactElement(config, context);
+    }
+    getYupSchema(config: FieldConfig, context: YupFieldHandlerContext): yup.Schema<unknown> {
+        let schema = this.inner.getYupSchema(config, context);
         if(config.when) {
             const ast = parse(config.when);
             const refs = extractRefs(ast);
@@ -28,7 +39,7 @@ export default class YupVisibilityDecorator implements YupFieldVisitor {
                         return p
                     }, {})
 
-                    return !!evalExpr(ast, getEvalContext(packed));
+                    return !!evalExpr(ast, getYupEvalContext(packed));
                 },
                 then: schema
             })
@@ -36,6 +47,37 @@ export default class YupVisibilityDecorator implements YupFieldVisitor {
         return schema
     }
 }
+
+
+export function getReactEvalContext(context: ReactFieldHandlerContext) {
+    return {
+        ref: (name: string) => {
+            return context.form.watch(resolveFieldName(context.parents, name))
+        },
+        Number(value: unknown) {
+            return Number(value)
+        },
+        String(value: unknown) {
+            return String(value)
+        }
+    }
+}
+
+
+export function getYupEvalContext(refValues: {}) {
+    return {
+        ref: (path: string) => {
+            return get(refValues, path);
+        },
+        Number(value: unknown) {
+            return Number(value)
+        },
+        String(value: unknown) {
+            return String(value)
+        }
+    }
+}
+
 
 /**
  * Extract the arguments for any ref() calls in the expression.
@@ -101,20 +143,5 @@ function extractValue(ast: Expression) {
             return (ast as Literal).value
         default:
             throw new Error(`Unable to extract value from ${ast.type}`)
-    }
-}
-
-
-export function getEvalContext(refValues: {}) {
-    return {
-        ref: (path: string) => {
-            return get(refValues, path);
-        },
-        Number(value: unknown) {
-            return Number(value)
-        },
-        String(value: unknown) {
-            return String(value)
-        }
     }
 }

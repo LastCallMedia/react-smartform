@@ -1,16 +1,15 @@
 import React from 'react'
-import ReactSchemaVisitor from "./react";
 import {useForm} from "react-hook-form";
-import {Schema} from "./types";
+import {Schema, SchemaHandler} from "./types";
 
 type SmartFormProps = {
-    visitor: ReactSchemaVisitor
+    handler: SchemaHandler
     schema: Schema
 }
-export default function SmartForm({visitor, schema}: SmartFormProps) {
+export default function SmartForm({handler, schema}: SmartFormProps) {
     const formContext = useForm();
 
     return (
-        <form>{visitor.visitSchema(schema, {form: formContext})}</form>
+        <form>{handler.getReactElement(schema, {form: formContext})}</form>
     )
 }

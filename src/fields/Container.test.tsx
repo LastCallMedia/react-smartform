@@ -1,19 +1,18 @@
-import ReactSchemaVisitor from "../react";
-import ReactContainerVisitor from "./Container.react";
-import ReactInputVisitor from "./Input.react";
+import SmartFormSchemaHandler from "../index";
+import ContainerHandler from "./Container";
+import InputHandler from "./Input";
 import {Schema} from "../types";
 import {render} from "@testing-library/react";
 import SmartForm from "../SmartForm";
 import React from "react";
 
-describe('Container', function() {
-    const visitor = new ReactSchemaVisitor([
-        new ReactContainerVisitor(),
-        new ReactInputVisitor()
-    ]);
-    function renderSchema(schema: Schema) {
-        return render(<SmartForm visitor={visitor} schema={schema} />)
-    }
+
+describe('ContainerHandler', function() {
+    const schemaHandler = new SmartFormSchemaHandler([
+        new ContainerHandler(),
+        new InputHandler()
+    ])
+    const renderSchema = (schema: Schema) => render(<SmartForm handler={schemaHandler} schema={schema} />)
 
     it('Should render container items', () => {
         const {container, debug} = renderSchema([
@@ -28,5 +27,4 @@ describe('Container', function() {
         ]);
         expect(container.querySelector('div.container1 #text')).not.toBeNull()
     })
-
 })

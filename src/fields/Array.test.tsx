@@ -1,22 +1,22 @@
-import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import ReactSchemaVisitor from "../react";
-import ReactArrayVisitor from "./Array.react";
-import ReactInputVisitor from "./Input.react";
-import SmartForm from "../SmartForm";
+import SmartFormSchemaHandler from "../index";
+import ArrayHandler from "./Array";
 import {Schema} from "../types";
+import {fireEvent, render} from "@testing-library/react";
+import SmartForm from "../SmartForm";
+import React from "react";
+import InputHandler from "./Input";
+import * as yup from "yup";
 
-describe('Array', function() {
-    const visitor = new ReactSchemaVisitor([
-        new ReactArrayVisitor(),
-        new ReactInputVisitor()
+describe('ArrayHandler', () => {
+    const handler = new ArrayHandler()
+    const schemaHandler = new SmartFormSchemaHandler([
+        handler,
+        new InputHandler()
     ]);
-    function renderSchema(schema: Schema) {
-        return render(<SmartForm visitor={visitor} schema={schema} />)
-    }
+    const renderSchema = (schema: Schema) => render(<SmartForm handler={schemaHandler} schema={schema} />)
 
     it('Should render complex array items', () => {
-        const {container, debug} = renderSchema([
+        const {container} = renderSchema([
             {
                 type: 'array',
                 name: 'myarr',
@@ -81,4 +81,33 @@ describe('Array', function() {
         fireEvent.input(container.querySelector('#myarr-0-cnt'), {target: {value: '2'}})
         expect(container.querySelectorAll('input[id^="myarr-0-mynestedarr-"]')).toHaveLength(2)
     })
-})
+
+    it('Should validate simple arrays', () => {
+        const actual = schemaHandler.getYupSchema([
+            {
+                name: 'myarr',
+                type: 'array',
+                of: {type: 'input'}
+            }
+        ], {yup})
+        const expected = yup.object({
+            myarr: yup.array().of(yup.string())
+        })
+        expect(actual.describe()).toEqual(expected.describe())
+    });
+
+    it('Should validate complex arrays', () => {
+        const actual = schemaHandler.getYupSchema([
+            {
+                name: 'myarr',
+                type: 'array',
+                of: [{type: 'input', name: 'mytext'}]
+            }
+        ], {yup})
+        const expected = yup.object({
+            myarr: yup.array().of(yup.object({mytext: yup.string()}))
+        })
+        expect(actual.describe()).toEqual(expected.describe())
+    });
+
+});
