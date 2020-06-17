@@ -3,7 +3,7 @@ import {render, fireEvent} from "@testing-library/react";
 import ReactVisibilityDecorator from "./Visibility.react";
 import {Schema} from "../types";
 import ReactSchemaVisitor from "../react";
-import ReactInputVisitor from "./Input.react";
+import ReactInputVisitor from "../fields/Input.react";
 import SmartForm from "../SmartForm";
 
 

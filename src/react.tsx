@@ -2,7 +2,6 @@ import React from "react";
 import {FieldConfig, FieldName, Schema} from "./types";
 import {FormContextValues} from "react-hook-form";
 import {makeElementName} from "./util";
-import ReactVisibilityDecorator from "./fields/Visibility.react";
 
 export interface ReactFieldVisitor<C extends FieldConfig = FieldConfig> {
     visits(): string[]
