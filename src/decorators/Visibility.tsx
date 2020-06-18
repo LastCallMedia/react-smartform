@@ -21,7 +21,7 @@ import {
 import get from "lodash/get";
 
 export default class VisibilityDecorator implements FieldHandler {
-  inner: FieldHandler;
+  private readonly inner: FieldHandler;
 
   constructor(inner: FieldHandler) {
     this.inner = inner;

@@ -10,16 +10,30 @@ import { makeElementName } from "./util";
 import React from "react";
 import * as yup from "yup";
 
-export default class SmartFormSchemaHandler implements SchemaHandler {
-  handlers: Map<string, FieldHandler>;
+// Unpacks a typed array into a union of types
+type Unpacked<T> = T extends (infer U)[] ? U : never;
+// Extracts the configuration type for a single FieldHandler.
+type ExtractConfigFromHandler<T> = T extends FieldHandler
+  ? Parameters<T["getReactElement"]>[0]
+  : never;
+// Extracts a union configuration type for an array of FieldHandlers
+type ExtractConfigFromHandlers<T> = ExtractConfigFromHandler<Unpacked<T>>;
 
-  constructor(handlers: FieldHandler[] = []) {
+/**
+ * This complicated typing allows us to extract
+ */
+export default class SmartFormSchemaHandler<
+  H extends FieldHandler[],
+  C extends ExtractConfigFromHandlers<H>
+> implements SchemaHandler {
+  private readonly handlers: Map<string, FieldHandler>;
+
+  constructor(handlers: H) {
     this.handlers = new Map<string, FieldHandler>();
-    handlers.forEach((handler) => this.addHandler(handler));
-  }
-  addHandler(handler: FieldHandler): void {
-    handler.handles().forEach((type) => {
-      this.handlers.set(type, handler);
+    handlers.forEach((handler) => {
+      handler.handles().forEach((type) => {
+        this.handlers.set(type, handler);
+      });
     });
   }
   getHandler(field: FieldConfig): FieldHandler {
@@ -30,7 +44,7 @@ export default class SmartFormSchemaHandler implements SchemaHandler {
     return handler;
   }
   getReactElement(
-    schema: Schema | FieldConfig,
+    schema: C | C[],
     context: ReactSchemaHandlerContext
   ): React.ReactElement {
     const parents = context.parents || [];
@@ -52,7 +66,7 @@ export default class SmartFormSchemaHandler implements SchemaHandler {
     return buildField(schema);
   }
   getYupSchema(
-    schema: Schema | FieldConfig,
+    schema: C | C[],
     context: YupSchemaHandlerContext
   ): yup.Schema<unknown> {
     const parents = context.parents || [];

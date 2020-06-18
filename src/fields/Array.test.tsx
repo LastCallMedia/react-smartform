@@ -106,6 +106,7 @@ describe("ArrayHandler", () => {
         {
           name: "myarr",
           type: "array",
+          count: 1,
           of: { type: "text" },
         },
       ],
@@ -123,6 +124,7 @@ describe("ArrayHandler", () => {
         {
           name: "myarr",
           type: "array",
+          count: 1,
           of: [{ type: "text", name: "mytext" }],
         },
       ],

@@ -7,7 +7,7 @@ import { InputConfig } from "../fields/Input";
 describe("Validation decorator", function () {
   const inner = new InputHandler();
   const decorator = new ValidationHandler(inner);
-  const handler = new SmartFormSchemaHandler();
+  const handler = new SmartFormSchemaHandler([decorator]);
 
   it("Should pass through validation if no conditions are specified", () => {
     const config = { type: "text", name: "test" } as InputConfig;

@@ -9,7 +9,7 @@ import React from "react";
 import * as yup from "yup";
 
 type UnnamedFieldConfig = Omit<FieldConfig, "name">;
-export default interface ArrayConfig extends FieldConfig {
+export interface ArrayConfig extends FieldConfig {
   count: number | string;
   of: UnnamedFieldConfig | FieldConfig[];
 }

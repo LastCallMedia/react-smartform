@@ -21,7 +21,7 @@ interface ValidationConfig extends FieldConfig {
 
 export default class ValidationHandler
   implements FieldHandler<ValidationConfig> {
-  inner: FieldHandler;
+  private readonly inner: FieldHandler;
   constructor(inner: FieldHandler) {
     this.inner = inner;
   }
