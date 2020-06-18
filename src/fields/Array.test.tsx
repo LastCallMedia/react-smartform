@@ -21,7 +21,7 @@ describe('ArrayHandler', () => {
                 type: 'array',
                 name: 'myarr',
                 count: 2,
-                of: [{name: 'text', type: 'input', inputType: 'text'}]
+                of: [{name: 'text', type: 'text'}]
             }
         ]);
         expect(container.querySelectorAll('input[name="myarr[0].text"]')).toHaveLength(1);
@@ -34,7 +34,7 @@ describe('ArrayHandler', () => {
                 type: 'array',
                 name: 'myarr',
                 count: 2,
-                of: {type: 'input', inputType: 'text'}
+                of: {type: 'text'}
             }
         ]);
         expect(container.querySelectorAll('input[name="myarr[0]"]')).toHaveLength(1);
@@ -42,43 +42,42 @@ describe('ArrayHandler', () => {
     });
 
     it('Should allow count to be controlled by another field', async () => {
-        const {container} = renderSchema([
+        const {container, getByLabelText} = renderSchema([
             {
                 name: 'mynumber',
-                type: 'input',
-                inputType: 'number'
+                type: 'number',
             },
             {
                 type: 'array',
                 name: 'myarr',
                 count: 'value(mynumber)',
-                of: {type: 'input', inputType: 'text'}
+                of: {type: 'text'}
             }
         ]);
         expect(container.querySelectorAll('input[name="myarr[0]"]')).toHaveLength(0);
-        fireEvent.input(container.querySelector('[name="mynumber"]'), {target: {value: '2'}})
+        fireEvent.input(getByLabelText('label.mynumber'), {target: {value: '2'}})
         expect(container.querySelectorAll('input[id^="myarr-"]')).toHaveLength(2);
     });
 
     it('Should allow count to be controlled by a relative field', async () => {
-        const {container} = renderSchema([
+        const {container, getByLabelText} = renderSchema([
             {
                 type: 'array',
                 name: 'myarr',
                 count: 1,
                 of: [
-                    {name: 'cnt', type: 'input', inputType: 'number'},
+                    {name: 'cnt', type: 'number'},
                     {
                         type: 'array',
                         name: 'mynestedarr',
                         count: 'value(./cnt)',
-                        of: {type: 'input', inputType: 'text'}
+                        of: {type: 'text'}
                     }
                 ]
             }
         ]);
         expect(container.querySelectorAll('input[name="myarr[0].mynestedarr[0]"]')).toHaveLength(0);
-        fireEvent.input(container.querySelector('#myarr-0-cnt'), {target: {value: '2'}})
+        fireEvent.input(getByLabelText('label.myarr.cnt'), {target: {value: '2'}})
         expect(container.querySelectorAll('input[id^="myarr-0-mynestedarr-"]')).toHaveLength(2)
     })
 
@@ -87,7 +86,7 @@ describe('ArrayHandler', () => {
             {
                 name: 'myarr',
                 type: 'array',
-                of: {type: 'input'}
+                of: {type: 'text'}
             }
         ], {yup})
         const expected = yup.object({
@@ -101,7 +100,7 @@ describe('ArrayHandler', () => {
             {
                 name: 'myarr',
                 type: 'array',
-                of: [{type: 'input', name: 'mytext'}]
+                of: [{type: 'text', name: 'mytext'}]
             }
         ], {yup})
         const expected = yup.object({

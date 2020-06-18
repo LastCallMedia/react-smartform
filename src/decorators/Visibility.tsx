@@ -1,6 +1,7 @@
 import React from 'react';
 import {FieldHandler, FieldConfig, ReactFieldHandlerContext, YupFieldHandlerContext} from "../types";
-import {compile, eval as evalExpr, parse} from "expression-eval";
+import {compile, eval as evalExpr} from "expression-eval";
+import jsep from "jsep";
 import {resolveFieldName} from "../util";
 import * as yup from "yup";
 import set from "lodash/set";
@@ -29,7 +30,7 @@ export default class VisibilityDecorator implements FieldHandler {
     getYupSchema(config: FieldConfig, context: YupFieldHandlerContext): yup.Schema<unknown> {
         let schema = this.inner.getYupSchema(config, context);
         if(config.when) {
-            const ast = parse(config.when);
+            const ast = jsep(config.when);
             const refs = extractRefs(ast);
             schema = yup.mixed().when(refs, {
                 is: (...values) => {

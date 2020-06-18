@@ -1,11 +1,15 @@
 import {FieldConfig, FieldHandler, ReactFieldHandlerContext, YupFieldHandlerContext} from "../types";
 import {resolveFieldName} from "../util";
 import React from "react";
+import {Field} from "react-hook-form";
 
+type UnnamedFieldConfig = Omit<FieldConfig, 'name'>
 export default interface ArrayConfig extends FieldConfig {
     count: number|string
-    of: Omit<FieldConfig, 'name'> | FieldConfig[]
+    of: UnnamedFieldConfig | FieldConfig[]
 }
+
+
 
 export default class ArrayHandler implements FieldHandler<ArrayConfig> {
     handles(): string[] {
@@ -18,7 +22,7 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
         const children = Array.from(Array(count).keys()).map(i => {
             return Array.isArray(config.of)
                 ? handler.getReactElement(config.of, {...context, parents: parents.concat([config.name, i])})
-                : handler.getReactElement({...config.of, name: i}, {...context, parents: parents.concat(config.name)})
+                : handler.getReactElement({...config.of, name: i} as FieldConfig, {...context, parents: parents.concat(config.name)})
         })
         return <React.Fragment key={config.name}>{children}</React.Fragment>
     }
@@ -27,7 +31,7 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
         const {handler} = context
         const children = Array.isArray(config.of) ?
             handler.getYupSchema(config.of, context) :
-            handler.getYupSchema({name: 0, ...config.of}, context);
+            handler.getYupSchema({...config.of, name: 0} as FieldConfig, context);
         return context.yup.array().of(children);
     }
 }

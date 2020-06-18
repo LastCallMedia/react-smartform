@@ -2,18 +2,16 @@ import {FieldConfig, FieldHandler, ReactFieldHandlerContext, YupFieldHandlerCont
 import {makeElementId, makeElementLabel, makeElementName} from "../util";
 import React from "react";
 
-export default interface InputConfig extends FieldConfig {
+export interface InputConfig extends FieldConfig {
     name: string
-    type: 'input'
+    type: 'text'|'number'|'tel'|'password'
     placeholder?: boolean
-    inputType?: string
     required?: boolean
 }
 
-
 export default class InputHandler implements FieldHandler<InputConfig> {
     handles(): string[] {
-        return ['input']
+        return ['text', 'number', 'tel', 'password']
     }
     getReactElement(config: InputConfig, context: ReactFieldHandlerContext): React.ReactElement {
         const name = makeElementName(context.parents.concat([config.name]));
@@ -26,7 +24,7 @@ export default class InputHandler implements FieldHandler<InputConfig> {
                     id={id}
                     name={name}
                     placeholder={config.placeholder ? makeElementLabel(context.parents.concat(config.name), 'placeholder'): undefined}
-                    type={config.inputType || 'text'}
+                    type={config.type}
                     ref={context.form.register()}
                 />
             </div>

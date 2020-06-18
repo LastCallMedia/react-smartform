@@ -21,10 +21,10 @@ describe('ContainerHandler', function() {
                 name: 'myarr',
                 className: 'container1',
                 of: [
-                    {name: 'text', type: 'input', inputType: 'text'}
+                    {name: 'mytext', type: 'text'}
                 ]
             }
         ]);
-        expect(container.querySelector('div.container1 #text')).not.toBeNull()
+        expect(container.querySelector('div.container1 #mytext')).not.toBeNull()
     })
 })
