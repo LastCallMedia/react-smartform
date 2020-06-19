@@ -1,11 +1,11 @@
 import InputHandler from "../fields/Input";
-import ValidationHandler from "./Validation";
+import ValidationDecorator from "./Validation";
 import * as yup from "yup";
 import { getYupFieldSchema } from "../testing";
 
 describe("Validation decorator", function () {
   const inner = new InputHandler();
-  const decorator = new ValidationHandler(inner);
+  const decorator = new ValidationDecorator(inner);
 
   it("Should pass through validation if no conditions are specified", () => {
     const config = { type: "text" as const, name: "test" };
@@ -59,7 +59,7 @@ describe("Validation decorator", function () {
     inner.getYupSchema = function () {
       return yup.string().meta({ mergeUp: true });
     };
-    const decorator = new ValidationHandler(inner);
+    const decorator = new ValidationDecorator(inner);
     const matches = getYupFieldSchema(decorator, {
       type: "text",
       name: "test",

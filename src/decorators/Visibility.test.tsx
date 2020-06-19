@@ -4,7 +4,7 @@ import {
   getYupFieldSchema,
   getYupSchema,
 } from "../testing";
-import SmartFormSchemaHandler from "../index";
+import SmartFormSchemaHandler from "../SchemaHandler";
 import VisibilityDecorator from "./Visibility";
 import InputHandler from "../fields/Input";
 import * as yup from "yup";

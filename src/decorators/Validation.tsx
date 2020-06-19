@@ -19,7 +19,7 @@ interface ValidationConfig {
   validate?: Validation[];
 }
 
-export default class ValidationHandler<
+export default class ValidationDecorator<
   I extends FieldHandler,
   C extends ExtractConfigFromHandler<I>
 > implements FieldHandler<C & ValidationConfig> {

@@ -1,4 +1,4 @@
-import SmartFormSchemaHandler from "../index";
+import SmartFormSchemaHandler from "../SchemaHandler";
 import ArrayHandler from "./Array";
 import { fireEvent, renderSchema, getYupFieldSchema } from "../testing";
 import InputHandler from "./Input";

@@ -1,4 +1,4 @@
-import SmartFormSchemaHandler from "../index";
+import SmartFormSchemaHandler from "../SchemaHandler";
 import InputHandler from "./Input";
 import { renderSchema, getYupFieldSchema } from "../testing";
 import * as yup from "yup";

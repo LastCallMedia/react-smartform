@@ -10,7 +10,7 @@ import {
   YupFieldHandlerContext,
 } from "./types";
 import * as yup from "yup";
-import SmartFormSchemaHandler from ".";
+import SmartFormSchemaHandler from "./SchemaHandler";
 
 export function renderSchema<
   H extends SchemaHandler,
