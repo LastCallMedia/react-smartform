@@ -24,8 +24,10 @@ export type Schema<T extends FieldConfig = FieldConfig> = T[];
 export interface ReactSchemaHandlerContext {
   form: FormContextValues;
   parents?: FieldName[];
+  renderer?: SchemaRenderer;
 }
-export interface ReactFieldHandlerContext extends ReactSchemaHandlerContext {
+export interface ReactFieldHandlerContext
+  extends Omit<ReactSchemaHandlerContext, "renderer"> {
   handler: SchemaHandler;
   parents: FieldName[];
 }
@@ -80,3 +82,8 @@ export type ConfigFromFieldHandlers<
 export type SchemaFromSchemaHandler<T extends SchemaHandler> = Parameters<
   T["getReactElement"]
 >[0];
+
+export type RenderChildren = Record<string, React.ReactElement>;
+export type SchemaRenderer<C extends RenderChildren = RenderChildren> = (
+  children: C
+) => React.ReactElement;

@@ -44,7 +44,7 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
             }
           );
     });
-    return <React.Fragment key={config.name}>{children}</React.Fragment>;
+    return <React.Fragment>{children}</React.Fragment>;
   }
 
   getYupSchema(

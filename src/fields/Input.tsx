@@ -30,7 +30,7 @@ export default class InputHandler implements FieldHandler<InputConfig> {
       "label"
     );
     return (
-      <div key={config.name}>
+      <div>
         <label htmlFor={id}>{label}</label>
         <input
           id={id}

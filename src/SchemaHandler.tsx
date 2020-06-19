@@ -6,6 +6,8 @@ import type {
   FieldHandler,
   FieldConfig,
   ConfigFromFieldHandlers,
+  SchemaRenderer,
+  RenderChildren,
 } from "./types";
 import { makeElementName } from "./util";
 import React from "react";
@@ -45,26 +47,33 @@ export default class SmartFormSchemaHandler<
     context: ReactSchemaHandlerContext
   ): React.ReactElement {
     const parents = context.parents || [];
-
     const key = parents.length === 0 ? "root" : makeElementName(parents);
-    return (
-      <React.Fragment key={key}>
-        {schema
-          .map((config) => this.getReactElementSingle(config, context))
-          .filter((e) => !!e)}
-      </React.Fragment>
-    );
+
+    // Render the children into an object, keyed by field name.
+    const children = schema.reduce((output, config) => {
+      const fieldOutput = this.getReactElementSingle(config, context);
+      return { ...output, [config.name]: fieldOutput };
+    }, {} as RenderChildren);
+
+    // Use the chosen renderer to render the children.
+    const render = context.renderer ? context.renderer : defaultRenderer;
+    // Tack the key onto the element at the end so we don't end up with duplicate key errors.
+    return React.cloneElement(render(children), { key });
   }
   getReactElementSingle(
     config: C,
     context: ReactSchemaHandlerContext
   ): React.ReactElement {
     const parents = context.parents || [];
-    return this.getHandler(config).getReactElement(config, {
-      ...context,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { renderer, ...restOfContext } = context;
+    const element = this.getHandler(config).getReactElement(config, {
+      // Do not pass renderer through. We reset at each level of recursion.
+      ...restOfContext,
       parents,
       handler: this,
     });
+    return React.cloneElement(element, { key: config.name });
   }
 
   getYupSchema(
@@ -120,3 +129,7 @@ function omitMeta<T extends yup.Schema<unknown>>(schema: T, key: string): T {
   }
   return schema;
 }
+
+const defaultRenderer: SchemaRenderer = (children: RenderChildren) => {
+  return <React.Fragment>{Object.values(children)}</React.Fragment>;
+};

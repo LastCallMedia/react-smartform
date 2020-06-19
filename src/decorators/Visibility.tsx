@@ -44,7 +44,7 @@ export default class VisibilityDecorator<
   ): React.ReactElement {
     if (config.when) {
       if (!compile(config.when)(getReactEvalContext(context))) {
-        return <React.Fragment key={config.name}></React.Fragment>;
+        return <React.Fragment></React.Fragment>;
       }
     }
     return this.inner.getReactElement(config, context);

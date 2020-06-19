@@ -23,7 +23,7 @@ export default class ContainerHandler implements FieldHandler<ContainerConfig> {
     context: ReactFieldHandlerContext
   ): React.ReactElement {
     return (
-      <div key={config.name} className={config.className}>
+      <div className={config.className}>
         {context.handler.getReactElement(config.of, context)}
       </div>
     );
