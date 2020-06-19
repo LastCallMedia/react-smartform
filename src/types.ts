@@ -13,14 +13,13 @@ export type FieldName = string | number;
 export interface FieldConfig {
   name: FieldName;
   type: string;
-  when?: string;
   [k: string]: unknown;
 }
 
 /**
  * Many fields in an array are considered a Schema.
  */
-export type Schema = FieldConfig[];
+export type Schema<T extends FieldConfig = FieldConfig> = T[];
 
 export interface ReactSchemaHandlerContext {
   form: FormContextValues;
@@ -39,13 +38,21 @@ export interface YupFieldHandlerContext extends YupSchemaHandlerContext {
   parents: FieldName[];
 }
 
-export interface SchemaHandler {
+export interface SchemaHandler<S extends Schema = Schema> {
   getReactElement(
-    schema: Schema | FieldConfig,
+    schema: S,
+    context: ReactSchemaHandlerContext
+  ): React.ReactElement;
+  getReactElementSingle(
+    config: Unpacked<S>,
     context: ReactSchemaHandlerContext
   ): React.ReactElement;
   getYupSchema(
-    schema: Schema | FieldConfig,
+    schema: S,
+    context: YupSchemaHandlerContext
+  ): yup.Schema<unknown>;
+  getYupSchemaSingle(
+    config: Unpacked<S>,
     context: YupSchemaHandlerContext
   ): yup.Schema<unknown>;
 }
@@ -58,3 +65,24 @@ export interface FieldHandler<C extends FieldConfig = FieldConfig> {
   ): React.ReactElement;
   getYupSchema(config: C, context: YupFieldHandlerContext): yup.Schema<unknown>;
 }
+
+// Unpacks a typed array into a union of types
+type Unpacked<T> = T extends (infer U)[] ? U : never;
+// Extracts the configuration type for a single FieldHandler.
+export type ExtractConfigFromHandler<T> = T extends FieldHandler
+  ? Parameters<T["getReactElement"]>[0]
+  : never;
+// Extracts a union configuration type for an array of FieldHandlers
+export type ExtractConfigFromHandlers<T> = ExtractConfigFromHandler<
+  Unpacked<T>
+>;
+
+export type ConfigFromFieldHandler<T extends FieldHandler> = Parameters<
+  T["getReactElement"]
+>[0];
+export type ConfigFromFieldHandlers<
+  T extends FieldHandler[]
+> = ConfigFromFieldHandler<Unpacked<T>>;
+export type SchemaFromSchemaHandler<T extends SchemaHandler> = Parameters<
+  T["getReactElement"]
+>[0];

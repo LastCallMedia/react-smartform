@@ -1,23 +1,18 @@
 import SmartFormSchemaHandler from "../index";
 import ArrayHandler from "./Array";
-import { Schema } from "../types";
-import { fireEvent, render } from "@testing-library/react";
-import SmartForm from "../SmartForm";
-import React from "react";
+import { fireEvent, renderSchema, getYupFieldSchema } from "../testing";
 import InputHandler from "./Input";
 import * as yup from "yup";
 
 describe("ArrayHandler", () => {
-  const handler = new ArrayHandler();
+  const fieldHandler = new ArrayHandler();
   const schemaHandler = new SmartFormSchemaHandler([
-    handler,
+    fieldHandler,
     new InputHandler(),
   ]);
-  const renderSchema = (schema: Schema) =>
-    render(<SmartForm handler={schemaHandler} schema={schema} />);
 
   it("Should render complex array items", () => {
-    const { container } = renderSchema([
+    const { container } = renderSchema(schemaHandler, [
       {
         type: "array",
         name: "myarr",
@@ -34,7 +29,7 @@ describe("ArrayHandler", () => {
   });
 
   it("Should render simple array items", () => {
-    const { container } = renderSchema([
+    const { container } = renderSchema(schemaHandler, [
       {
         type: "array",
         name: "myarr",
@@ -51,7 +46,7 @@ describe("ArrayHandler", () => {
   });
 
   it("Should allow count to be controlled by another field", async () => {
-    const { container, getByLabelText } = renderSchema([
+    const { container, getByLabelText } = renderSchema(schemaHandler, [
       {
         name: "mynumber",
         type: "number",
@@ -73,7 +68,7 @@ describe("ArrayHandler", () => {
   });
 
   it("Should allow count to be controlled by a relative field", async () => {
-    const { container, getByLabelText } = renderSchema([
+    const { container, getByLabelText } = renderSchema(schemaHandler, [
       {
         type: "array",
         name: "myarr",
@@ -101,38 +96,32 @@ describe("ArrayHandler", () => {
   });
 
   it("Should validate simple arrays", () => {
-    const actual = schemaHandler.getYupSchema(
-      [
-        {
-          name: "myarr",
-          type: "array",
-          count: 1,
-          of: { type: "text" },
-        },
-      ],
-      { yup }
+    const actual = getYupFieldSchema(
+      fieldHandler,
+      {
+        name: "myarr",
+        type: "array",
+        count: 1,
+        of: { type: "text" },
+      },
+      { handler: schemaHandler }
     );
-    const expected = yup.object({
-      myarr: yup.array().of(yup.string()),
-    });
+    const expected = yup.array().of(yup.string());
     expect(actual.describe()).toEqual(expected.describe());
   });
 
   it("Should validate complex arrays", () => {
-    const actual = schemaHandler.getYupSchema(
-      [
-        {
-          name: "myarr",
-          type: "array",
-          count: 1,
-          of: [{ type: "text", name: "mytext" }],
-        },
-      ],
-      { yup }
+    const actual = getYupFieldSchema(
+      fieldHandler,
+      {
+        name: "myarr",
+        type: "array",
+        count: 1,
+        of: [{ type: "text", name: "mytext" }],
+      },
+      { handler: schemaHandler }
     );
-    const expected = yup.object({
-      myarr: yup.array().of(yup.object({ mytext: yup.string() })),
-    });
+    const expected = yup.array().of(yup.object({ mytext: yup.string() }));
     expect(actual.describe()).toEqual(expected.describe());
   });
 });

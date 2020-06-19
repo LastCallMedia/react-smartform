@@ -4,6 +4,7 @@ import {
   FieldConfig,
   ReactFieldHandlerContext,
   YupFieldHandlerContext,
+  ExtractConfigFromHandler,
 } from "../types";
 import { compile, eval as evalExpr } from "expression-eval";
 import jsep from "jsep";
@@ -20,10 +21,17 @@ import {
 } from "jsep";
 import get from "lodash/get";
 
-export default class VisibilityDecorator implements FieldHandler {
+export interface VisibilityConfig extends FieldConfig {
+  when?: string;
+}
+
+export default class VisibilityDecorator<
+  I extends FieldHandler,
+  C extends ExtractConfigFromHandler<I>
+> implements FieldHandler {
   private readonly inner: FieldHandler;
 
-  constructor(inner: FieldHandler) {
+  constructor(inner: I) {
     this.inner = inner;
   }
 
@@ -32,7 +40,7 @@ export default class VisibilityDecorator implements FieldHandler {
   }
 
   getReactElement(
-    config: FieldConfig,
+    config: C & VisibilityConfig,
     context: ReactFieldHandlerContext
   ): React.ReactElement {
     if (config.when) {
@@ -43,7 +51,7 @@ export default class VisibilityDecorator implements FieldHandler {
     return this.inner.getReactElement(config, context);
   }
   getYupSchema(
-    config: FieldConfig,
+    config: C & VisibilityConfig,
     context: YupFieldHandlerContext
   ): yup.Schema<unknown> {
     let schema = this.inner.getYupSchema(config, context);

@@ -5,27 +5,24 @@ import {
   YupSchemaHandlerContext,
   FieldHandler,
   FieldConfig,
+  ConfigFromFieldHandlers,
 } from "./types";
 import { makeElementName } from "./util";
 import React from "react";
 import * as yup from "yup";
 
-// Unpacks a typed array into a union of types
-type Unpacked<T> = T extends (infer U)[] ? U : never;
-// Extracts the configuration type for a single FieldHandler.
-type ExtractConfigFromHandler<T> = T extends FieldHandler
-  ? Parameters<T["getReactElement"]>[0]
-  : never;
-// Extracts a union configuration type for an array of FieldHandlers
-type ExtractConfigFromHandlers<T> = ExtractConfigFromHandler<Unpacked<T>>;
-
 /**
- * This complicated typing allows us to extract
+ * This complicated typing allows us to extract allowed configuration
+ * shapes from the field handlers, giving type checking for all passed
+ * schema objects.
+ *
+ * H is the array of handlers that are passed in the constructor.
+ * C is a union of the configuration types those handlers support.
  */
 export default class SmartFormSchemaHandler<
   H extends FieldHandler[],
-  C extends ExtractConfigFromHandlers<H>
-> implements SchemaHandler {
+  C extends ConfigFromFieldHandlers<H>
+> implements SchemaHandler<Schema<C>> {
   private readonly handlers: Map<string, FieldHandler>;
 
   constructor(handlers: H) {
@@ -44,49 +41,53 @@ export default class SmartFormSchemaHandler<
     return handler;
   }
   getReactElement(
-    schema: C | C[],
+    schema: C[],
     context: ReactSchemaHandlerContext
   ): React.ReactElement {
     const parents = context.parents || [];
 
-    const buildField = (field: FieldConfig) =>
-      this.getHandler(field).getReactElement(field, {
-        ...context,
-        parents,
-        handler: this,
-      });
-    if (Array.isArray(schema)) {
-      const key = parents.length === 0 ? "root" : makeElementName(parents);
-      return (
-        <React.Fragment key={key}>
-          {schema.map(buildField).filter((e) => !!e)}
-        </React.Fragment>
-      );
-    }
-    return buildField(schema);
+    const key = parents.length === 0 ? "root" : makeElementName(parents);
+    return (
+      <React.Fragment key={key}>
+        {schema
+          .map((config) => this.getReactElementSingle(config, context))
+          .filter((e) => !!e)}
+      </React.Fragment>
+    );
+  }
+  getReactElementSingle(
+    config: C,
+    context: ReactSchemaHandlerContext
+  ): React.ReactElement {
+    const parents = context.parents || [];
+    return this.getHandler(config).getReactElement(config, {
+      ...context,
+      parents,
+      handler: this,
+    });
   }
   getYupSchema(
-    schema: C | C[],
+    schema: C[],
+    context: YupSchemaHandlerContext
+  ): yup.Schema<unknown> {
+    const fields = schema.reduce((collected, config) => {
+      collected[config.name.toString()] = this.getYupSchemaSingle(
+        config,
+        context
+      );
+      return collected;
+    }, {} as Record<string, yup.Schema<unknown>>);
+    return context.yup.object(fields);
+  }
+  getYupSchemaSingle(
+    config: C,
     context: YupSchemaHandlerContext
   ): yup.Schema<unknown> {
     const parents = context.parents || [];
-    const buildField = (field: FieldConfig) =>
-      this.getHandler(field).getYupSchema(field, {
-        ...context,
-        parents,
-        handler: this,
-      });
-
-    if (Array.isArray(schema)) {
-      const fields = schema.reduce((collected, field) => {
-        collected[field.name.toString()] = this.getHandler(
-          field
-        ).getYupSchema(field, { ...context, parents, handler: this });
-        return collected;
-      }, {} as Record<string, yup.Schema<unknown>>);
-      return context.yup.object(fields);
-    }
-
-    return buildField(schema);
+    return this.getHandler(config).getYupSchema(config, {
+      ...context,
+      parents,
+      handler: this,
+    });
   }
 }

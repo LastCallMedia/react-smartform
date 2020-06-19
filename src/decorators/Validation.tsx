@@ -1,8 +1,8 @@
 import {
-  FieldConfig,
   FieldHandler,
   ReactFieldHandlerContext,
   YupFieldHandlerContext,
+  ExtractConfigFromHandler,
 } from "../types";
 import * as yup from "yup";
 
@@ -15,27 +15,29 @@ interface MatchesValidation {
   message?: string;
 }
 type Validation = PatternValidation | MatchesValidation;
-interface ValidationConfig extends FieldConfig {
+interface ValidationConfig {
   validate?: Validation[];
 }
 
-export default class ValidationHandler
-  implements FieldHandler<ValidationConfig> {
+export default class ValidationHandler<
+  I extends FieldHandler,
+  C extends ExtractConfigFromHandler<I>
+> implements FieldHandler<C & ValidationConfig> {
   private readonly inner: FieldHandler;
-  constructor(inner: FieldHandler) {
+  constructor(inner: I) {
     this.inner = inner;
   }
   handles(): string[] {
     return this.inner.handles();
   }
   getReactElement(
-    config: ValidationConfig,
+    config: C & ValidationConfig,
     context: ReactFieldHandlerContext
   ): React.ReactElement {
     return this.inner.getReactElement(config, context);
   }
   getYupSchema(
-    config: ValidationConfig,
+    config: C & ValidationConfig,
     context: YupFieldHandlerContext
   ): yup.Schema<unknown> {
     let schema = this.inner.getYupSchema(config, context);

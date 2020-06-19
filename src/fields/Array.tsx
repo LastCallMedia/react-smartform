@@ -8,7 +8,12 @@ import { resolveFieldName } from "../util";
 import React from "react";
 import * as yup from "yup";
 
-type UnnamedFieldConfig = Omit<FieldConfig, "name">;
+// @todo: I'd like to use Omit<FieldConfig, "name"> here, but it's not working with the
+// additional properties.
+interface UnnamedFieldConfig {
+  type: string;
+  [k: string]: unknown;
+}
 export interface ArrayConfig extends FieldConfig {
   count: number | string;
   of: UnnamedFieldConfig | FieldConfig[];
@@ -31,10 +36,13 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
             ...context,
             parents: parents.concat([config.name, i]),
           })
-        : handler.getReactElement({ ...config.of, name: i } as FieldConfig, {
-            ...context,
-            parents: parents.concat(config.name),
-          });
+        : handler.getReactElementSingle(
+            { ...config.of, name: i },
+            {
+              ...context,
+              parents: parents.concat(config.name),
+            }
+          );
     });
     return <React.Fragment key={config.name}>{children}</React.Fragment>;
   }
@@ -46,7 +54,7 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
     const { handler } = context;
     const children = Array.isArray(config.of)
       ? handler.getYupSchema(config.of, context)
-      : handler.getYupSchema({ ...config.of, name: 0 } as FieldConfig, context);
+      : handler.getYupSchemaSingle({ ...config.of, name: 0 }, context);
     return context.yup.array().of(children);
   }
 }

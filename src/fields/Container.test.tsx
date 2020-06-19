@@ -1,21 +1,16 @@
 import SmartFormSchemaHandler from "../index";
 import ContainerHandler from "./Container";
 import InputHandler from "./Input";
-import { Schema } from "../types";
-import { render } from "@testing-library/react";
-import SmartForm from "../SmartForm";
-import React from "react";
+import { renderSchema } from "../testing";
 
 describe("ContainerHandler", function () {
   const schemaHandler = new SmartFormSchemaHandler([
     new ContainerHandler(),
     new InputHandler(),
   ]);
-  const renderSchema = (schema: Schema) =>
-    render(<SmartForm handler={schemaHandler} schema={schema} />);
 
   it("Should render container items", () => {
-    const { container } = renderSchema([
+    const { container } = renderSchema(schemaHandler, [
       {
         type: "container",
         name: "myarr",

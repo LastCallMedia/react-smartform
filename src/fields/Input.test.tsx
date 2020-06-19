@@ -1,20 +1,14 @@
 import SmartFormSchemaHandler from "../index";
 import InputHandler from "./Input";
-import { Schema } from "../types";
-import { render } from "@testing-library/react";
-import SmartForm from "../SmartForm";
-import React from "react";
+import { renderSchema, getYupFieldSchema } from "../testing";
 import * as yup from "yup";
 
 describe("InputHandler", function () {
   const fieldHandler = new InputHandler();
   const schemaHandler = new SmartFormSchemaHandler([fieldHandler]);
 
-  const renderSchema = (schema: Schema) =>
-    render(<SmartForm handler={schemaHandler} schema={schema} />);
-
   it("Should render", () => {
-    const { container } = renderSchema([
+    const { container } = renderSchema(schemaHandler, [
       { type: "number", name: "mynumber" },
       { type: "text", name: "mytext" },
     ]);
@@ -27,26 +21,27 @@ describe("InputHandler", function () {
   });
 
   it("Should optionally render with a placeholder", () => {
-    const { getByPlaceholderText } = renderSchema([
+    const { getByPlaceholderText } = renderSchema(schemaHandler, [
       { type: "text", name: "mytext", placeholder: true },
     ]);
     expect(getByPlaceholderText("placeholder.mytext")).not.toBeNull();
   });
 
   it("Should form a base schema", () => {
-    const actual = fieldHandler.getYupSchema(
-      { type: "text", name: "foo" },
-      { yup, handler: schemaHandler, parents: [] }
-    );
+    const actual = getYupFieldSchema(fieldHandler, {
+      type: "text",
+      name: "foo",
+    });
     const expected = yup.string();
     expect(actual.describe()).toEqual(expected.describe());
   });
 
   it("Should be require-able", () => {
-    const actual = fieldHandler.getYupSchema(
-      { type: "text", name: "foo", required: true },
-      { yup, handler: schemaHandler, parents: [] }
-    );
+    const actual = getYupFieldSchema(fieldHandler, {
+      type: "text",
+      name: "foo",
+      required: true,
+    });
     const expected = yup.string().required();
     expect(actual.describe()).toEqual(expected.describe());
   });
