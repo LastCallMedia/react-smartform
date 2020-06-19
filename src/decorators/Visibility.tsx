@@ -1,17 +1,17 @@
 import React from "react";
-import {
+import type {
   FieldHandler,
   FieldConfig,
   ReactFieldHandlerContext,
   YupFieldHandlerContext,
   ExtractConfigFromHandler,
 } from "../types";
+import type { Schema as YupSchema } from "yup";
 import { compile, eval as evalExpr } from "expression-eval";
-import jsep from "jsep";
 import { resolveFieldName } from "../util";
-import * as yup from "yup";
 import set from "lodash/set";
-import {
+import get from "lodash/get";
+import jsep, {
   BinaryExpression,
   CallExpression,
   Expression,
@@ -19,7 +19,6 @@ import {
   Literal,
   LogicalExpression,
 } from "jsep";
-import get from "lodash/get";
 
 export interface VisibilityConfig extends FieldConfig {
   when?: string;
@@ -53,12 +52,12 @@ export default class VisibilityDecorator<
   getYupSchema(
     config: C & VisibilityConfig,
     context: YupFieldHandlerContext
-  ): yup.Schema<unknown> {
+  ): YupSchema<unknown> {
     let schema = this.inner.getYupSchema(config, context);
     if (config.when) {
       const ast = jsep(config.when);
       const refs = extractRefs(ast);
-      schema = yup.mixed().when(refs, {
+      schema = context.yup.mixed().when(refs, {
         is: (...values) => {
           // Extract values from our values array into an object we can descend into.
           const packed = refs.reduce((p, fieldName, i) => {

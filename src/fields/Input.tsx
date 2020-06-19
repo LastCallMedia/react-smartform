@@ -1,12 +1,12 @@
-import {
+import type {
   FieldConfig,
   FieldHandler,
   ReactFieldHandlerContext,
   YupFieldHandlerContext,
 } from "../types";
+import type { StringSchema } from "yup";
 import { makeElementId, makeElementLabel, makeElementName } from "../util";
 import React from "react";
-import * as yup from "yup";
 
 export interface InputConfig extends FieldConfig {
   name: string;
@@ -52,7 +52,7 @@ export default class InputHandler implements FieldHandler<InputConfig> {
   getYupSchema(
     config: InputConfig,
     context: YupFieldHandlerContext
-  ): yup.StringSchema {
+  ): StringSchema {
     let schema = context.yup.string();
     if (config.required) {
       schema = schema.required();

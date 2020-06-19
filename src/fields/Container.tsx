@@ -1,12 +1,12 @@
-import {
+import type {
   FieldConfig,
   FieldHandler,
   ReactFieldHandlerContext,
   Schema,
   YupFieldHandlerContext,
 } from "../types";
+import type { ObjectSchema } from "yup";
 import React from "react";
-import * as yup from "yup";
 
 export interface ContainerConfig extends FieldConfig {
   type: "container";
@@ -31,7 +31,8 @@ export default class ContainerHandler implements FieldHandler<ContainerConfig> {
   getYupSchema(
     config: ContainerConfig,
     context: YupFieldHandlerContext
-  ): yup.StringSchema {
+  ): ObjectSchema {
+    // @todo: Implement.
     return context.yup.string();
   }
 }

@@ -1,4 +1,4 @@
-import {
+import type {
   Schema,
   SchemaHandler,
   ReactSchemaHandlerContext,
@@ -69,7 +69,7 @@ export default class SmartFormSchemaHandler<
   getYupSchema(
     schema: C[],
     context: YupSchemaHandlerContext
-  ): yup.Schema<unknown> {
+  ): yup.ObjectSchema {
     const fields = schema.reduce((collected, config) => {
       collected[config.name.toString()] = this.getYupSchemaSingle(
         config,

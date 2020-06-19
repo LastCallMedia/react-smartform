@@ -1,12 +1,12 @@
-import {
+import type {
   FieldConfig,
   FieldHandler,
   ReactFieldHandlerContext,
   YupFieldHandlerContext,
 } from "../types";
+import type { Schema as YupSchema } from "yup";
 import { resolveFieldName } from "../util";
 import React from "react";
-import * as yup from "yup";
 
 // @todo: I'd like to use Omit<FieldConfig, "name"> here, but it's not working with the
 // additional properties.
@@ -50,7 +50,7 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
   getYupSchema(
     config: ArrayConfig,
     context: YupFieldHandlerContext
-  ): yup.Schema<unknown> {
+  ): YupSchema<unknown> {
     const { handler } = context;
     const children = Array.isArray(config.of)
       ? handler.getYupSchema(config.of, context)

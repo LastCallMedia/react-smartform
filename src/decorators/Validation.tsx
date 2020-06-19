@@ -1,10 +1,10 @@
-import {
+import type {
   FieldHandler,
   ReactFieldHandlerContext,
   YupFieldHandlerContext,
   ExtractConfigFromHandler,
 } from "../types";
-import * as yup from "yup";
+import { Schema as YupSchema, StringSchema } from "yup";
 
 interface PatternValidation {
   pattern: string;
@@ -39,7 +39,7 @@ export default class ValidationHandler<
   getYupSchema(
     config: C & ValidationConfig,
     context: YupFieldHandlerContext
-  ): yup.Schema<unknown> {
+  ): YupSchema<unknown> {
     let schema = this.inner.getYupSchema(config, context);
     if (config.validate) {
       config.validate.forEach((validation) => {
@@ -49,7 +49,7 @@ export default class ValidationHandler<
               `Unable to perform pattern validation on a schema of type ${schema.type}`
             );
           }
-          schema = (schema as yup.StringSchema).matches(
+          schema = (schema as StringSchema).matches(
             new RegExp(validation.pattern),
             validation.message
           );
@@ -58,11 +58,8 @@ export default class ValidationHandler<
           // @todo: Validate type here?
           const refs = Array.isArray(validation.matches)
             ? validation.matches.map((m) => context.yup.ref(m))
-            : [yup.ref(validation.matches)];
-          schema = (schema as yup.StringSchema).equals(
-            refs,
-            validation.message
-          );
+            : [context.yup.ref(validation.matches)];
+          schema = (schema as StringSchema).equals(refs, validation.message);
         }
       });
     }

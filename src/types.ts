@@ -1,6 +1,6 @@
-import React from "react";
-import * as yup from "yup";
-import { FormContextValues } from "react-hook-form";
+import type { ReactElement } from "react";
+import type * as yup from "yup";
+import type { FormContextValues } from "react-hook-form";
 
 export type FieldName = string | number;
 
@@ -39,18 +39,12 @@ export interface YupFieldHandlerContext extends YupSchemaHandlerContext {
 }
 
 export interface SchemaHandler<S extends Schema = Schema> {
-  getReactElement(
-    schema: S,
-    context: ReactSchemaHandlerContext
-  ): React.ReactElement;
+  getReactElement(schema: S, context: ReactSchemaHandlerContext): ReactElement;
   getReactElementSingle(
     config: Unpacked<S>,
     context: ReactSchemaHandlerContext
-  ): React.ReactElement;
-  getYupSchema(
-    schema: S,
-    context: YupSchemaHandlerContext
-  ): yup.Schema<unknown>;
+  ): ReactElement;
+  getYupSchema(schema: S, context: YupSchemaHandlerContext): yup.ObjectSchema;
   getYupSchemaSingle(
     config: Unpacked<S>,
     context: YupSchemaHandlerContext
