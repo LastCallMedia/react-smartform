@@ -1,7 +1,8 @@
 import SmartFormSchemaHandler from "../index";
 import ContainerHandler from "./Container";
 import InputHandler from "./Input";
-import { renderSchema } from "../testing";
+import { renderSchema, getYupSchema } from "../testing";
+import * as yup from "yup";
 
 describe("ContainerHandler", function () {
   const schemaHandler = new SmartFormSchemaHandler([
@@ -19,5 +20,23 @@ describe("ContainerHandler", function () {
       },
     ]);
     expect(container.querySelector("div.container1 #mytext")).not.toBeNull();
+  });
+
+  it("Should return a mergeable Yup schema", () => {
+    const actual = getYupSchema(schemaHandler, [
+      {
+        type: "container",
+        name: "mycontainer",
+        of: [
+          {
+            type: "text",
+            name: "mytext",
+            required: true,
+          },
+        ],
+      },
+    ]);
+    const expected = yup.object({ mytext: yup.string().required() });
+    expect(actual.describe()).toEqual(expected.describe());
   });
 });

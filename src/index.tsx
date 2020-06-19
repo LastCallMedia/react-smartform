@@ -66,19 +66,26 @@ export default class SmartFormSchemaHandler<
       handler: this,
     });
   }
+
   getYupSchema(
     schema: C[],
     context: YupSchemaHandlerContext
   ): yup.ObjectSchema {
-    const fields = schema.reduce((collected, config) => {
-      collected[config.name.toString()] = this.getYupSchemaSingle(
-        config,
-        context
-      );
-      return collected;
-    }, {} as Record<string, yup.Schema<unknown>>);
-    return context.yup.object(fields);
+    const yupSchema = schema.reduce((yupSchema, config) => {
+      const fieldSchema = this.getYupSchemaSingle(config, context);
+      const metadata = fieldSchema.meta();
+      // If we've been requested to merge this object upward, do so, and remove
+      // the metadata that tells us to do that.
+      if (typeof metadata === "object" && metadata.mergeUp) {
+        return yupSchema.concat(
+          omitMeta(fieldSchema, "mergeUp") as yup.ObjectSchema
+        );
+      }
+      return yupSchema.shape({ [config.name.toString()]: fieldSchema });
+    }, context.yup.object());
+    return yupSchema;
   }
+
   getYupSchemaSingle(
     config: C,
     context: YupSchemaHandlerContext
@@ -90,4 +97,26 @@ export default class SmartFormSchemaHandler<
       handler: this,
     });
   }
+}
+
+type YupSchemaWithMetaObj = yup.Schema<unknown> & {
+  _meta?: Record<string, unknown>;
+};
+function omitMeta<T extends yup.Schema<unknown>>(schema: T, key: string): T {
+  const meta = { ...schema.meta() };
+  if (
+    meta &&
+    typeof meta === "object" &&
+    key in (meta as Record<string, unknown>)
+  ) {
+    const replacement = schema.clone();
+    delete meta[key];
+    if (Object.keys(meta).length > 0) {
+      (replacement as YupSchemaWithMetaObj)._meta = meta;
+    } else {
+      (replacement as YupSchemaWithMetaObj)._meta = undefined;
+    }
+    return replacement;
+  }
+  return schema;
 }

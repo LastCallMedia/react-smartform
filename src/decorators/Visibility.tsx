@@ -57,18 +57,21 @@ export default class VisibilityDecorator<
     if (config.when) {
       const ast = jsep(config.when);
       const refs = extractRefs(ast);
-      schema = context.yup.mixed().when(refs, {
-        is: (...values) => {
-          // Extract values from our values array into an object we can descend into.
-          const packed = refs.reduce((p, fieldName, i) => {
-            set(p, fieldName, values[i]);
-            return p;
-          }, {});
+      schema = context.yup
+        .mixed()
+        .when(refs, {
+          is: (...values) => {
+            // Extract values from our values array into an object we can descend into.
+            const packed = refs.reduce((p, fieldName, i) => {
+              set(p, fieldName, values[i]);
+              return p;
+            }, {});
 
-          return !!evalExpr(ast, getYupEvalContext(packed));
-        },
-        then: schema,
-      });
+            return !!evalExpr(ast, getYupEvalContext(packed));
+          },
+          then: schema,
+        })
+        .meta(schema.meta());
     }
     return schema;
   }

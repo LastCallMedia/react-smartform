@@ -32,7 +32,11 @@ export default class ContainerHandler implements FieldHandler<ContainerConfig> {
     config: ContainerConfig,
     context: YupFieldHandlerContext
   ): ObjectSchema {
-    // @todo: Implement.
-    return context.yup.string();
+    return (
+      context.handler
+        .getYupSchema(config.of, context)
+        // Set a metdata key that allows this schema to be merged "up" to the next level.
+        .meta({ mergeUp: true })
+    );
   }
 }

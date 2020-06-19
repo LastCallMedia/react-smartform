@@ -7,6 +7,7 @@ import {
 import SmartFormSchemaHandler from "../index";
 import VisibilityDecorator from "./Visibility";
 import InputHandler from "../fields/Input";
+import * as yup from "yup";
 
 describe("VisibilityDecorator", function () {
   const fieldHandler = new VisibilityDecorator(new InputHandler());
@@ -89,5 +90,25 @@ describe("VisibilityDecorator", function () {
     await expect(actual.validate({ bar: 2 })).resolves.toBeTruthy();
     // Validate that we show a required error when bar = 1
     await expect(actual.validate({ bar: 1 })).rejects.toBeTruthy();
+  });
+
+  it("Should hoist yup schema metadata", function () {
+    const inner = new InputHandler();
+    inner.getYupSchema = function () {
+      return yup.string().meta({ mergeUp: true });
+    };
+    const decorator = new VisibilityDecorator(inner);
+    const actual = getYupFieldSchema(decorator, {
+      type: "text",
+      name: "foo",
+    });
+    expect(actual.meta()).toEqual({ mergeUp: true });
+
+    const invisible = getYupFieldSchema(decorator, {
+      type: "text",
+      name: "foo",
+      when: "2 == 2",
+    });
+    expect(invisible.meta()).toEqual({ mergeUp: true });
   });
 });

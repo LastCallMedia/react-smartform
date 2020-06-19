@@ -53,4 +53,25 @@ describe("Validation decorator", function () {
     const expected = yup.string().equals([yup.ref("foo")], "bar");
     expect(actual.describe()).toEqual(expected.describe());
   });
+
+  it("Should hoist metadata up when match validation is used", () => {
+    const inner = new InputHandler();
+    inner.getYupSchema = function () {
+      return yup.string().meta({ mergeUp: true });
+    };
+    const decorator = new ValidationHandler(inner);
+    const matches = getYupFieldSchema(decorator, {
+      type: "text",
+      name: "test",
+      validate: [{ matches: "abc" }],
+    });
+    expect(matches.meta()).toEqual({ mergeUp: true });
+
+    const pattern = getYupFieldSchema(decorator, {
+      type: "text",
+      name: "test",
+      validate: [{ pattern: "abc" }],
+    });
+    expect(pattern.meta()).toEqual({ mergeUp: true });
+  });
 });
