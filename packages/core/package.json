@@ -2,7 +2,7 @@
   "name": "@lastcall/react-smartform",
   "private": true,
   "version": "1.0.0",
-  "description": "",
+  "description": "Declarative forms for React",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {

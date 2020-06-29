@@ -2,7 +2,7 @@
   "name": "@lastcall/react-smartform-material-ui",
   "private": true,
   "version": "0.0.0",
-  "description": "> TODO: description",
+  "description": "Declarative forms for Material UI.",
   "author": "Rob Bayliss <rob@lastcallmedia.com>",
   "homepage": "",
   "license": "ISC",
