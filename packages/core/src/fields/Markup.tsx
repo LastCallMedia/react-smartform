@@ -23,7 +23,7 @@ abstract class MarkupHandler<C extends FieldConfig> implements FieldHandler<C> {
   render(config: C, context: FieldRenderContext) {
     return this.renderer(config, context);
   }
-  buildYupSchema(config: C, context: FieldValidationContext): false {
+  buildYupSchema(): false {
     return false;
   }
 }

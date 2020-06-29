@@ -28,7 +28,7 @@ export interface RenderContext {
   form: FormContextValues;
   // The key property to use when rendering this item. This will be
   // set automatically for you in most cases.
-  key?: string|number
+  key?: string | number;
   t?: TranslationFunction;
   parents?: FieldName[];
   renderer?: SchemaRenderer;
@@ -120,10 +120,10 @@ export type SchemaFromSchemaHandler<T extends SchemaBuilder> = Parameters<
 >[0];
 
 export type RenderChildren = Record<string, React.ReactElement>;
-export type SchemaRenderer<Children extends RenderChildren = RenderChildren, Context extends RenderContext = RenderContext> = (
-  children: Children,
-  context: Context
-) => React.ReactElement;
+export type SchemaRenderer<
+  Children extends RenderChildren = RenderChildren,
+  Context extends RenderContext = RenderContext
+> = (children: Children, context: Context) => React.ReactElement;
 
 // Defines the shape of a single option (eg: to be used in select lists).
 export interface Option {

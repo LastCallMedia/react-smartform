@@ -38,7 +38,8 @@ export default class SmartFormSchemaBuilder<
 
   render(schema: Config[], context: RenderContext): React.ReactElement {
     const parents = context.parents || [];
-    const key = context.key ?? parents.length === 0 ? 'root' : makeElementName(parents);
+    const key =
+      context.key ?? parents.length === 0 ? "root" : makeElementName(parents);
 
     // Render the children into an object, keyed by field name.
     const children = schema.reduce((output, config) => {

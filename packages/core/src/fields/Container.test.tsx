@@ -34,5 +34,5 @@ describe("ContainerHandler", function () {
     expect(actual.describe()).toEqual(expected.describe());
   });
 
-  it.todo('Should allow a custom renderer');
+  it.todo("Should allow a custom renderer");
 });

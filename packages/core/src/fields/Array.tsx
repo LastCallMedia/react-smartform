@@ -2,26 +2,24 @@ import type {
   FieldConfig,
   FieldHandler,
   FieldRenderContext,
-  FieldValidationContext, SchemaRenderer,
-  FieldName
+  FieldValidationContext,
+  SchemaRenderer,
+  FieldName,
 } from "../types";
 import type { Schema as YupSchema } from "yup";
 import React from "react";
-import {compile} from "expression-eval";
-import {getReactEvalContext} from "../eval";
-import {RenderChildren, RenderContext} from "../types";
+import { compile } from "expression-eval";
+import { getReactEvalContext } from "../eval";
+import { RenderChildren, RenderContext } from "../types";
 
 interface ArrayRenderContext extends RenderContext {
   array: {
-    config: ArrayConfig,
-    index: number,
-    parents: FieldName[]
-  }
+    config: ArrayConfig;
+    index: number;
+    parents: FieldName[];
+  };
 }
-export type ArrayRenderer = SchemaRenderer<
-  RenderChildren,
-  ArrayRenderContext
->
+export type ArrayRenderer = SchemaRenderer<RenderChildren, ArrayRenderContext>;
 
 // @todo: I'd like to use Omit<FieldConfig, "name"> here, but it's not working with the
 // additional properties.
@@ -35,7 +33,7 @@ export interface ArrayConfig extends FieldConfig {
 }
 
 export default class ArrayHandler implements FieldHandler<ArrayConfig> {
-  renderer?: ArrayRenderer
+  renderer?: ArrayRenderer;
   constructor(renderer?: ArrayRenderer) {
     this.renderer = renderer;
   }
@@ -51,7 +49,7 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
         config,
         index: i,
         parents,
-      }
+      };
       return Array.isArray(config.of)
         ? builder.render(config.of, {
             ...context,
@@ -60,16 +58,13 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
             renderer: this.renderer,
             array: arrayContext,
           } as ArrayRenderContext)
-        : builder.render(
-          [{...config.of, name: i}],
-          {
+        : builder.render([{ ...config.of, name: i }], {
             ...context,
             key: i,
             parents: parents.concat(config.name),
             renderer: this.renderer,
             array: arrayContext,
-          } as ArrayRenderContext
-        )
+          } as ArrayRenderContext);
     });
     return <React.Fragment>{children}</React.Fragment>;
   }

@@ -55,7 +55,7 @@ export class FieldTester<
       },
     };
   }
-  getSchema(config: C) {
+  getSchema(config: C): yup.Schema<unknown>|false {
     return this.fieldHandler.buildYupSchema(config, {
       yup,
       t: (key: string) => key,

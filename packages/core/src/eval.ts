@@ -1,6 +1,6 @@
 import { FieldRenderContext } from "./types";
 import { compile } from "expression-eval";
-import {makeElementName} from "./util";
+import { makeElementName } from "./util";
 
 export interface EvalContext {
   ref(name: string): unknown;
@@ -14,8 +14,10 @@ export function evaluateInRenderContext(
   expression: string,
   context: FieldRenderContext
 ): unknown {
-  if(typeof expression !== 'string') {
-    throw new Error(`Unable to evaluate expression: ${JSON.stringify(expression)}`)
+  if (typeof expression !== "string") {
+    throw new Error(
+      `Unable to evaluate expression: ${JSON.stringify(expression)}`
+    );
   }
   const evalContext = getReactEvalContext(context);
   return compile(expression)(evalContext);
@@ -24,10 +26,10 @@ export function evaluateInRenderContext(
 export function getReactEvalContext(context: FieldRenderContext): EvalContext {
   return {
     ref: (name: unknown) => {
-      if(typeof name !== "string") {
+      if (typeof name !== "string") {
         throw new Error(`Invalid ref() passed: ${name}`);
       }
-      const fqn = makeElementName(context.parents.concat([name]))
+      const fqn = makeElementName(context.parents.concat([name]));
       return context.form.watch(fqn);
     },
     isArray(value: unknown) {
@@ -41,6 +43,6 @@ export function getReactEvalContext(context: FieldRenderContext): EvalContext {
     },
     Array(value: unknown) {
       return Array.isArray(value) ? value : [value];
-    }
+    },
   };
 }

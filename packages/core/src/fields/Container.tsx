@@ -4,21 +4,24 @@ import type {
   FieldRenderContext,
   Schema,
   FieldValidationContext,
-  FieldName, RenderChildren, RenderContext, SchemaRenderer
+  FieldName,
+  RenderChildren,
+  RenderContext,
+  SchemaRenderer,
 } from "../types";
 import type { ObjectSchema } from "yup";
 import React from "react";
 
 interface ContainerRenderContext extends RenderContext {
   container: {
-    config: ContainerConfig,
-    parents: FieldName[]
-  }
+    config: ContainerConfig;
+    parents: FieldName[];
+  };
 }
 export type ContainerRenderer = SchemaRenderer<
   RenderChildren,
   ContainerRenderContext
-  >
+>;
 
 export interface ContainerConfig extends FieldConfig {
   type: "container";
@@ -26,7 +29,7 @@ export interface ContainerConfig extends FieldConfig {
 }
 
 export default class ContainerHandler implements FieldHandler<ContainerConfig> {
-  renderer?: ContainerRenderer
+  renderer?: ContainerRenderer;
   constructor(renderer?: ContainerRenderer) {
     this.renderer = renderer;
   }
@@ -41,8 +44,8 @@ export default class ContainerHandler implements FieldHandler<ContainerConfig> {
       ...context,
       container: {
         config,
-        parents: context.parents
-      }
+        parents: context.parents,
+      },
     } as ContainerRenderContext);
   }
   buildYupSchema(

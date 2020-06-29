@@ -89,7 +89,7 @@ describe("Visibility Decorator", function () {
     await expect(yupSchema.validate({ bar: 1 })).rejects.toBeTruthy();
   });
 
-  it("Should be able to evaluate inclusion expressions", async() => {
+  it("Should be able to evaluate inclusion expressions", async () => {
     const yupSchema = yup.object({
       foo: tester.getSchema({
         type: "dummy",
@@ -105,7 +105,7 @@ describe("Visibility Decorator", function () {
     await expect(yupSchema.validate({ bar: ["foo"] })).rejects.toBeTruthy();
   });
 
-  it("Should be able to evaluate exclusion expressions", async() => {
+  it("Should be able to evaluate exclusion expressions", async () => {
     const yupSchema = yup.object({
       foo: tester.getSchema({
         type: "dummy",
@@ -121,7 +121,9 @@ describe("Visibility Decorator", function () {
     await expect(yupSchema.validate({ bar: ["baz"] })).rejects.toBeTruthy();
   });
 
-  it.todo("Should apply when conditions to object fields when we're dealing with a mergeUp schema.")
+  it.todo(
+    "Should apply when conditions to object fields when we're dealing with a mergeUp schema."
+  );
 
   it("Should hoist yup schema metadata", function () {
     const actual = tester.getSchema({
@@ -139,5 +141,4 @@ describe("Visibility Decorator", function () {
     });
     expect(invisible.meta()).toEqual({ mergeUp: true });
   });
-
 });
