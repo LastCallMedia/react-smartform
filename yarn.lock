@@ -1652,7 +1652,7 @@ __metadata:
     "@babel/preset-env": ^7.10.2
     "@babel/preset-react": ^7.10.1
     "@babel/preset-typescript": ^7.10.1
-    "@lastcall/react-smartform": "*"
+    "@lastcall/react-smartform": 0.0.1
     "@material-ui/core": ^4.10.2
     "@testing-library/react": ^10.2.1
     "@types/jest": ^26.0.0
@@ -1679,7 +1679,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lastcall/react-smartform@*, @lastcall/react-smartform@workspace:packages/core":
+"@lastcall/react-smartform@0.0.1, @lastcall/react-smartform@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lastcall/react-smartform@workspace:packages/core"
   dependencies:
