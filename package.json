@@ -12,5 +12,8 @@
     "lint": "yarn workspaces foreach -p --exclude example run lint",
     "lint:fix": "yarn workspaces foreach -p --exclude example run lint:js --fix",
     "test": "yarn workspaces foreach -p run test"
+  },
+  "devDependencies": {
+    "lerna": "^3.22.1"
   }
 }
