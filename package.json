@@ -10,6 +10,7 @@
   "scripts": {
     "build": "yarn workspaces foreach -pt --exclude example run build",
     "lint": "yarn workspaces foreach -p --exclude example run lint",
-    "lint:fix": "yarn workspaces foreach -p --exclude example run lint:js --fix"
+    "lint:fix": "yarn workspaces foreach -p --exclude example run lint:js --fix",
+    "test": "yarn workspaces foreach -p run test"
   }
 }
