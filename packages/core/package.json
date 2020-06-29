@@ -4,6 +4,12 @@
   "description": "Declarative forms for React",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "test": "jest",
     "clean": "rm -rf lib/*",
