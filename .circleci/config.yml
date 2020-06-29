@@ -3,9 +3,19 @@ version: 2.1
 orbs:
   node: circleci/node@3.0.0
 
+jobs:
+  test:
+    docker:
+      - image: node:12
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+          override-ci-command: yarn install
+      - run: yarn run build
+      - run: yarn run test
+
 workflows:
   test:
     jobs:
-      - node/test:
-          pkg-manager: yarn
-          override-ci-command: yarn install
+      - test
