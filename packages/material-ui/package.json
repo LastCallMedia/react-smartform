@@ -23,7 +23,7 @@
     "react": "^16.13.1"
   },
   "dependencies": {
-    "@lastcall/react-smartform": "*"
+    "@lastcall/react-smartform": "workspace:packages/core"
   },
   "scripts": {
     "test": "jest",
