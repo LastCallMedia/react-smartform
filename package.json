@@ -1,52 +1,15 @@
 {
-  "name": "react-smartform",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest",
-    "build": "npm run build:js && npm run build:types",
-    "build:types": "tsc --emitDeclarationOnly",
-    "build:js": "babel src --out-dir dist --extensions '.ts,.tsx' --ignore 'src/**/*.test.ts','src/**/*.test.tsx','src/testing.tsx'",
-    "lint": "eslint src/",
-    "types": "tsc --noEmit",
-    "precommit": "npm run test && npm run lint && npm run types"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@babel/cli": "^7.10.1",
-    "@babel/core": "^7.10.2",
-    "@babel/preset-env": "^7.10.2",
-    "@babel/preset-react": "^7.10.1",
-    "@babel/preset-typescript": "^7.10.1",
-    "@testing-library/react": "^10.2.1",
-    "@types/jest": "^26.0.0",
-    "@types/lodash": "^4.14.155",
-    "@types/react": "^16.9.36",
-    "@types/yup": "^0.29.3",
-    "@typescript-eslint/eslint-plugin": "^3.3.0",
-    "@typescript-eslint/parser": "^3.3.0",
-    "eslint": "^7.2.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.0",
-    "jest": "^26.0.1",
-    "prettier": "^2.0.5",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-hook-form": "^5.7.2",
-    "ts-jest": "^26.1.0",
-    "typescript": "^3.9.5",
-    "yup": "^0.29.1"
-  },
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "dependencies": {
-    "jsep": "^0.3.4",
-    "expression-eval": "^3.1.1",
-    "lodash": "^4.17.15"
+    "npm-run-all": "^4.1.5"
   },
-  "peerDependencies": {
-    "react": "^16.2.0"
+  "scripts": {
+    "build": "yarn workspaces foreach -pt --exclude example run build",
+    "lint": "yarn workspaces foreach -p --exclude example run lint",
+    "lint:fix": "yarn workspaces foreach -p --exclude example run lint:js --fix"
   }
 }
