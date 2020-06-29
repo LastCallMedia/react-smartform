@@ -79,6 +79,7 @@ export default function withVisibility<
           "mergeUp" in schema.meta() &&
           (schema as yup.ObjectSchema).fields
         ) {
+          // eslint-disable-next-line @typescript-eslint/ban-types
           const typedSchema = schema as yup.ObjectSchema<object>;
           const shape = Object.entries(typedSchema.fields).reduce(
             (shape, [key, subschema]) => {

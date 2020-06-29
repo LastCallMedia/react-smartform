@@ -1,8 +1,8 @@
 import {
+  Constructor,
   FieldConfig,
   FieldHandler,
   FieldRenderContext,
-  FieldValidationContext,
 } from "../types";
 
 type MarkupRenderFunction<C extends FieldConfig> = (
@@ -31,7 +31,7 @@ abstract class MarkupHandler<C extends FieldConfig> implements FieldHandler<C> {
 export default function makeMarkupHandler<C extends FieldConfig>(
   types: string[],
   render: MarkupRenderFunction<C>
-) {
+): Constructor<FieldHandler<C>> {
   return class extends MarkupHandler<C> {
     constructor() {
       super(types, render);
