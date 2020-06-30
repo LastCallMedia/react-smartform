@@ -2,27 +2,41 @@ version: 2.1
 
 orbs:
   node: circleci/node@3.0.0
+executors:
+  default:
+    docker:
+      - image: node:12
+
+commands:
+  install:
+    description: "Install Packages"
+    steps:
+      - restore_cache:
+          keys:
+            - v1-yarn-{{ arch }}-{{ checksum "yarn.lock" }}
+            - v1-yarn-{{ arch }}-
+      - run:
+          name: "Install"
+          command: "yarn install"
+      - save_cache:
+          key: v1-yarn-{{ arch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ".yarn/cache"
 
 jobs:
   test:
-    docker:
-      - image: node:12
+    executor: default
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: yarn
-          override-ci-command: yarn install
+      - install
       - run: yarn run build
       - run: yarn run test
       - run: yarn run lint
   publish:
-    docker:
-      - image: node:12
+    executor: default
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: yarn
-          override-ci-command: yarn install
+      - install
       - run: yarn run build
       - run: yarn version $CIRCLE_TAG
       - run:
