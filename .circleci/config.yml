@@ -38,7 +38,7 @@ jobs:
       - checkout
       - install
       - run: yarn run build
-      - run: yarn version $CIRCLE_TAG
+      - run: yarn workspaces foreach version $CIRCLE_TAG
       - run: yarn config set npmAuthToken '${NPM_PUBLISH_TOKEN}'
       - run:
           name: "Publish packages"
