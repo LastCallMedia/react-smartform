@@ -29,12 +29,14 @@ export interface ContainerConfig extends FieldConfig {
 }
 
 export default class ContainerHandler implements FieldHandler<ContainerConfig> {
+  types: string[]
   renderer?: ContainerRenderer;
-  constructor(renderer?: ContainerRenderer) {
+  constructor(types: string[] = ['container'], renderer?: ContainerRenderer) {
+    this.types = types;
     this.renderer = renderer;
   }
   handles(): string[] {
-    return ["container"];
+    return this.types;
   }
   render(
     config: ContainerConfig,
