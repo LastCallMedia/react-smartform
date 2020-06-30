@@ -15,8 +15,29 @@ jobs:
       - run: yarn run build
       - run: yarn run test
       - run: yarn run lint
-
+  publish:
+    docker:
+      - image: node:12
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+          override-ci-command: yarn install
+      - run: yarn run build
+      - run: yarn version $CIRCLE_TAG
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_PUBLISH_TOKEN" >> ~/.npmrc
+      - run: yarn workspaces foreach npm publish
 workflows:
+  version: 2
   test:
     jobs:
       - test
+  publish:
+    jobs:
+      - publish:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
+          context: org-global
