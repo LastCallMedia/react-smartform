@@ -33,14 +33,14 @@ export interface ArrayConfig extends FieldConfig {
 }
 
 export default class ArrayHandler implements FieldHandler<ArrayConfig> {
-  types: string[]
+  types: string[];
   renderer?: ArrayRenderer;
-  constructor(types: string[] = ['array'], renderer?: ArrayRenderer) {
+  constructor(types: string[] = ["array"], renderer?: ArrayRenderer) {
     this.types = types;
     this.renderer = renderer;
   }
   handles(): string[] {
-    return this.types
+    return this.types;
   }
 
   render(config: ArrayConfig, context: FieldRenderContext): React.ReactElement {

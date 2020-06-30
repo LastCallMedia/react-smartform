@@ -29,9 +29,9 @@ export interface ContainerConfig extends FieldConfig {
 }
 
 export default class ContainerHandler implements FieldHandler<ContainerConfig> {
-  types: string[]
+  types: string[];
   renderer?: ContainerRenderer;
-  constructor(types: string[] = ['container'], renderer?: ContainerRenderer) {
+  constructor(types: string[] = ["container"], renderer?: ContainerRenderer) {
     this.types = types;
     this.renderer = renderer;
   }

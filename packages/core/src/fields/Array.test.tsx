@@ -1,8 +1,7 @@
+import React from "react";
 import ArrayHandler from "./Array";
 import { FieldTester, DummyHandler } from "../testing";
 import * as yup from "yup";
-import ContainerHandler from "./Container";
-import React from "react";
 
 describe("ArrayHandler", () => {
   const tester = new FieldTester(new ArrayHandler(), {
@@ -66,9 +65,12 @@ describe("ArrayHandler", () => {
 
   it("Should allow a custom renderer", () => {
     let renderer;
-    const handler = new ArrayHandler(['array'], renderer = jest.fn((children) => {
-      return <span data-testid="the-array">{Object.values(children)}</span>
-    }));
+    const handler = new ArrayHandler(
+      ["array"],
+      (renderer = jest.fn((children) => {
+        return <span data-testid="the-array">{Object.values(children)}</span>;
+      }))
+    );
     const tester = new FieldTester(handler, {
       handlers: [new DummyHandler()],
     });
@@ -77,9 +79,9 @@ describe("ArrayHandler", () => {
       type: "array",
       count: 2,
       of: [{ type: "dummy", name: "the-field" }],
-    }
-    const {getAllByTestId} = tester.render(config);
-    expect(getAllByTestId('the-array')).toHaveLength(2);
+    };
+    const { getAllByTestId } = tester.render(config);
+    expect(getAllByTestId("the-array")).toHaveLength(2);
     expect(renderer).toHaveBeenCalledWith(
       expect.objectContaining({
         "the-field": expect.anything(),
@@ -88,9 +90,9 @@ describe("ArrayHandler", () => {
         array: {
           config: config,
           parents: [],
-          index: 0
-        }
+          index: 0,
+        },
       })
-    )
+    );
   });
 });

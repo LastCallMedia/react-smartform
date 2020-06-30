@@ -6,7 +6,6 @@ import type {
   ConfigFromFieldHandlers,
   SchemaRenderer,
   RenderChildren,
-  OptionList,
   TranslationFunction,
 } from "./types";
 import { makeElementName } from "./util";

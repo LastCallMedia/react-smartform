@@ -2,7 +2,7 @@ import * as handlerObj from "./fields";
 import Registry from "./Registry";
 
 export const registry = new Registry(
-  Object.values(handlerObj).map((cls) => new cls()),
+  Object.values(handlerObj).map((cls) => new cls())
 );
 
 export { makeElementName, makeElementId } from "./util";

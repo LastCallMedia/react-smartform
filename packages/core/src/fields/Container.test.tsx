@@ -37,9 +37,14 @@ describe("ContainerHandler", function () {
 
   it("Should allow a custom renderer", () => {
     let renderer;
-    const handler = new ContainerHandler(['container'], renderer = jest.fn((children) => {
-      return <span data-testid="the-container">{Object.values(children)}</span>
-    }));
+    const handler = new ContainerHandler(
+      ["container"],
+      (renderer = jest.fn((children) => {
+        return (
+          <span data-testid="the-container">{Object.values(children)}</span>
+        );
+      }))
+    );
     const tester = new FieldTester(handler, {
       handlers: [new DummyHandler()],
     });
@@ -48,9 +53,9 @@ describe("ContainerHandler", function () {
       name: "myarr",
       className: "container1",
       of: [{ name: "the-field", type: "dummy" }],
-    }
-    const {getByTestId, debug} = tester.render(containerConfig);
-    expect(getByTestId('the-container')).toBeTruthy();
+    };
+    const { getByTestId } = tester.render(containerConfig);
+    expect(getByTestId("the-container")).toBeTruthy();
     expect(renderer).toHaveBeenCalledWith(
       expect.objectContaining({
         "the-field": expect.anything(),
@@ -59,8 +64,8 @@ describe("ContainerHandler", function () {
         container: {
           config: containerConfig,
           parents: [],
-        }
+        },
       })
-    )
+    );
   });
 });
