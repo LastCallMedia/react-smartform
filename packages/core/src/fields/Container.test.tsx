@@ -1,3 +1,4 @@
+import React from "react";
 import ContainerHandler from "./Container";
 import { FieldTester, DummyHandler } from "../testing";
 import * as yup from "yup";
@@ -34,5 +35,32 @@ describe("ContainerHandler", function () {
     expect(actual.describe()).toEqual(expected.describe());
   });
 
-  it.todo("Should allow a custom renderer");
+  it("Should allow a custom renderer", () => {
+    let renderer;
+    const handler = new ContainerHandler(['container'], renderer = jest.fn((children) => {
+      return <span data-testid="the-container">{Object.values(children)}</span>
+    }));
+    const tester = new FieldTester(handler, {
+      handlers: [new DummyHandler()],
+    });
+    const containerConfig = {
+      type: "container" as const,
+      name: "myarr",
+      className: "container1",
+      of: [{ name: "the-field", type: "dummy" }],
+    }
+    const {getByTestId, debug} = tester.render(containerConfig);
+    expect(getByTestId('the-container')).toBeTruthy();
+    expect(renderer).toHaveBeenCalledWith(
+      expect.objectContaining({
+        "the-field": expect.anything(),
+      }),
+      expect.objectContaining({
+        container: {
+          config: containerConfig,
+          parents: [],
+        }
+      })
+    )
+  });
 });

@@ -44,6 +44,7 @@ export default class ContainerHandler implements FieldHandler<ContainerConfig> {
   ): React.ReactElement {
     return context.builder.render(config.of, {
       ...context,
+      renderer: this.renderer,
       container: {
         config,
         parents: context.parents,
