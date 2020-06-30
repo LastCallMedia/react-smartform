@@ -7,11 +7,18 @@ import {
   FieldValidationContext,
   Option,
   TranslationFunction,
+  FieldConfig,
 } from "../types";
 
-export interface NamedOptionsConfig {
-  options: string | string[] | OptionList;
-}
+export type WithNamedOptionsConfig<Config extends FieldConfig> = Omit<
+  Config,
+  "options"
+> & { options: string | string[] | OptionList };
+
+type OptionFactory = (name: string) => OptionList;
+const defaultOptionFactory: OptionFactory = (name: string) => {
+  throw new Error(`Unknown option set: ${name}`);
+};
 
 /**
  * This decorator allows the options property to be a string referencing a predefined
@@ -21,17 +28,18 @@ export default function withPreparedOptions<
   HandlerConstructor extends Constructor<FieldHandler>,
   HandlerInstance extends InstanceType<HandlerConstructor>,
   HandlerInstanceConfig extends ExtractConfigFromHandler<HandlerInstance>,
-  Config extends HandlerInstanceConfig & NamedOptionsConfig
->(constructor: HandlerConstructor): Constructor<FieldHandler<Config>> {
+  Config extends WithNamedOptionsConfig<HandlerInstanceConfig>
+>(
+  constructor: HandlerConstructor,
+  factory: OptionFactory = defaultOptionFactory
+): Constructor<FieldHandler<Config>> {
   // Ex: ref(foo) > 0 ? 'bar' : 'baz'
   return class extends constructor {
     render(config: Config, context: FieldRenderContext): React.ReactElement {
       return super.render(
         {
           ...config,
-          options: prepareOptions(config.options, context.t, (name: string) =>
-            context.builder.getOptionList(name)
-          ),
+          options: prepareOptions(config.options, context.t, factory),
         },
         context
       );
@@ -40,9 +48,7 @@ export default function withPreparedOptions<
       return super.buildYupSchema(
         {
           ...config,
-          options: prepareOptions(config.options, context.t, (name: string) =>
-            context.builder.getOptionList(name)
-          ),
+          options: prepareOptions(config.options, context.t, factory),
         },
         context
       );
@@ -53,10 +59,10 @@ export default function withPreparedOptions<
 function prepareOptions(
   options: string | string[] | OptionList,
   t: TranslationFunction,
-  cb: (name: string) => OptionList
+  factory: OptionFactory
 ): OptionList {
   if (typeof options === "string") {
-    options = cb(options);
+    options = factory(options);
   }
   if (!Array.isArray(options)) {
     throw new Error(

@@ -1,5 +1,4 @@
 import React from "react";
-import Registry from "../Registry";
 import { DummyHandler, FieldTester, DummyConfig } from "../testing";
 import { OptionList, FieldRenderContext } from "../types";
 import withPreparedOptions from "./withPreparedOptions";
@@ -16,14 +15,16 @@ const renderMock = jest.fn(() => <span />);
 DummyHandler.prototype.render = renderMock;
 
 describe("withPreparedOptions", () => {
-  const lists = {
-    factory: () => [{ value: "factory", label: "Factory" }],
-    simple: [{ value: "simple", label: "Simple" }],
+  const factory = (name: string) => {
+    switch (name) {
+      case "simple":
+        return [{ value: "simple", label: "Simple" }];
+      default:
+        throw new Error(`Unknown option set: ${name}`);
+    }
   };
-  class WrappedDummy extends withPreparedOptions(Base) {}
-  const tester = new FieldTester(new WrappedDummy(), {
-    registry: new Registry([new WrappedDummy()], lists),
-  });
+  class WrappedDummy extends withPreparedOptions(Base, factory) {}
+  const tester = new FieldTester(new WrappedDummy());
 
   afterEach(() => jest.clearAllMocks());
 
