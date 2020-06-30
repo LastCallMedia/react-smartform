@@ -3,7 +3,6 @@ import Registry from "./Registry";
 
 export const registry = new Registry(
   Object.values(handlerObj).map((cls) => new cls()),
-  {}
 );
 
 export { makeElementName, makeElementId } from "./util";

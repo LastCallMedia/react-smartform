@@ -70,7 +70,6 @@ export interface SchemaBuilder<S extends Schema = Schema> {
     config: Unpacked<S>,
     context: ValidationContext
   ): yup.Schema<unknown> | false;
-  getOptionList(name: string): OptionList;
 }
 
 /**

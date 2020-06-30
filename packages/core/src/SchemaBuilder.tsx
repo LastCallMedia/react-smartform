@@ -32,10 +32,6 @@ export default class SmartFormSchemaBuilder<
     this.registry = registry;
   }
 
-  getOptionList(name: string): OptionList {
-    return this.registry.getOptionList(name);
-  }
-
   render(schema: Config[], context: RenderContext): React.ReactElement {
     const parents = context.parents || [];
     const key =

@@ -27,7 +27,7 @@ export class FieldTester<
     this.fieldHandler = handler;
     this.schemaHandler = new SmartFormSchemaBuilder(
       options?.registry ??
-        new Registry([...(options?.handlers ?? []), handler], {})
+        new Registry([...(options?.handlers ?? []), handler])
     );
   }
   render(
