@@ -7,7 +7,6 @@ import {
   FieldRenderContext,
   FieldValidationContext,
   withLabelExpression,
-  withValidation,
   withVisibility,
 } from "@lastcall/react-smartform";
 import TextField from "@material-ui/core/TextField";
@@ -64,6 +63,4 @@ class MaterialInputHandler implements FieldHandler<MaterialInputConfig> {
   }
 }
 
-export default withVisibility(
-  withLabelExpression(withValidation(MaterialInputHandler))
-);
+export default withVisibility(withLabelExpression(MaterialInputHandler));

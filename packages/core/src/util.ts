@@ -27,3 +27,11 @@ export function makeElementId(parts: FieldName[]): string {
 export function makeElementLabel(parts: FieldName[], prefix: string): string {
   return prefix + "." + parts.filter((p) => typeof p === "string").join(".");
 }
+
+/**
+ * Dummy translation function.
+ * @param key
+ */
+export function neverTranslate(key: string): string {
+  return key;
+}

@@ -5,7 +5,6 @@ import type {
   FieldValidationContext,
 } from "../types";
 import withVisibility from "../decorators/withVisibility";
-import withValidation from "../decorators/withValidation";
 import type { StringSchema } from "yup";
 import { makeElementId, makeElementLabel, makeElementName } from "../util";
 import React from "react";
@@ -62,6 +61,4 @@ class InputHandler implements FieldHandler<InputConfig> {
   }
 }
 
-export default withVisibility(
-  withLabelExpression(withValidation(InputHandler))
-);
+export default withVisibility(withLabelExpression(InputHandler));
