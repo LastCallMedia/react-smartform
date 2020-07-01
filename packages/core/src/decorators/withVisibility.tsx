@@ -37,7 +37,11 @@ export default function withVisibility<
   HandlerInstance extends InstanceType<HandlerConstructor>,
   HandlerConfig extends ExtractConfigFromHandler<HandlerInstance>,
   Config extends HandlerConfig & VisibilityConfig
->(constructor: HandlerConstructor): Constructor<FieldHandler<Config>> {
+>(
+  constructor: HandlerConstructor
+): new (...args: ConstructorParameters<HandlerConstructor>) => FieldHandler<
+  Config
+> {
   return class extends constructor {
     render(config: Config, context: FieldRenderContext) {
       if (config.when) {

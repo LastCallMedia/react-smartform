@@ -4,8 +4,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {
   makeElementId,
   makeElementName,
-  withValidation,
-  withPreparedOptions,
   withVisibility,
   withLabelExpression,
   FieldConfig,
@@ -85,8 +83,4 @@ class MaterialSelectHandler implements FieldHandler<MaterialSelectConfig> {
   }
 }
 
-export default withVisibility(
-  withPreparedOptions(
-    withLabelExpression(withValidation(MaterialSelectHandler))
-  )
-);
+export default withVisibility(withLabelExpression(MaterialSelectHandler));

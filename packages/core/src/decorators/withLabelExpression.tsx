@@ -16,7 +16,11 @@ export default function withLabelExpression<
   HandlerInstance extends InstanceType<HandlerConstructor>,
   HandlerInstanceConfig extends ExtractConfigFromHandler<HandlerInstance>,
   Config extends HandlerInstanceConfig & LabelExpressionConfig
->(constructor: HandlerConstructor): Constructor<FieldHandler<Config>> {
+>(
+  constructor: HandlerConstructor
+): new (...args: ConstructorParameters<HandlerConstructor>) => FieldHandler<
+  Config
+> {
   // Ex: ref(foo) > 0 ? 'bar' : 'baz'
   return class extends constructor {
     render(config: Config, context: FieldRenderContext): React.ReactElement {

@@ -48,7 +48,9 @@ export default function withAutoProps<
   constructor: HandlerConstructor,
   alwaysKeys: AlwaysKey[] = [],
   maybeKeys: MaybeKey[] = []
-): Constructor<FieldHandler<Config>> {
+): new (...args: ConstructorParameters<HandlerConstructor>) => FieldHandler<
+  Config
+> {
   function override(config: Config, nameParts: FieldName[]) {
     let overrides: Config = alwaysKeys.reduce((overrides, key) => {
       if (typeof overrides[key] !== "string") {

@@ -8,7 +8,6 @@ import {
   makeElementName,
   withVisibility,
   withLabelExpression,
-  withPreparedOptions,
 } from "@lastcall/react-smartform";
 import {
   FormControl,
@@ -85,6 +84,4 @@ class MaterialCheckboxesHandler
   }
 }
 
-export default withVisibility(
-  withLabelExpression(withPreparedOptions(MaterialCheckboxesHandler))
-);
+export default withVisibility(withLabelExpression(MaterialCheckboxesHandler));

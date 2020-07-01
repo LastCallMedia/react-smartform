@@ -6,9 +6,8 @@ import type {
   ConfigFromFieldHandlers,
   SchemaRenderer,
   RenderChildren,
-  TranslationFunction,
 } from "./types";
-import { makeElementName } from "./util";
+import { makeElementName, neverTranslate } from "./util";
 import React from "react";
 import * as yup from "yup";
 import Registry from "./Registry";
@@ -57,7 +56,7 @@ export default class SmartFormSchemaBuilder<
       ...restOfContext,
       parents,
       builder: this,
-      t: context.t ?? defaultTranslation,
+      t: context.t ?? neverTranslate,
     });
     return React.cloneElement(element, { key: config.name });
   }
@@ -93,7 +92,7 @@ export default class SmartFormSchemaBuilder<
       ...context,
       parents,
       builder: this,
-      t: context.t ?? defaultTranslation,
+      t: context.t ?? neverTranslate,
     });
   }
 }
@@ -119,10 +118,6 @@ function omitMeta<T extends yup.Schema<unknown>>(schema: T, key: string): T {
   }
   return schema;
 }
-
-const defaultTranslation: TranslationFunction = (key: string) => {
-  return key;
-};
 
 const defaultRenderer: SchemaRenderer = (children: RenderChildren) => {
   return <React.Fragment>{Object.values(children)}</React.Fragment>;

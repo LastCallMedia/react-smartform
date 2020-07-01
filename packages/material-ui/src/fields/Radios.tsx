@@ -9,10 +9,8 @@ import Radio from "@material-ui/core/Radio";
 import {
   makeElementId,
   makeElementName,
-  withPreparedOptions,
   withLabelExpression,
   withVisibility,
-  withValidation,
   FieldConfig,
   FieldHandler,
   FieldRenderContext,
@@ -79,8 +77,4 @@ class MaterialRadiosHandler implements FieldHandler<RadiosConfig> {
   }
 }
 
-export default withVisibility(
-  withPreparedOptions(
-    withLabelExpression(withValidation(MaterialRadiosHandler))
-  )
-);
+export default withVisibility(withLabelExpression(MaterialRadiosHandler));
