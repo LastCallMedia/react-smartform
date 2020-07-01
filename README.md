@@ -1,7 +1,12 @@
 React SmartForm
 ===============
 
-This project makes it easy to produce highly dynamic forms in React. "Smart" forms may be defined in a simple, declarative configuration format, which will be run through various "builders" in order to build up the final form.
+This project is aimed at developers who are planning to implement multiple React forms following a single theme.  It aims to make building those forms simple by distilling the development down to two basic steps:
+
+1. Building flexible, reusable input components (building an element "registry").
+2. Composing a form from those elements using a simple, declarative syntax.
+
+Once the elements have been defined, the same "registry" may be used to build as many forms as you need.
 
 Example:
 ```yaml
@@ -23,12 +28,12 @@ Example:
 Project Goals
 -------------
 
-This project is guided by a few principals:
+The principals behind this project are:
 
-* Forms should be defined in a declarative syntax. No javascript code should be required when defining a form.
-* Prefer implementing complex behavior in decorators so that novel elements can reuse that behavior ad-hoc.  As an example, conditional visibility is implemented as an element decorator that can be used by any element.
-* Forms should follow strong conventions for defining translation strings.
+* Complexity should live in the element handlers, not in the form definition.
+* The form definition should be 100% declarative (eg: No javascript code should be required to define the form). This makes it possible to refactor, replace, or extend the existing elements without changing the form definitions, and possible to change the form definition without changing the basic elements.
 * Translation should be a first class citizen.
+* It should be possible to understand the data produced by a form outside of React.  For example, given a form definition, we should be able to validate a single submission in a backend server process. 
 
 Development
 -----------
