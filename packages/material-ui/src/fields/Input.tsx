@@ -63,6 +63,4 @@ class MaterialInputHandler implements FieldHandler<MaterialInputConfig> {
   }
 }
 
-export default withVisibility(
-  withLabelExpression(MaterialInputHandler)
-);
+export default withVisibility(withLabelExpression(MaterialInputHandler));
