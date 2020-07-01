@@ -5,12 +5,14 @@ import type {
   FieldValidationContext,
   SchemaRenderer,
   FieldName,
+  RenderChildren,
+  RenderContext,
+  Constructor,
 } from "../types";
 import type { Schema as YupSchema } from "yup";
 import React from "react";
 import { compile } from "expression-eval";
 import { getReactEvalContext } from "../eval";
-import { RenderChildren, RenderContext } from "../types";
 
 interface ArrayRenderContext extends RenderContext {
   array: {
@@ -102,10 +104,13 @@ function resolveCount(
   throw new Error(`Invalid count expression given: ${spec}`);
 }
 
-export function makeArrayHandler(types: string[], renderer?: ArrayRenderer) {
+export function makeArrayHandler(
+  types: string[],
+  renderer?: ArrayRenderer
+): Constructor<ArrayHandler> {
   return class extends ArrayHandler {
     constructor() {
       super(types, renderer);
     }
-  }
+  };
 }

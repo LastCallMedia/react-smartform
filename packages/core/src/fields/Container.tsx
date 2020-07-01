@@ -8,6 +8,7 @@ import type {
   RenderChildren,
   RenderContext,
   SchemaRenderer,
+  Constructor,
 } from "../types";
 import type { ObjectSchema } from "yup";
 import React from "react";
@@ -64,10 +65,13 @@ export default class ContainerHandler implements FieldHandler<ContainerConfig> {
   }
 }
 
-export function makeContainerHandler(types: string[], renderer: ContainerRenderer) {
+export function makeContainerHandler(
+  types: string[],
+  renderer: ContainerRenderer
+): Constructor<ContainerHandler> {
   return class extends ContainerHandler {
     constructor() {
       super(types, renderer);
     }
-  }
+  };
 }

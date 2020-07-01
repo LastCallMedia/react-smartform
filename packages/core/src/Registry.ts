@@ -1,15 +1,15 @@
-import {FieldHandler, Unpacked} from "./types";
+import type { FieldHandler } from "./types";
 
 export default class Registry<
   Handlers extends FieldHandler[] = FieldHandler[]
 > {
   readonly handlers: Handlers;
-  readonly map: Map<string, FieldHandler>
+  readonly map: Map<string, FieldHandler>;
 
   constructor(handlers: Handlers) {
     this.handlers = handlers;
     this.map = handlers.reduce((m, handler) => {
-      handler.handles().forEach(type => m.set(type, handler));
+      handler.handles().forEach((type) => m.set(type, handler));
       return m;
     }, new Map<string, FieldHandler>());
   }
