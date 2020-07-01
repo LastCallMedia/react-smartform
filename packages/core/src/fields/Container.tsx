@@ -63,3 +63,11 @@ export default class ContainerHandler implements FieldHandler<ContainerConfig> {
     );
   }
 }
+
+export function makeContainerHandler(types: string[], renderer: ContainerRenderer) {
+  return class extends ContainerHandler {
+    constructor() {
+      super(types, renderer);
+    }
+  }
+}

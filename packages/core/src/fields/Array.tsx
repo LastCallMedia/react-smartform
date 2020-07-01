@@ -101,3 +101,11 @@ function resolveCount(
   }
   throw new Error(`Invalid count expression given: ${spec}`);
 }
+
+export function makeArrayHandler(types: string[], renderer?: ArrayRenderer) {
+  return class extends ArrayHandler {
+    constructor() {
+      super(types, renderer);
+    }
+  }
+}

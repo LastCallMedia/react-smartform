@@ -14,6 +14,8 @@ export { default as withLabelExpression } from "./decorators/withLabelExpression
 export { default as withAutoProps } from "./decorators/withAutoProps";
 export { default as CompoundFieldHandler } from "./fields/Compound";
 export { default as makeMarkupHandler } from "./fields/Markup";
+export { makeContainerHandler } from "./fields/Container";
+export { makeArrayHandler } from "./fields/Array";
 
 export type {
   FieldHandler,
