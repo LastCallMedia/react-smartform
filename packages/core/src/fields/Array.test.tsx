@@ -67,8 +67,8 @@ describe("ArrayHandler", () => {
     let renderer;
     const handler = new ArrayHandler(
       ["array"],
-      (renderer = jest.fn((children) => {
-        return <span data-testid="the-array">{Object.values(children)}</span>;
+      (renderer = jest.fn((props) => {
+        return <span data-testid="the-array">{props.children}</span>;
       }))
     );
     const tester = new FieldTester(handler, {
@@ -84,15 +84,19 @@ describe("ArrayHandler", () => {
     expect(getAllByTestId("the-array")).toHaveLength(2);
     expect(renderer).toHaveBeenCalledWith(
       expect.objectContaining({
-        "the-field": expect.anything(),
-      }),
-      expect.objectContaining({
-        array: {
-          config: config,
-          parents: [],
-          index: 0,
+        children: expect.any(Array),
+        fields: {
+          "the-field": expect.anything(),
         },
-      })
+        context: expect.objectContaining({
+          array: {
+            config: config,
+            parents: [],
+            index: 0,
+          },
+        }),
+      }),
+      {}
     );
   });
 });

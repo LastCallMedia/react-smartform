@@ -1,10 +1,3 @@
-import * as handlerObj from "./fields";
-import Registry from "./Registry";
-
-export const registry = new Registry(
-  Object.values(handlerObj).map((cls) => new cls())
-);
-
 export { makeElementName, makeElementId } from "./util";
 export { default as SmartForm } from "./SmartForm";
 export { default as Registry } from "./Registry";

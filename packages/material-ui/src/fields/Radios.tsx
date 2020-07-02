@@ -20,7 +20,7 @@ import {
 import * as yup from "yup";
 import get from "lodash/get";
 
-interface RadiosConfig extends FieldConfig {
+export interface RadiosConfig extends FieldConfig {
   type: "radios";
   label: string;
   options: OptionList;

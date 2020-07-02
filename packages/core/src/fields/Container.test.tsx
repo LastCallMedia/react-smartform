@@ -39,10 +39,8 @@ describe("ContainerHandler", function () {
     let renderer;
     const handler = new ContainerHandler(
       ["container"],
-      (renderer = jest.fn((children) => {
-        return (
-          <span data-testid="the-container">{Object.values(children)}</span>
-        );
+      (renderer = jest.fn((props) => {
+        return <span data-testid="the-container">{props.children}</span>;
       }))
     );
     const tester = new FieldTester(handler, {
@@ -58,14 +56,18 @@ describe("ContainerHandler", function () {
     expect(getByTestId("the-container")).toBeTruthy();
     expect(renderer).toHaveBeenCalledWith(
       expect.objectContaining({
-        "the-field": expect.anything(),
+        children: expect.any(Array),
+        fields: expect.objectContaining({
+          "the-field": expect.anything(),
+        }),
+        context: expect.objectContaining({
+          container: {
+            config: containerConfig,
+            parents: [],
+          },
+        }),
       }),
-      expect.objectContaining({
-        container: {
-          config: containerConfig,
-          parents: [],
-        },
-      })
+      {}
     );
   });
 });

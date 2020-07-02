@@ -1,11 +1,10 @@
 import React from "react";
-import { DummyHandler, render } from "./testing";
+import { DummyHandler, render, TestForm } from "./testing";
 import * as yup from "yup";
 import SmartFormSchemaBuilder from "./SchemaBuilder";
 import Registry from "./Registry";
 import { SchemaFromSchemaHandler, SchemaBuilder } from "./types";
 import { RenderResult } from "@testing-library/react";
-import SmartForm from "./SmartForm";
 
 const validSchema = [{ type: "dummy", name: "foo" }];
 const invalidSchema = [{ type: "baz", name: "baz" }];
@@ -14,7 +13,7 @@ function renderSchema<
   H extends SchemaBuilder,
   S extends SchemaFromSchemaHandler<H>
 >(handler: H, schema: S): RenderResult {
-  return render(<SmartForm handler={handler} schema={schema} />);
+  return render(<TestForm schema={schema} handler={handler} />);
 }
 
 describe("SchemaHandler", function () {
@@ -40,7 +39,9 @@ describe("SchemaHandler", function () {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(container).toMatchInlineSnapshot(`
       <div>
-        <form>
+        <form
+          data-testid="the-form"
+        >
           <span
             class="dummy-input"
             data-testid="foo"

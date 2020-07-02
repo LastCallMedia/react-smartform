@@ -1,7 +1,6 @@
 import * as handlerObj from "./fields";
-import { Registry, registry as coreRegistry } from "@lastcall/react-smartform";
+import { Registry } from "@lastcall/react-smartform";
 
-const materialRegistry = new Registry(
+export const registry = new Registry(
   Object.values(handlerObj).map((cls) => new cls())
 );
-export const registry = coreRegistry.merge(materialRegistry);

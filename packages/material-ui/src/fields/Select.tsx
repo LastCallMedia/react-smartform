@@ -17,7 +17,7 @@ import * as yup from "yup";
 import get from "lodash/get";
 import { extractOptionValues } from "../util";
 
-interface MaterialSelectConfig extends FieldConfig {
+export interface MaterialSelectConfig extends FieldConfig {
   name: string;
   type: "select";
   label: string;
