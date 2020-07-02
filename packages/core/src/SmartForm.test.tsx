@@ -1,7 +1,6 @@
 import React from "react";
 import { render } from "./testing";
 import SmartForm from "./SmartForm";
-import SmartFormSchemaBuilder from "./SchemaBuilder";
 import Registry from "./Registry";
 import { SchemaRenderer, SchemaRenderProps } from "./types";
 
@@ -30,20 +29,19 @@ class ClassRenderer extends React.Component<SchemaRenderProps> {
 
 describe("SmartForm", function () {
   const registry = new Registry([]);
-  const handler = new SmartFormSchemaBuilder(registry);
 
   afterEach(() => jest.clearAllMocks());
 
   it("Can render with a functional renderer", function () {
     const { getByTestId } = render(
-      <SmartForm handler={handler} schema={[]} renderer={FunctionalRenderer} />
+      <SmartForm registry={registry} schema={[]} render={FunctionalRenderer} />
     );
     getByTestId("the-submit");
   });
 
   it("Can render with a class renderer", function () {
     const { getByTestId } = render(
-      <SmartForm handler={handler} schema={[]} renderer={ClassRenderer} />
+      <SmartForm registry={registry} schema={[]} render={ClassRenderer} />
     );
     getByTestId("the-submit");
   });
@@ -51,9 +49,9 @@ describe("SmartForm", function () {
   it("Forwards rest props to renderer", function () {
     render(
       <SmartForm
-        handler={handler}
+        registry={registry}
         schema={[]}
-        renderer={FunctionalRenderer}
+        render={FunctionalRenderer}
         foo={"bar"}
       />
     );

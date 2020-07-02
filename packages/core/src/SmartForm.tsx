@@ -1,47 +1,54 @@
 import React from "react";
-import { useForm } from "react-hook-form";
-import type {
-  SchemaBuilder,
-  SchemaFromSchemaHandler,
-  SchemaRenderer,
-  TranslationFunction,
-} from "./types";
+import { useForm, FieldValues } from "react-hook-form";
+import type { Schema, SchemaRenderer, TranslationFunction } from "./types";
+import Registry from "./Registry";
 import * as importedYup from "yup";
 import { neverTranslate } from "./util";
+import SmartFormSchemaBuilder from "./SchemaBuilder";
 
 type SmartFormProps = {
-  renderer: SchemaRenderer;
+  registry: Registry;
+  schema: Schema;
+  render: SchemaRenderer;
   t?: TranslationFunction;
   yup?: typeof importedYup;
+  defaultValues: FieldValues;
 };
 
-export default function SmartForm<
-  H extends SchemaBuilder,
-  S extends SchemaFromSchemaHandler<H>
->(props: SmartFormProps & { handler: H; schema: S }): React.ReactElement {
+export default function SmartForm(props: SmartFormProps): React.ReactElement {
   const {
-    handler,
+    registry,
     schema,
-    renderer: Renderer,
+    render: Renderer,
     t = neverTranslate,
     yup = importedYup,
+    defaultValues,
     ...rest
   } = props;
+
+  // Memoize the builder instantiation to avoid spurious rerenders.
+  const builder = React.useMemo(() => {
+    return new SmartFormSchemaBuilder(registry);
+  }, [registry]);
+
+  const validationSchema = builder.buildYupSchema(schema, {
+    yup,
+    t,
+  });
   const formContext = useForm({
-    validationSchema: handler.buildYupSchema(schema, {
-      yup,
-      t,
-    }),
+    defaultValues,
+    validationSchema,
   });
 
+  // Wrap the renderer to pass the rest of the props along.
   const WrappedRender = React.useCallback(
     (props) => {
       return <Renderer {...props} {...rest} />;
     },
-    [props.renderer, rest]
+    [Renderer, rest]
   );
 
-  return handler.render(schema, {
+  return builder.render(schema, {
     form: formContext,
     renderer: WrappedRender,
     t,
