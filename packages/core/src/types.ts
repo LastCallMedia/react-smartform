@@ -26,9 +26,6 @@ export type Schema<T extends FieldConfig = FieldConfig> = T[];
  */
 export interface RenderContext {
   form: FormContextValues;
-  // The key property to use when rendering this item. This will be
-  // set automatically for you in most cases.
-  key?: string | number;
   t?: TranslationFunction;
   parents?: FieldName[];
   renderer?: SchemaRenderer;

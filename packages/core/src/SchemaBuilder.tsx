@@ -7,7 +7,7 @@ import type {
   ConfigFromFieldHandlers,
   RenderChildren,
 } from "./types";
-import { makeElementName, neverTranslate } from "./util";
+import { neverTranslate } from "./util";
 import * as yup from "yup";
 import type Registry from "./Registry";
 
@@ -31,8 +31,7 @@ export default class SmartFormSchemaBuilder<
 
   render(schema: Config[], context: RenderContext): React.ReactElement {
     const parents = context.parents || [];
-    const key =
-      context.key ?? parents.length === 0 ? "root" : makeElementName(parents);
+    const key = [...parents].pop() ?? "root";
 
     // Render the children into an object, keyed by field name.
     const fields = schema.reduce((output, config) => {

@@ -54,21 +54,23 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
         index: i,
         parents,
       };
-      return Array.isArray(config.of)
-        ? builder.render(config.of, {
-            ...context,
-            key: i,
-            parents: parents.concat([config.name, i]),
-            renderer: this.renderer,
-            array: arrayContext,
-          } as ArrayRenderContext)
-        : builder.render([{ ...config.of, name: i }], {
-            ...context,
-            key: i,
-            parents: parents.concat(config.name),
-            renderer: this.renderer,
-            array: arrayContext,
-          } as ArrayRenderContext);
+      if (Array.isArray(config.of)) {
+        return builder.render(config.of, {
+          ...context,
+          parents: parents.concat([config.name, i]),
+          renderer: this.renderer,
+          array: arrayContext,
+        } as ArrayRenderContext);
+      } else {
+        const element = builder.render([{ ...config.of, name: i }], {
+          ...context,
+          parents: parents.concat(config.name),
+          renderer: this.renderer,
+          array: arrayContext,
+        } as ArrayRenderContext);
+        // Override the key for simple array items, since they will all share the same one.
+        return React.cloneElement(element, { key: i });
+      }
     });
     return <React.Fragment>{children}</React.Fragment>;
   }
