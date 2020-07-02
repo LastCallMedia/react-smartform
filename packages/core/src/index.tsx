@@ -9,6 +9,7 @@ export { default as CompoundFieldHandler } from "./fields/Compound";
 export { default as makeMarkupHandler } from "./fields/Markup";
 export { makeContainerHandler } from "./fields/Container";
 export { makeArrayHandler } from "./fields/Array";
+export { makeCompoundHandler } from "./fields/Compound";
 
 export type {
   FieldHandler,

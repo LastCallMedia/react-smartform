@@ -1,6 +1,9 @@
 import React from "react";
 import { FieldTester, DummyHandler } from "../testing";
-import CompoundFieldHandler, { CompoundSchemaBuilder } from "./Compound";
+import CompoundFieldHandler, {
+  CompoundSchemaBuilder,
+  makeCompoundHandler,
+} from "./Compound";
 import type { FieldConfig, SchemaRenderer } from "../types";
 import * as yup from "yup";
 
@@ -82,5 +85,12 @@ describe("CompoundFieldHandler", function () {
       title: yup.string(),
     });
     expect(actual.describe()).toEqual(expected.describe());
+  });
+
+  it("Should allow construction using a make function", () => {
+    const CustomHandler = makeCompoundHandler(["foo"], builder, renderer);
+    expect(new CustomHandler()).toEqual(
+      new CompoundFieldHandler(["foo"], builder, renderer)
+    );
   });
 });
