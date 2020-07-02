@@ -1,6 +1,6 @@
 import {
+  ConfigFromFieldHandler,
   Constructor,
-  ExtractConfigFromHandler,
   FieldHandler,
   FieldRenderContext,
   FieldValidationContext,
@@ -14,7 +14,7 @@ export interface LabelExpressionConfig {
 export default function withLabelExpression<
   HandlerConstructor extends Constructor<FieldHandler>,
   HandlerInstance extends InstanceType<HandlerConstructor>,
-  HandlerInstanceConfig extends ExtractConfigFromHandler<HandlerInstance>,
+  HandlerInstanceConfig extends ConfigFromFieldHandler<HandlerInstance>,
   Config extends HandlerInstanceConfig & LabelExpressionConfig
 >(
   constructor: HandlerConstructor

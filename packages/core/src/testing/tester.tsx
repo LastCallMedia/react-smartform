@@ -1,5 +1,5 @@
 import {
-  ExtractConfigFromHandler,
+  ConfigFromFieldHandler,
   FieldHandler,
   Schema,
   SchemaBuilder,
@@ -11,6 +11,7 @@ import { act, fireEvent } from "@testing-library/react";
 import React from "react";
 import { render } from "./index";
 import Registry from "../Registry";
+import { neverTranslate } from "../util";
 
 type Options = {
   handlers?: FieldHandler[];
@@ -19,7 +20,7 @@ type Options = {
 
 export class FieldTester<
   H extends FieldHandler,
-  C extends ExtractConfigFromHandler<H>
+  C extends ConfigFromFieldHandler<H>
 > {
   fieldHandler: FieldHandler;
   schemaHandler: SchemaBuilder;
@@ -71,9 +72,10 @@ type TestFormProps = {
   defaultValues?: UseFormOptions["defaultValues"];
 };
 export function TestForm(props: TestFormProps): React.ReactElement {
+  const t = neverTranslate;
   const form = useForm({
     defaultValues: props.defaultValues,
-    validationSchema: props.handler.buildYupSchema(props.schema, { yup: yup }),
+    validationSchema: props.handler.buildYupSchema(props.schema, { yup, t }),
   });
   const onSubmit = form.handleSubmit(
     props.submit ??
@@ -83,7 +85,7 @@ export function TestForm(props: TestFormProps): React.ReactElement {
   );
   return (
     <form data-testid="the-form" onSubmit={onSubmit}>
-      {props.handler.render(props.schema, { form })}
+      {props.handler.render(props.schema, { form, t })}
     </form>
   );
 }

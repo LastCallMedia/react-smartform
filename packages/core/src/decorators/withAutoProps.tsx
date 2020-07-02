@@ -2,10 +2,10 @@ import type {
   FieldHandler,
   FieldRenderContext,
   FieldValidationContext,
-  ExtractConfigFromHandler,
   FieldName,
   FieldConfig,
   ExtractPropertyNamesOfType,
+  ConfigFromFieldHandler,
 } from "../types";
 import type { Schema as YupSchema } from "yup";
 import { Constructor } from "../types";
@@ -40,7 +40,7 @@ type TranslatableConfig<Config extends FieldConfig> = Pick<
 export default function withAutoProps<
   HandlerConstructor extends Constructor<FieldHandler>,
   HandlerInstance extends InstanceType<HandlerConstructor>,
-  HandlerInstanceConfig extends ExtractConfigFromHandler<HandlerInstance>,
+  HandlerInstanceConfig extends ConfigFromFieldHandler<HandlerInstance>,
   AlwaysKey extends keyof TranslatableConfig<HandlerInstanceConfig> & string,
   MaybeKey extends keyof TranslatableConfig<HandlerInstanceConfig> & string,
   Config extends ExtrapolateConfig<HandlerInstanceConfig, AlwaysKey, MaybeKey>

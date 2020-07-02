@@ -26,7 +26,7 @@ export type Schema<T extends FieldConfig = FieldConfig> = T[];
  */
 export interface RenderContext {
   form: FormContextValues;
-  t?: TranslationFunction;
+  t: TranslationFunction;
   parents?: FieldName[];
   renderer?: SchemaRenderer;
 }
@@ -44,7 +44,7 @@ export interface FieldRenderContext extends Omit<RenderContext, "renderer"> {
  */
 export interface ValidationContext {
   yup: typeof yup;
-  t?: TranslationFunction;
+  t: TranslationFunction;
   parents?: FieldName[];
 }
 /**
@@ -93,14 +93,6 @@ export type ExtractPropertyNamesOfType<T, S> = {
 
 // Unpacks a typed array into a union of types
 export type Unpacked<T> = T extends (infer U)[] ? U : never;
-// Extracts the configuration type for a single FieldHandler.
-export type ExtractConfigFromHandler<T> = T extends FieldHandler
-  ? Parameters<T["render"]>[0]
-  : never;
-// Extracts a union configuration type for an array of FieldHandlers
-export type ExtractConfigFromHandlers<T> = ExtractConfigFromHandler<
-  Unpacked<T>
->;
 
 // Utility type to extract the allowed configuration type from a field builder.
 export type ConfigFromFieldHandler<T extends FieldHandler> = Parameters<
@@ -115,7 +107,7 @@ export type SchemaFromSchemaHandler<T extends SchemaBuilder> = Parameters<
   T["render"]
 >[0];
 
-export type RenderChildren = Record<string, React.ReactElement>;
+export type RenderChildren = Record<FieldName, React.ReactElement>;
 export type SchemaRenderProps<
   Fields extends RenderChildren = RenderChildren,
   Context extends RenderContext = RenderContext

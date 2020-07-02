@@ -4,7 +4,7 @@ import type {
   FieldConfig,
   FieldRenderContext,
   FieldValidationContext,
-  ExtractConfigFromHandler,
+  ConfigFromFieldHandler,
 } from "../types";
 import type { EvalContext } from "../eval";
 import { eval as evalExpr } from "expression-eval";
@@ -35,7 +35,7 @@ export interface VisibilityConfig extends FieldConfig {
 export default function withVisibility<
   HandlerConstructor extends Constructor<FieldHandler>,
   HandlerInstance extends InstanceType<HandlerConstructor>,
-  HandlerConfig extends ExtractConfigFromHandler<HandlerInstance>,
+  HandlerConfig extends ConfigFromFieldHandler<HandlerInstance>,
   Config extends HandlerConfig & VisibilityConfig
 >(
   constructor: HandlerConstructor
