@@ -1,16 +1,15 @@
+import React from "react";
 import type {
   Schema,
   SchemaBuilder,
   RenderContext,
   ValidationContext,
   ConfigFromFieldHandlers,
-  SchemaRenderer,
   RenderChildren,
 } from "./types";
 import { makeElementName, neverTranslate } from "./util";
-import React from "react";
 import * as yup from "yup";
-import Registry from "./Registry";
+import type Registry from "./Registry";
 
 /**
  * This complicated typing allows us to extract allowed configuration
@@ -36,16 +35,21 @@ export default class SmartFormSchemaBuilder<
       context.key ?? parents.length === 0 ? "root" : makeElementName(parents);
 
     // Render the children into an object, keyed by field name.
-    const children = schema.reduce((output, config) => {
+    const fields = schema.reduce((output, config) => {
       const fieldOutput = this.renderField(config, context);
       return { ...output, [config.name]: fieldOutput };
     }, {} as RenderChildren);
 
     // Use the chosen renderer to render the children.
-    const render = context.renderer ? context.renderer : defaultRenderer;
+    const RenderElement = context.renderer ?? DefaultRenderer;
+    const rendered = (
+      <RenderElement context={context} fields={fields}>
+        {Object.values(fields)}
+      </RenderElement>
+    );
 
     // Tack the key onto the element at the end so we don't end up with duplicate key errors.
-    return React.cloneElement(render(children, context), { key });
+    return React.cloneElement(rendered, { key });
   }
   renderField(config: Config, context: RenderContext): React.ReactElement {
     const parents = context.parents || [];
@@ -119,6 +123,6 @@ function omitMeta<T extends yup.Schema<unknown>>(schema: T, key: string): T {
   return schema;
 }
 
-const defaultRenderer: SchemaRenderer = (children: RenderChildren) => {
-  return <React.Fragment>{Object.values(children)}</React.Fragment>;
+const DefaultRenderer = (props: { children: React.ReactNodeArray }) => {
+  return <React.Fragment>{props.children}</React.Fragment>;
 };

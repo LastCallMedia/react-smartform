@@ -119,10 +119,18 @@ export type SchemaFromSchemaHandler<T extends SchemaBuilder> = Parameters<
 >[0];
 
 export type RenderChildren = Record<string, React.ReactElement>;
-export type SchemaRenderer<
-  Children extends RenderChildren = RenderChildren,
+export type SchemaRenderProps<
+  Fields extends RenderChildren = RenderChildren,
   Context extends RenderContext = RenderContext
-> = (children: Children, context: Context) => React.ReactElement;
+> = {
+  fields: RenderChildren;
+  children: React.ReactNode[];
+  context: RenderContext;
+};
+export type SchemaRenderer<
+  Fields extends RenderChildren = RenderChildren,
+  Context extends RenderContext = RenderContext
+> = React.ComponentType<SchemaRenderProps<Fields, Context>>;
 
 // Defines the shape of a single option (eg: to be used in select lists).
 export interface Option {

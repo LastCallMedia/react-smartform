@@ -65,18 +65,22 @@ export class FieldTester<
 }
 
 type TestFormProps = {
-  submit: (data: Record<string, unknown>) => void;
+  submit?: (data: Record<string, unknown>) => void;
   schema: Schema;
   handler: SchemaBuilder;
   defaultValues?: UseFormOptions["defaultValues"];
 };
-
-function TestForm(props: TestFormProps) {
+export function TestForm(props: TestFormProps): React.ReactNode {
   const form = useForm({
     defaultValues: props.defaultValues,
     validationSchema: props.handler.buildYupSchema(props.schema, { yup: yup }),
   });
-  const onSubmit = form.handleSubmit(props.submit);
+  const onSubmit = form.handleSubmit(
+    props.submit ??
+      (() => {
+        /* No-op */
+      })
+  );
   return (
     <form data-testid="the-form" onSubmit={onSubmit}>
       {props.handler.render(props.schema, { form })}

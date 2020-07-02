@@ -1,7 +1,7 @@
 import React from "react";
 import { FieldTester, DummyHandler } from "../testing";
 import CompoundFieldHandler, { CompoundSchemaBuilder } from "./Compound";
-import type { FieldConfig, SchemaRenderer, RenderChildren } from "../types";
+import type { FieldConfig, SchemaRenderer } from "../types";
 import * as yup from "yup";
 
 interface NameWidgetConfig extends FieldConfig {
@@ -22,9 +22,9 @@ const builder: CompoundSchemaBuilder<NameWidgetConfig> = (
   return schema;
 };
 
-const renderer: SchemaRenderer = (children: RenderChildren) => (
-  <div className="name-widget">{Object.values(children)}</div>
-);
+const renderer: SchemaRenderer = jest.fn((props) => (
+  <div className="name-widget">{props.children}</div>
+));
 
 describe("CompoundFieldHandler", function () {
   const tester = new FieldTester(new CompoundFieldHandler(["name"], builder), {
