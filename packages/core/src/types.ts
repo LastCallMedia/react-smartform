@@ -123,9 +123,9 @@ export type SchemaRenderProps<
   Fields extends RenderChildren = RenderChildren,
   Context extends RenderContext = RenderContext
 > = {
-  fields: RenderChildren;
+  fields: Fields;
   children: React.ReactNode[];
-  context: RenderContext;
+  context: Context;
 };
 export type SchemaRenderer<
   Fields extends RenderChildren = RenderChildren,
