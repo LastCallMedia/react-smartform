@@ -70,7 +70,7 @@ type TestFormProps = {
   handler: SchemaBuilder;
   defaultValues?: UseFormOptions["defaultValues"];
 };
-export function TestForm(props: TestFormProps): React.ReactNode {
+export function TestForm(props: TestFormProps): React.ReactElement {
   const form = useForm({
     defaultValues: props.defaultValues,
     validationSchema: props.handler.buildYupSchema(props.schema, { yup: yup }),
