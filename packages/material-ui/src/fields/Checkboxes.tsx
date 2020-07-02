@@ -21,7 +21,7 @@ import get from "lodash/get";
 import * as yup from "yup";
 import { extractOptionValues } from "../util";
 
-interface MaterialCheckboxesConfig extends FieldConfig {
+export interface MaterialCheckboxesConfig extends FieldConfig {
   type: "checkboxes";
   label: string;
   options: OptionList;

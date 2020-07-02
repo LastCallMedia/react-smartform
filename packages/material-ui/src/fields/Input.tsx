@@ -13,7 +13,7 @@ import TextField from "@material-ui/core/TextField";
 import * as yup from "yup";
 import get from "lodash/get";
 
-interface MaterialInputConfig extends FieldConfig {
+export interface MaterialInputConfig extends FieldConfig {
   name: string | number;
   type: "text" | "password";
   label: string;
