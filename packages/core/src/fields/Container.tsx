@@ -5,24 +5,21 @@ import type {
   Schema,
   FieldValidationContext,
   FieldName,
-  RenderChildren,
   RenderContext,
   SchemaRenderer,
   Constructor,
 } from "../types";
 import type { ObjectSchema } from "yup";
 import React from "react";
+import Tree from "../components/Tree";
 
 interface ContainerRenderContext extends RenderContext {
-  container: {
+  parent: {
     config: ContainerConfig;
     parents: FieldName[];
   };
 }
-export type ContainerRenderer = SchemaRenderer<
-  RenderChildren,
-  ContainerRenderContext
->;
+export type ContainerRenderer = SchemaRenderer<ContainerRenderContext>;
 
 export interface ContainerConfig extends FieldConfig {
   type: "container";
@@ -31,8 +28,11 @@ export interface ContainerConfig extends FieldConfig {
 
 export default class ContainerHandler implements FieldHandler<ContainerConfig> {
   types: string[];
-  renderer?: ContainerRenderer;
-  constructor(types: string[] = ["container"], renderer?: ContainerRenderer) {
+  renderer: ContainerRenderer | SchemaRenderer;
+  constructor(
+    types: string[] = ["container"],
+    renderer: ContainerRenderer | SchemaRenderer = Tree
+  ) {
     this.types = types;
     this.renderer = renderer;
   }
@@ -43,14 +43,17 @@ export default class ContainerHandler implements FieldHandler<ContainerConfig> {
     config: ContainerConfig,
     context: FieldRenderContext
   ): React.ReactElement {
-    return context.builder.render(config.of, {
+    const renderContext = {
       ...context,
       renderer: this.renderer,
-      container: {
+      parent: {
         config,
         parents: context.parents,
       },
-    } as ContainerRenderContext);
+    } as ContainerRenderContext;
+    const fields = context.builder.renderFields(config.of, renderContext);
+    const Renderer = this.renderer;
+    return <Renderer context={renderContext} fields={fields} />;
   }
   buildYupSchema(
     config: ContainerConfig,

@@ -1,5 +1,4 @@
 export { makeElementName, makeElementId } from "./util";
-export { default as SmartForm } from "./SmartForm";
 export { default as Registry } from "./Registry";
 export { default as SchemaBuilder } from "./SchemaBuilder";
 export { default as withVisibility } from "./decorators/withVisibility";

@@ -85,7 +85,7 @@ export function TestForm(props: TestFormProps): React.ReactElement {
   );
   return (
     <form data-testid="the-form" onSubmit={onSubmit}>
-      {props.handler.render(props.schema, { form, t })}
+      {Object.values(props.handler.renderFields(props.schema, { form, t }))}
     </form>
   );
 }

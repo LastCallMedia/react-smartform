@@ -84,12 +84,11 @@ describe("ArrayHandler", () => {
     expect(getAllByTestId("the-array")).toHaveLength(2);
     expect(renderer).toHaveBeenCalledWith(
       expect.objectContaining({
-        children: expect.any(Array),
         fields: {
           "the-field": expect.anything(),
         },
         context: expect.objectContaining({
-          array: {
+          parent: {
             config: config,
             parents: [],
             index: 0,

@@ -6,11 +6,11 @@ import type {
   FieldRenderContext,
   FieldValidationContext,
   SchemaRenderer,
-  RenderChildren,
   FieldName,
   RenderContext,
 } from "../types";
 import type { Schema as YupSchema } from "yup";
+import Tree from "../components/Tree";
 
 interface CompoundRenderContext extends RenderContext {
   parent: {
@@ -18,10 +18,7 @@ interface CompoundRenderContext extends RenderContext {
     parents: FieldName[];
   };
 }
-export type CompoundRenderer = SchemaRenderer<
-  RenderChildren,
-  CompoundRenderContext
->;
+export type CompoundRenderer = SchemaRenderer<CompoundRenderContext>;
 
 export type CompoundSchemaBuilder<C extends FieldConfig = FieldConfig> = (
   config: C
@@ -31,12 +28,12 @@ export default class CompoundFieldHandler<C extends FieldConfig>
   implements FieldHandler<C> {
   types: string[];
   builder: CompoundSchemaBuilder<C>;
-  renderer?: CompoundRenderer;
+  renderer: CompoundRenderer | SchemaRenderer;
 
   constructor(
     types: string[],
     schemaBuilder: CompoundSchemaBuilder<C>,
-    renderer?: CompoundRenderer
+    renderer: CompoundRenderer | SchemaRenderer = Tree
   ) {
     this.types = types;
     this.builder = schemaBuilder;
@@ -46,17 +43,18 @@ export default class CompoundFieldHandler<C extends FieldConfig>
     return this.types;
   }
   render(config: C, context: FieldRenderContext): React.ReactElement {
+    const Renderer = this.renderer;
     const { builder, parents } = context;
-    return builder.render(this.builder(config), {
+    const renderContext = {
       ...context,
       parents: parents.concat([config.name]),
-      key: config.name,
-      renderer: this.renderer,
       parent: {
         config,
         parents: context.parents,
       },
-    } as CompoundRenderContext);
+    } as CompoundRenderContext;
+    const fields = builder.renderFields(this.builder(config), renderContext);
+    return <Renderer context={renderContext} fields={fields} />;
   }
   buildYupSchema(
     config: C,

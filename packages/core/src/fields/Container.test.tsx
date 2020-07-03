@@ -56,12 +56,11 @@ describe("ContainerHandler", function () {
     expect(getByTestId("the-container")).toBeTruthy();
     expect(renderer).toHaveBeenCalledWith(
       expect.objectContaining({
-        children: expect.any(Array),
         fields: expect.objectContaining({
           "the-field": expect.anything(),
         }),
         context: expect.objectContaining({
-          container: {
+          parent: {
             config: containerConfig,
             parents: [],
           },

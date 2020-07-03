@@ -28,7 +28,6 @@ export interface RenderContext {
   form: FormContextValues;
   t: TranslationFunction;
   parents?: FieldName[];
-  renderer?: SchemaRenderer;
 }
 /**
  * Context for React rendering, passed to the field builder.
@@ -60,7 +59,7 @@ export interface FieldValidationContext extends ValidationContext {
  * Defines an object that knows how to deal with entire schemas.
  */
 export interface SchemaBuilder<S extends Schema = Schema> {
-  render(schema: S, context: RenderContext): ReactElement;
+  renderFields(schema: S, context: RenderContext): RenderChildren;
   renderField(config: Unpacked<S>, context: RenderContext): ReactElement;
   buildYupSchema(schema: S, context: ValidationContext): yup.ObjectSchema;
   buildYupSchemaField(
@@ -104,22 +103,17 @@ export type ConfigFromFieldHandlers<
 > = ConfigFromFieldHandler<Unpacked<T>>;
 // Utility type to extract the allowed configuration types from a schema builder.
 export type SchemaFromSchemaHandler<T extends SchemaBuilder> = Parameters<
-  T["render"]
+  T["renderFields"]
 >[0];
 
 export type RenderChildren = Record<FieldName, React.ReactElement>;
-export type SchemaRenderProps<
-  Fields extends RenderChildren = RenderChildren,
-  Context extends RenderContext = RenderContext
-> = {
-  fields: Fields;
-  children: React.ReactNode[];
+export type SchemaRenderProps<Context extends RenderContext = RenderContext> = {
+  fields: RenderChildren;
   context: Context;
 };
 export type SchemaRenderer<
-  Fields extends RenderChildren = RenderChildren,
   Context extends RenderContext = RenderContext
-> = React.ComponentType<SchemaRenderProps<Fields, Context>>;
+> = React.ComponentType<SchemaRenderProps<Context>>;
 
 // Defines the shape of a single option (eg: to be used in select lists).
 export interface Option {

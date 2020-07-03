@@ -29,37 +29,19 @@ export default class SmartFormSchemaBuilder<
     this.registry = registry;
   }
 
-  render(schema: Config[], context: RenderContext): React.ReactElement {
-    const parents = context.parents || [];
-    const key = [...parents].pop() ?? "root";
-
+  renderFields(schema: Config[], context: RenderContext): RenderChildren {
     // Render the children into an object, keyed by field name.
-    const fields = schema.reduce((output, config) => {
+    return schema.reduce((output, config) => {
       const fieldOutput = this.renderField(config, context);
       return { ...output, [config.name]: fieldOutput };
     }, {} as RenderChildren);
-
-    // Use the chosen renderer to render the children.
-    const RenderElement = context.renderer ?? DefaultRenderer;
-    const rendered = (
-      <RenderElement context={context} fields={fields}>
-        {Object.values(fields)}
-      </RenderElement>
-    );
-
-    // Tack the key onto the element at the end so we don't end up with duplicate key errors.
-    return React.cloneElement(rendered, { key });
   }
+
   renderField(config: Config, context: RenderContext): React.ReactElement {
-    const parents = context.parents || [];
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { renderer, t, ...restOfContext } = context;
     const element = this.registry.getHandler(config.type).render(config, {
-      // Do not pass renderer through. We reset at each level of recursion.
-      ...restOfContext,
-      parents,
+      parents: [], // Parents will be overridden if set on context.
+      ...context,
       builder: this,
-      t: context.t ?? neverTranslate,
     });
     return React.cloneElement(element, { key: config.name });
   }
@@ -121,7 +103,3 @@ function omitMeta<T extends yup.Schema<unknown>>(schema: T, key: string): T {
   }
   return schema;
 }
-
-const DefaultRenderer = (props: { children: React.ReactNodeArray }) => {
-  return <React.Fragment>{props.children}</React.Fragment>;
-};

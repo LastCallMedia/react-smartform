@@ -5,7 +5,6 @@ import type {
   FieldValidationContext,
   SchemaRenderer,
   FieldName,
-  RenderChildren,
   RenderContext,
   Constructor,
 } from "../types";
@@ -13,15 +12,16 @@ import type { Schema as YupSchema } from "yup";
 import React from "react";
 import { compile } from "expression-eval";
 import { getReactEvalContext } from "../eval";
+import Tree from "../components/Tree";
 
 interface ArrayRenderContext extends RenderContext {
-  array: {
+  parent: {
     config: ArrayConfig;
     index: number;
     parents: FieldName[];
   };
 }
-export type ArrayRenderer = SchemaRenderer<RenderChildren, ArrayRenderContext>;
+export type ArrayRenderer = SchemaRenderer<ArrayRenderContext>;
 
 // @todo: I'd like to use Omit<FieldConfig, "name"> here, but it's not working with the
 // additional properties.
@@ -36,8 +36,11 @@ export interface ArrayConfig extends FieldConfig {
 
 export default class ArrayHandler implements FieldHandler<ArrayConfig> {
   types: string[];
-  renderer?: ArrayRenderer;
-  constructor(types: string[] = ["array"], renderer?: ArrayRenderer) {
+  renderer: ArrayRenderer | SchemaRenderer;
+  constructor(
+    types: string[] = ["array"],
+    renderer: ArrayRenderer | SchemaRenderer = Tree
+  ) {
     this.types = types;
     this.renderer = renderer;
   }
@@ -46,6 +49,8 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
   }
 
   render(config: ArrayConfig, context: FieldRenderContext): React.ReactElement {
+    const Renderer = this.renderer;
+
     const count = resolveCount(config.count, context);
     const { parents, builder } = context;
     const children = Array.from(Array(count).keys()).map((i) => {
@@ -54,23 +59,26 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
         index: i,
         parents,
       };
+      let fields, renderContext;
       if (Array.isArray(config.of)) {
-        return builder.render(config.of, {
+        renderContext = {
           ...context,
           parents: parents.concat([config.name, i]),
-          renderer: this.renderer,
-          array: arrayContext,
-        } as ArrayRenderContext);
+          parent: arrayContext,
+        } as ArrayRenderContext;
+        fields = builder.renderFields(config.of, renderContext);
       } else {
-        const element = builder.render([{ ...config.of, name: i }], {
+        renderContext = {
           ...context,
           parents: parents.concat(config.name),
-          renderer: this.renderer,
-          array: arrayContext,
-        } as ArrayRenderContext);
-        // Override the key for simple array items, since they will all share the same one.
-        return React.cloneElement(element, { key: i });
+          parent: arrayContext,
+        } as ArrayRenderContext;
+        fields = builder.renderFields(
+          [{ ...config.of, name: i }],
+          renderContext
+        );
       }
+      return <Renderer key={i} fields={fields} context={renderContext} />;
     });
     return <React.Fragment>{children}</React.Fragment>;
   }
