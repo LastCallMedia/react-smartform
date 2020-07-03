@@ -21,7 +21,7 @@ interface ArrayRenderContext extends RenderContext {
     parents: FieldName[];
   };
 }
-export type ArrayRenderer = SchemaRenderer<ArrayRenderContext>;
+export type ArrayRenderer = SchemaRenderer<ArrayRenderContext> | SchemaRenderer;
 
 // @todo: I'd like to use Omit<FieldConfig, "name"> here, but it's not working with the
 // additional properties.
@@ -36,11 +36,8 @@ export interface ArrayConfig extends FieldConfig {
 
 export default class ArrayHandler implements FieldHandler<ArrayConfig> {
   types: string[];
-  renderer: ArrayRenderer | SchemaRenderer;
-  constructor(
-    types: string[] = ["array"],
-    renderer: ArrayRenderer | SchemaRenderer = Tree
-  ) {
+  renderer: ArrayRenderer;
+  constructor(types: string[] = ["array"], renderer: ArrayRenderer = Tree) {
     this.types = types;
     this.renderer = renderer;
   }

@@ -6,7 +6,7 @@ import useSmartForm, {
 import { Schema } from "./types";
 import Registry from "./Registry";
 
-export default function withSmartForm<P>(
+export default function withSmartForm<P extends UseSmartFormResult>(
   Component: React.ComponentType<P>,
   options: Partial<UseSmartFormOptions>
 ): React.FunctionComponent<P & UseSmartFormResult> {

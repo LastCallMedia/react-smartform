@@ -18,7 +18,9 @@ interface CompoundRenderContext extends RenderContext {
     parents: FieldName[];
   };
 }
-export type CompoundRenderer = SchemaRenderer<CompoundRenderContext>;
+export type CompoundRenderer =
+  | SchemaRenderer<CompoundRenderContext>
+  | SchemaRenderer;
 
 export type CompoundSchemaBuilder<C extends FieldConfig = FieldConfig> = (
   config: C
@@ -28,12 +30,12 @@ export default class CompoundFieldHandler<C extends FieldConfig>
   implements FieldHandler<C> {
   types: string[];
   builder: CompoundSchemaBuilder<C>;
-  renderer: CompoundRenderer | SchemaRenderer;
+  renderer: CompoundRenderer;
 
   constructor(
     types: string[],
     schemaBuilder: CompoundSchemaBuilder<C>,
-    renderer: CompoundRenderer | SchemaRenderer = Tree
+    renderer: CompoundRenderer = Tree
   ) {
     this.types = types;
     this.builder = schemaBuilder;
