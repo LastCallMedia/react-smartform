@@ -6,11 +6,17 @@ import useSmartForm, {
 import { Schema } from "./types";
 import Registry from "./Registry";
 
+type Diff<A, B> = Omit<A, keyof B>;
+
 export default function withSmartForm<P extends UseSmartFormResult>(
   Component: React.ComponentType<P>,
   options: Partial<UseSmartFormOptions>
-): React.FunctionComponent<P & UseSmartFormResult> {
-  function WithSmartForm(props: P & Partial<UseSmartFormOptions>) {
+): React.FunctionComponent<
+  Diff<P, UseSmartFormResult> & Partial<UseSmartFormOptions>
+> {
+  function WithSmartForm(
+    props: Diff<P, UseSmartFormResult> & Partial<UseSmartFormOptions>
+  ) {
     const smartFormOptions = { ...options, ...props };
     if (!isValidIsh(smartFormOptions)) {
       throw new Error(
@@ -18,7 +24,8 @@ export default function withSmartForm<P extends UseSmartFormResult>(
       );
     }
     const smartProps = useSmartForm(smartFormOptions);
-    return <Component {...props} {...smartProps} />;
+    const p = { ...props, ...smartProps } as P;
+    return <Component {...p} />;
   }
   WithSmartForm.displayName = `WithSmartForm(${getDisplayName(Component)})`;
 
