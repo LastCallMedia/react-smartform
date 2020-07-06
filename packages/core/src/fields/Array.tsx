@@ -14,18 +14,21 @@ import { compile } from "expression-eval";
 import { getReactEvalContext } from "../eval";
 import Tree from "../components/Tree";
 
-interface ArrayRenderContext extends RenderContext {
+interface ArrayRenderContext<Config extends ArrayConfig = ArrayConfig>
+  extends RenderContext {
   parent: {
-    config: ArrayConfig;
+    config: Config;
     index: number;
     parents: FieldName[];
   };
 }
-export type ArrayRenderer = SchemaRenderer<ArrayRenderContext>;
+export type ArrayRenderer<
+  Config extends ArrayConfig = ArrayConfig
+> = SchemaRenderer<ArrayRenderContext<Config>>;
 
 // @todo: I'd like to use Omit<FieldConfig, "name"> here, but it's not working with the
 // additional properties.
-interface UnnamedFieldConfig {
+export interface UnnamedFieldConfig {
   type: string;
   [k: string]: unknown;
 }
@@ -34,10 +37,14 @@ export interface ArrayConfig extends FieldConfig {
   of: UnnamedFieldConfig | FieldConfig[];
 }
 
-export default class ArrayHandler implements FieldHandler<ArrayConfig> {
+export default class ArrayHandler<Config extends ArrayConfig = ArrayConfig>
+  implements FieldHandler<Config> {
   types: string[];
-  renderer: ArrayRenderer;
-  constructor(types: string[] = ["array"], renderer: ArrayRenderer = Tree) {
+  renderer: ArrayRenderer<Config>;
+  constructor(
+    types: string[] = ["array"],
+    renderer: ArrayRenderer<Config> = Tree
+  ) {
     this.types = types;
     this.renderer = renderer;
   }
@@ -45,7 +52,7 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
     return this.types;
   }
 
-  render(config: ArrayConfig, context: FieldRenderContext): React.ReactElement {
+  render(config: Config, context: FieldRenderContext): React.ReactElement {
     const Renderer = this.renderer;
 
     const count = resolveCount(config.count, context);
@@ -62,14 +69,14 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
           ...context,
           parents: parents.concat([config.name, i]),
           parent: arrayContext,
-        } as ArrayRenderContext;
+        } as ArrayRenderContext<Config>;
         fields = builder.renderFields(config.of, renderContext);
       } else {
         renderContext = {
           ...context,
           parents: parents.concat(config.name),
           parent: arrayContext,
-        } as ArrayRenderContext;
+        } as ArrayRenderContext<Config>;
         fields = builder.renderFields(
           [{ ...config.of, name: i }],
           renderContext
@@ -81,7 +88,7 @@ export default class ArrayHandler implements FieldHandler<ArrayConfig> {
   }
 
   buildYupSchema(
-    config: ArrayConfig,
+    config: Config,
     context: FieldValidationContext
   ): YupSchema<unknown> | false {
     const { builder, yup } = context;
@@ -111,11 +118,11 @@ function resolveCount(
   throw new Error(`Invalid count expression given: ${spec}`);
 }
 
-export function makeArrayHandler(
+export function makeArrayHandler<Config extends ArrayConfig = ArrayConfig>(
   types: string[],
-  renderer?: ArrayRenderer
-): Constructor<ArrayHandler> {
-  return class extends ArrayHandler {
+  renderer?: ArrayRenderer<Config>
+): Constructor<ArrayHandler<Config>> {
+  return class extends ArrayHandler<Config> {
     constructor() {
       super(types, renderer);
     }

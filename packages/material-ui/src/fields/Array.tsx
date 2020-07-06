@@ -1,15 +1,29 @@
 import React from "react";
 import { Container } from "@material-ui/core";
-import { makeArrayHandler, withVisibility } from "@lastcall/react-smartform";
+import {
+  ArrayConfig,
+  makeArrayHandler,
+  withVisibility,
+} from "@lastcall/react-smartform";
 
-const MaterialArrayHandler = makeArrayHandler(["array"], (props) => {
-  const { fields, context } = props;
-  return (
-    <Container>
-      {context.t(`Item ${context.parent.index + 1}`)}
-      {Object.values(fields)}
-    </Container>
-  );
-});
+// Material UI arrays may optionally be labelled.
+export interface MaterialArrayConfig extends ArrayConfig {
+  label?: string;
+}
+
+const MaterialArrayHandler = makeArrayHandler<MaterialArrayConfig>(
+  ["array"],
+  (props) => {
+    const { fields, context } = props;
+    const { t, parent } = context;
+    const { config } = parent;
+    return (
+      <Container>
+        {config.label && t(config.label)}
+        {Object.values(fields)}
+      </Container>
+    );
+  }
+);
 
 export default withVisibility(MaterialArrayHandler);
