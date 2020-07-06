@@ -1,6 +1,15 @@
-import * as handlerObj from "./fields";
 import { Registry } from "@lastcall/react-smartform";
 
-export const registry = new Registry(
-  Object.values(handlerObj).map((cls) => new cls())
-);
+import MaterialArrayHandler from "./fields/Array";
+import MaterialInputHandler from "./fields/Input";
+import MaterialCheckboxesHandler from "./fields/Checkboxes";
+import MaterialRadiosHandler from "./fields/Radios";
+
+const registry = new Registry([
+  new MaterialArrayHandler(),
+  new MaterialInputHandler(),
+  new MaterialCheckboxesHandler(),
+  new MaterialRadiosHandler(),
+]);
+
+export default registry
