@@ -1,0 +1,15 @@
+[
+  {
+    "type": "array",
+    "name": "myarray",
+    "label": "Example Field",
+    "count": 2,
+    "of": [
+      {
+        "type": "text",
+        "name": "mytext",
+        "label": "Text Field"
+      }
+    ]
+  }
+]
