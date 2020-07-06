@@ -27,5 +27,5 @@ export type {
   ValidationContext,
   FieldValidationContext,
   OptionList,
-  Schema
+  Schema,
 } from "./types";
