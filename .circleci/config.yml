@@ -32,6 +32,10 @@ jobs:
       - run: yarn run build
       - run: yarn run test
       - run: yarn run lint
+      - run:
+          name: "Build Example"
+          command: yarn run build
+          working_directory: example
   publish:
     executor: default
     steps:
