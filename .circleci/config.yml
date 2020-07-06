@@ -38,11 +38,11 @@ jobs:
       - checkout
       - install
       - run: yarn run build
-      - run: yarn workspaces foreach version $CIRCLE_TAG
+      - run: yarn workspaces foreach --exclude root example version $CIRCLE_TAG
       - run: yarn config set npmAuthToken '${NPM_PUBLISH_TOKEN}'
       - run:
           name: "Publish packages"
-          command: yarn workspaces foreach --exclude root npm publish
+          command: yarn workspaces foreach --exclude root example npm publish
 workflows:
   version: 2
   test:
