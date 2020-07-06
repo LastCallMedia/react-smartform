@@ -12,4 +12,4 @@ const registry = new Registry([
   new MaterialRadiosHandler(),
 ]);
 
-export default registry
+export default registry;

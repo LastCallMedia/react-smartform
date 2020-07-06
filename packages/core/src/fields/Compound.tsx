@@ -12,13 +12,16 @@ import type {
 import type { Schema as YupSchema } from "yup";
 import Tree from "../components/Tree";
 
-interface CompoundRenderContext<Config extends FieldConfig = FieldConfig> extends RenderContext {
+interface CompoundRenderContext<Config extends FieldConfig = FieldConfig>
+  extends RenderContext {
   parent: {
     config: Config;
     parents: FieldName[];
   };
 }
-export type CompoundRenderer<Config extends FieldConfig = FieldConfig> = SchemaRenderer<CompoundRenderContext<Config>>;
+export type CompoundRenderer<
+  Config extends FieldConfig = FieldConfig
+> = SchemaRenderer<CompoundRenderContext<Config>>;
 
 export type CompoundSchemaBuilder<Config extends FieldConfig = FieldConfig> = (
   config: Config
