@@ -19,9 +19,7 @@ interface ContainerRenderContext extends RenderContext {
     parents: FieldName[];
   };
 }
-export type ContainerRenderer =
-  | SchemaRenderer<ContainerRenderContext>
-  | SchemaRenderer;
+export type ContainerRenderer = SchemaRenderer<ContainerRenderContext>;
 
 export interface ContainerConfig extends FieldConfig {
   type: "container";

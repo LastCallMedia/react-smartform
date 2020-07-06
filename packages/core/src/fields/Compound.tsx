@@ -12,30 +12,28 @@ import type {
 import type { Schema as YupSchema } from "yup";
 import Tree from "../components/Tree";
 
-interface CompoundRenderContext extends RenderContext {
+interface CompoundRenderContext<Config extends FieldConfig = FieldConfig> extends RenderContext {
   parent: {
-    config: FieldConfig;
+    config: Config;
     parents: FieldName[];
   };
 }
-export type CompoundRenderer =
-  | SchemaRenderer<CompoundRenderContext>
-  | SchemaRenderer;
+export type CompoundRenderer<Config extends FieldConfig = FieldConfig> = SchemaRenderer<CompoundRenderContext<Config>>;
 
-export type CompoundSchemaBuilder<C extends FieldConfig = FieldConfig> = (
-  config: C
+export type CompoundSchemaBuilder<Config extends FieldConfig = FieldConfig> = (
+  config: Config
 ) => Schema;
 
-export default class CompoundFieldHandler<C extends FieldConfig>
-  implements FieldHandler<C> {
+export default class CompoundFieldHandler<Config extends FieldConfig>
+  implements FieldHandler<Config> {
   types: string[];
-  builder: CompoundSchemaBuilder<C>;
-  renderer: CompoundRenderer;
+  builder: CompoundSchemaBuilder<Config>;
+  renderer: CompoundRenderer<Config>;
 
   constructor(
     types: string[],
-    schemaBuilder: CompoundSchemaBuilder<C>,
-    renderer: CompoundRenderer = Tree
+    schemaBuilder: CompoundSchemaBuilder<Config>,
+    renderer: CompoundRenderer<Config> = Tree
   ) {
     this.types = types;
     this.builder = schemaBuilder;
@@ -44,7 +42,7 @@ export default class CompoundFieldHandler<C extends FieldConfig>
   handles(): string[] {
     return this.types;
   }
-  render(config: C, context: FieldRenderContext): React.ReactElement {
+  render(config: Config, context: FieldRenderContext): React.ReactElement {
     const Renderer = this.renderer;
     const { builder, parents } = context;
     const renderContext = {
@@ -54,12 +52,12 @@ export default class CompoundFieldHandler<C extends FieldConfig>
         config,
         parents: context.parents,
       },
-    } as CompoundRenderContext;
+    };
     const fields = builder.renderFields(this.builder(config), renderContext);
     return <Renderer context={renderContext} fields={fields} />;
   }
   buildYupSchema(
-    config: C,
+    config: Config,
     context: FieldValidationContext
   ): YupSchema<unknown> {
     return context.builder.buildYupSchema(this.builder(config), {
@@ -69,12 +67,12 @@ export default class CompoundFieldHandler<C extends FieldConfig>
   }
 }
 
-export function makeCompoundHandler<C extends FieldConfig>(
+export function makeCompoundHandler<Config extends FieldConfig>(
   types: string[],
-  builder: CompoundSchemaBuilder<C>,
-  renderer: CompoundRenderer
-): new () => CompoundFieldHandler<C> {
-  return class extends CompoundFieldHandler<C> {
+  builder: CompoundSchemaBuilder<Config>,
+  renderer?: CompoundRenderer<Config>
+): new () => CompoundFieldHandler<Config> {
+  return class extends CompoundFieldHandler<Config> {
     constructor() {
       super(types, builder, renderer);
     }

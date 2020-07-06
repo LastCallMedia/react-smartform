@@ -21,7 +21,7 @@ interface ArrayRenderContext extends RenderContext {
     parents: FieldName[];
   };
 }
-export type ArrayRenderer = SchemaRenderer<ArrayRenderContext> | SchemaRenderer;
+export type ArrayRenderer = SchemaRenderer<ArrayRenderContext>;
 
 // @todo: I'd like to use Omit<FieldConfig, "name"> here, but it's not working with the
 // additional properties.
