@@ -9,13 +9,13 @@ import Radio from "@material-ui/core/Radio";
 import {
   makeElementId,
   makeElementName,
-  withLabelExpression,
-  withVisibility,
   FieldConfig,
   FieldHandler,
   FieldRenderContext,
   FieldValidationContext,
   OptionList,
+  withVisibility,
+  withLabelExpression,
 } from "@lastcall/react-smartform";
 import * as yup from "yup";
 import get from "lodash/get";

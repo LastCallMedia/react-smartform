@@ -8,11 +8,13 @@ import Registry from "./Registry";
 
 type Diff<A, B> = Omit<A, keyof B>;
 
-export default function withSmartForm<P extends UseSmartFormResult>(
+export type WithSmartFormProps = UseSmartFormResult;
+
+export default function withSmartForm<P extends WithSmartFormProps>(
   Component: React.ComponentType<P>,
   options: Partial<UseSmartFormOptions>
 ): React.FunctionComponent<
-  Diff<P, UseSmartFormResult> & Partial<UseSmartFormOptions>
+  Diff<P, WithSmartFormProps> & Partial<UseSmartFormOptions>
 > {
   function WithSmartForm(
     props: Diff<P, UseSmartFormResult> & Partial<UseSmartFormOptions>

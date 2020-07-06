@@ -1,8 +1,7 @@
 import React from "react";
 import registry from "../registry";
-import {useSmartForm} from "@lastcall/react-smartform";
+import {Schema, useSmartForm} from "@lastcall/react-smartform";
 import {Button} from "@material-ui/core";
-import {Schema} from "@lastcall/react-smartform/lib/types";
 
 /**
  * In this example, we use the useSmartForm() hook to build the smartform within our

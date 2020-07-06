@@ -1,6 +1,6 @@
 import React from "react";
-import { makeArrayHandler } from "@lastcall/react-smartform";
 import { Container } from "@material-ui/core";
+import { makeArrayHandler, withVisibility } from "@lastcall/react-smartform";
 
 const MaterialArrayHandler = makeArrayHandler(["array"], (props) => {
   const { fields, context } = props;
@@ -12,4 +12,4 @@ const MaterialArrayHandler = makeArrayHandler(["array"], (props) => {
   );
 });
 
-export default MaterialArrayHandler;
+export default withVisibility(MaterialArrayHandler);

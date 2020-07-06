@@ -23,19 +23,19 @@ export type CompoundRenderer<
   Config extends FieldConfig = FieldConfig
 > = SchemaRenderer<CompoundRenderContext<Config>>;
 
-export type CompoundSchemaBuilder<Config extends FieldConfig = FieldConfig> = (
+export type CompoundBuilder<Config extends FieldConfig = FieldConfig> = (
   config: Config
 ) => Schema;
 
 export default class CompoundFieldHandler<Config extends FieldConfig>
   implements FieldHandler<Config> {
   types: string[];
-  builder: CompoundSchemaBuilder<Config>;
+  builder: CompoundBuilder<Config>;
   renderer: CompoundRenderer<Config>;
 
   constructor(
     types: string[],
-    schemaBuilder: CompoundSchemaBuilder<Config>,
+    schemaBuilder: CompoundBuilder<Config>,
     renderer: CompoundRenderer<Config> = Tree
   ) {
     this.types = types;
@@ -72,7 +72,7 @@ export default class CompoundFieldHandler<Config extends FieldConfig>
 
 export function makeCompoundHandler<Config extends FieldConfig>(
   types: string[],
-  builder: CompoundSchemaBuilder<Config>,
+  builder: CompoundBuilder<Config>,
   renderer?: CompoundRenderer<Config>
 ): new () => CompoundFieldHandler<Config> {
   return class extends CompoundFieldHandler<Config> {

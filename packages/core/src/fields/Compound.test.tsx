@@ -1,7 +1,7 @@
 import React from "react";
 import { FieldTester, DummyHandler } from "../testing";
 import CompoundFieldHandler, {
-  CompoundSchemaBuilder,
+  CompoundBuilder,
   makeCompoundHandler,
 } from "./Compound";
 import type { FieldConfig, SchemaRenderer } from "../types";
@@ -11,7 +11,7 @@ interface NameWidgetConfig extends FieldConfig {
   type: "name";
   showTitle?: boolean;
 }
-const builder: CompoundSchemaBuilder<NameWidgetConfig> = (
+const builder: CompoundBuilder<NameWidgetConfig> = (
   config: NameWidgetConfig
 ) => {
   const schema = [

@@ -1,7 +1,7 @@
 import simple from "./simple.json"
 import array from "./array.json";
 import compound from "./compound.json"
-import type {Schema} from "@lastcall/react-smartform/lib/types";
+import type {Schema} from "@lastcall/react-smartform";
 
 export default {
     simple,

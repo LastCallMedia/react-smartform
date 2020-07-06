@@ -4,7 +4,7 @@ import schemas from "./schemas";
 import {MenuItem, TextField} from "@material-ui/core";
 import UsingHook from "./usage/UsingHook";
 import UsingHOC from "./usage/UsingHOC";
-import {Schema} from "@lastcall/react-smartform/lib/types";
+import {Schema} from "@lastcall/react-smartform";
 
 
 function App() {

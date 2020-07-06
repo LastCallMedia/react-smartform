@@ -4,13 +4,13 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {
   makeElementId,
   makeElementName,
-  withVisibility,
-  withLabelExpression,
   FieldConfig,
   FieldHandler,
   FieldRenderContext,
   FieldValidationContext,
   OptionList,
+  withVisibility,
+  withLabelExpression,
 } from "@lastcall/react-smartform";
 import { Controller } from "react-hook-form";
 import * as yup from "yup";

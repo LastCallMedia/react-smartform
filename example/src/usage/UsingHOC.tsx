@@ -1,6 +1,5 @@
 import React from "react";
-import {withSmartForm} from "@lastcall/react-smartform";
-import {UseSmartFormResult} from "@lastcall/react-smartform/lib/useSmartForm"
+import {withSmartForm, WithSmartFormProps} from "@lastcall/react-smartform";
 import registry from "../registry";
 import {Button} from "@material-ui/core";
 
@@ -11,7 +10,7 @@ import {Button} from "@material-ui/core";
  * Here, we inject the registry when invoking the HOC, and the schema must be passed
  * down as a property.
  */
-type ComponentProps = UseSmartFormResult;
+type ComponentProps = WithSmartFormProps;
 
 function Component(props: ComponentProps) {
   const submit = (values: unknown) => console.log(values);

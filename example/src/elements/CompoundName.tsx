@@ -1,6 +1,10 @@
 import React from "react";
-import {FieldConfig, makeCompoundHandler} from "@lastcall/react-smartform";
-import {CompoundRenderer, CompoundSchemaBuilder} from "@lastcall/react-smartform/lib/fields/Compound";
+import {
+  FieldConfig,
+  makeCompoundHandler,
+  CompoundBuilder,
+  CompoundRenderer
+} from "@lastcall/react-smartform";
 import {FormControl, FormLabel, Grid} from "@material-ui/core";
 
 interface NameConfig extends FieldConfig {
@@ -9,7 +13,7 @@ interface NameConfig extends FieldConfig {
 }
 
 // Compound fields use a "builder" to produce the schema for subfields.
-const builder: CompoundSchemaBuilder<NameConfig> = (config) => {
+const builder: CompoundBuilder<NameConfig> = (config) => {
   return [
     {
       name: "first",
