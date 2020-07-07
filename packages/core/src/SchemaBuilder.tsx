@@ -30,6 +30,9 @@ export default class SmartFormSchemaBuilder<
   }
 
   renderFields(schema: Config[], context: RenderContext): RenderChildren {
+    if (!isValidSchema(schema)) {
+      throw new Error(`Invalid schema given: ${JSON.stringify(schema)}`);
+    }
     // Render the children into an object, keyed by field name.
     return schema.reduce((output, config) => {
       const fieldOutput = this.renderField(config, context);
@@ -50,6 +53,9 @@ export default class SmartFormSchemaBuilder<
     schema: Config[],
     context: ValidationContext
   ): yup.ObjectSchema {
+    if (!isValidSchema(schema)) {
+      throw new Error(`Invalid schema given: ${JSON.stringify(schema)}`);
+    }
     const yupSchema = schema.reduce((yupSchema, config) => {
       const fieldSchema = this.buildYupSchemaField(config, context);
       if (fieldSchema === false) {
@@ -102,4 +108,17 @@ function omitMeta<T extends yup.Schema<unknown>>(schema: T, key: string): T {
     return replacement;
   }
   return schema;
+}
+
+function isValidSchema(schema: unknown): schema is Schema {
+  if (!schema || !Array.isArray(schema)) {
+    console.log("Returning 1");
+    return false;
+  }
+  for (const item of schema) {
+    if (typeof item !== "object" || !("name" in item) || !("type" in item)) {
+      return false;
+    }
+  }
+  return true;
 }
