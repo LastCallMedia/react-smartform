@@ -83,9 +83,13 @@ export function TestForm(props: TestFormProps): React.ReactElement {
         /* No-op */
       })
   );
+  const context = { form, t };
+  const fields = props.handler.renderFields(props.schema, context);
   return (
     <form data-testid="the-form" onSubmit={onSubmit}>
-      {Object.values(props.handler.renderFields(props.schema, { form, t }))}
+      {Object.entries(fields).map(([name, field]) => {
+        return React.cloneElement(field, { key: name });
+      })}
     </form>
   );
 }

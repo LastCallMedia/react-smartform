@@ -1,11 +1,13 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormLabel from "@material-ui/core/FormLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Radio from "@material-ui/core/Radio";
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  FormHelperText,
+  RadioGroup,
+  Radio,
+} from "@material-ui/core";
 import {
   makeElementId,
   makeElementName,
@@ -27,6 +29,7 @@ export interface MaterialRadiosConfig extends FieldConfig {
   options: string | Option[];
   required?: boolean;
   help?: string;
+  inline?: boolean;
 }
 
 type ConstructorConfig = {
@@ -46,7 +49,8 @@ class MaterialRadiosHandler implements FieldHandler<MaterialRadiosConfig> {
     context: FieldRenderContext
   ): React.ReactElement {
     const fqp = context.parents.concat([config.name]);
-    const error = get(context.form.errors, `${fqp}.message`);
+    const name = makeElementName(fqp);
+    const error = get(context.form.errors, `${name}.message`);
     const t = (key: string | undefined) => (key ? context.t(key) : undefined);
 
     const options = this.options(config).map((option) => (
@@ -58,14 +62,22 @@ class MaterialRadiosHandler implements FieldHandler<MaterialRadiosConfig> {
       />
     ));
     return (
-      <FormControl component="fieldset" error={!!error}>
+      <FormControl
+        component="fieldset"
+        error={!!error}
+        required={!!config.required}
+      >
         <FormLabel component="legend">{t(config.label)}</FormLabel>
         <Controller
           id={makeElementId(fqp)}
-          name={makeElementName(fqp)}
+          name={name}
           control={context.form.control}
           defaultValue={""}
-          as={<RadioGroup aria-label={t(config.label)}>{options}</RadioGroup>}
+          as={
+            <RadioGroup row={!!config.inline} aria-label={t(config.label)}>
+              {options}
+            </RadioGroup>
+          }
         />
         {error && <FormHelperText error={true}>{error}</FormHelperText>}
         {!error && config.help && (

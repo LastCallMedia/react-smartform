@@ -48,11 +48,16 @@ class MaterialCheckboxesHandler
     context: FieldRenderContext
   ): React.ReactElement {
     const fqp = context.parents.concat([config.name]);
-    const error = get(context.form.errors, `${fqp}.message`);
+    const name = makeElementName(fqp);
+    const error = get(context.form.errors, `${name}.message`);
     const t = (key: string | undefined) => (key ? context.t(key) : undefined);
 
     return (
-      <FormControl component="fieldset" error={!!error}>
+      <FormControl
+        component="fieldset"
+        error={!!error}
+        required={!!config.required}
+      >
         <FormLabel component="legend">{t(config.label)}</FormLabel>
         <FormGroup>
           {this.options(config).map((option) => (
@@ -60,7 +65,7 @@ class MaterialCheckboxesHandler
               key={option.value}
               control={
                 <Checkbox
-                  name={makeElementName(fqp)}
+                  name={name}
                   value={option.value}
                   inputRef={context.form.register}
                 />

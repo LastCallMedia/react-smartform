@@ -1,0 +1,22 @@
+[
+  {
+    "type": "select",
+    "name": "base",
+    "label": "Base Select",
+    "options": ["yes", "no"]
+  },
+  {
+    "type": "select",
+    "name": "required",
+    "label": "Required Select",
+    "options": ["yes", "no"],
+    "required": true
+  },
+  {
+    "type": "select",
+    "name": "placeholder",
+    "label": "Select with Placeholder",
+    "placeholder": "Select an Option",
+    "options": ["yes", "no"]
+  }
+]
