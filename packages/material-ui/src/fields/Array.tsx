@@ -57,9 +57,8 @@ const ComplexMaterialArray: ArrayRenderer<MaterialArrayConfig> = (props) => {
       {config.label && <Typography variant="h4">{t(config.label)}</Typography>}
       {items.map((item, i) => (
         <Accordion key={i} defaultExpanded={true}>
-          {/* @todo: Label should include index. */}
           <AccordionSummary>
-            {config.itemLabel && t(config.itemLabel)}
+            {config.itemLabel && t(config.itemLabel, {count: i + 1})}
           </AccordionSummary>
           <AccordionDetails>
             <Tree fields={item} />
