@@ -1,0 +1,29 @@
+[
+  {
+    "type": "radios",
+    "name": "normal",
+    "label": "Base Radios",
+    "options": ["yes", "no"]
+  },
+  {
+    "type": "radios",
+    "name": "inline",
+    "label": "Inline Radios",
+    "options": ["yes", "no"],
+    "inline": true
+  },
+  {
+    "type": "radios",
+    "name": "help",
+    "label": "Radios with help",
+    "options": ["yes", "no"],
+    "help": "This descriptive help text will help you make the right choice."
+  },
+  {
+    "type": "radios",
+    "name": "required",
+    "label": "Required radios",
+    "options": ["yes", "no"],
+    "required": true
+  }
+]

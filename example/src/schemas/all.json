@@ -1,0 +1,14 @@
+[
+  {
+    "name": "isPerson",
+    "label": "Are you a person?",
+    "type": "radios",
+    "options": ["yes", "no"],
+    "help": "It can be difficult to tell humans and robots apart. Please answer this honestly."
+  },
+  {
+    "label": "Your Name",
+    "name": "name",
+    "type": "name"
+  }
+]

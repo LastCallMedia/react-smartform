@@ -1,0 +1,22 @@
+[
+  {
+    "type": "checkboxes",
+    "name": "checkboxes",
+    "label": "Checkboxes - Base",
+    "options": ["red", "green"]
+  },
+  {
+    "type": "checkboxes",
+    "name": "checkboxes-required",
+    "label": "Checkboxes - Required",
+    "options": ["red", "green"],
+    "required": true
+  },
+  {
+    "type": "checkboxes",
+    "name": "checkboxes-help",
+    "label": "Checkboxes - Help",
+    "options": ["red", "green"],
+    "help": "This descriptive help text will help you make the right choice."
+  }
+]

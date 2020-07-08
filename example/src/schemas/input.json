@@ -1,0 +1,48 @@
+[
+  {
+    "type": "text",
+    "name": "text",
+    "label": "Base Text"
+  },
+  {
+    "type": "text",
+    "name": "text-placeholder",
+    "label": "Text - Placeholder",
+    "placeholder": "Placeholder"
+  },
+  {
+    "type": "text",
+    "name": "text-required",
+    "label": "Text - Required",
+    "required": true
+  },
+  {
+    "type": "text",
+    "name": "text-help",
+    "label": "Text - Help",
+    "help": "This descriptive help text will help you enter the right data"
+  },
+  {
+    "type": "password",
+    "name": "password",
+    "label": "Base Password"
+  },
+  {
+    "type": "password",
+    "name": "password-placeholder",
+    "label": "Password - Placeholder",
+    "placeholder": "Placeholder"
+  },
+  {
+    "type": "password",
+    "name": "password-required",
+    "label": "Password - Required",
+    "required": true
+  },
+  {
+    "type": "password",
+    "name": "password-help",
+    "label": "Password - Help",
+    "help": "This descriptive help text will help you enter the right data"
+  }
+]

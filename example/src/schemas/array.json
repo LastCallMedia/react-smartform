@@ -1,8 +1,19 @@
 [
   {
     "type": "array",
+    "name": "array-simple",
+    "label": "Simple Arrays",
+    "count": 2,
+    "of": {
+      "type": "text",
+      "label": "Text Field"
+    }
+  },
+  {
+    "type": "array",
     "name": "myarray",
-    "label": "Example Field",
+    "label": "Complex Arrays",
+    "itemLabel": "Item {{index}}",
     "count": 2,
     "of": [
       {
