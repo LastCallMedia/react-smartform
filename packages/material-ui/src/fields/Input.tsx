@@ -15,7 +15,7 @@ import get from "lodash/get";
 
 export interface MaterialInputConfig extends FieldConfig {
   name: string | number;
-  type: "text" | "password";
+  type: "text" | "password" | "email" | "number";
   label: string;
   required?: boolean;
   placeholder?: string;
@@ -25,7 +25,7 @@ export interface MaterialInputConfig extends FieldConfig {
 
 class MaterialInputHandler implements FieldHandler<MaterialInputConfig> {
   handles(): string[] {
-    return ["text", "password", "email"];
+    return ["text", "password", "email", "number"];
   }
   render(
     config: MaterialInputConfig,
