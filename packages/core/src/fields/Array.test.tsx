@@ -80,16 +80,9 @@ describe("ArrayHandler", () => {
   });
 
   it("Should allow a custom renderer", () => {
-    let renderer;
-    const handler = new ArrayHandler(
-      ["array"],
-      (renderer = jest.fn((props) => {
-        return <span data-testid="the-array">Items: {props.items.length}</span>;
-      }))
-    );
-    const tester = new FieldTester(handler, {
-      handlers: [new DummyHandler()],
-    });
+    renderer.mockImplementation((props: { items: unknown[] }) => (
+      <span data-testid="the-array">Items: {props.items.length}</span>
+    ));
     const config = {
       name: "myarr",
       type: "array",

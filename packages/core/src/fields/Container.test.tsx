@@ -2,11 +2,16 @@ import React from "react";
 import ContainerHandler from "./Container";
 import { FieldTester, DummyHandler } from "../testing";
 import * as yup from "yup";
+import Tree from "../components/Tree";
 
 describe("ContainerHandler", function () {
-  const tester = new FieldTester(new ContainerHandler(), {
-    handlers: [new DummyHandler()],
-  });
+  const renderer = jest.fn(Tree);
+  const tester = new FieldTester(
+    new ContainerHandler(["container"], renderer),
+    {
+      handlers: [new DummyHandler()],
+    }
+  );
 
   it("Should render container items", () => {
     const { getByTestId } = tester.render({
@@ -36,16 +41,7 @@ describe("ContainerHandler", function () {
   });
 
   it("Should allow a custom renderer", () => {
-    let renderer;
-    const handler = new ContainerHandler(
-      ["container"],
-      (renderer = jest.fn((props) => {
-        return <span data-testid="the-container">{props.children}</span>;
-      }))
-    );
-    const tester = new FieldTester(handler, {
-      handlers: [new DummyHandler()],
-    });
+    renderer.mockImplementation(() => <span data-testid="the-container" />);
     const containerConfig = {
       type: "container" as const,
       name: "myarr",
@@ -59,12 +55,8 @@ describe("ContainerHandler", function () {
         fields: expect.objectContaining({
           "the-field": expect.anything(),
         }),
-        context: expect.objectContaining({
-          parent: {
-            config: containerConfig,
-            parents: [],
-          },
-        }),
+        context: expect.any(Object),
+        config: containerConfig,
       }),
       {}
     );

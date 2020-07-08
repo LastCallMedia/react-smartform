@@ -4,8 +4,9 @@ import CompoundFieldHandler, {
   CompoundBuilder,
   makeCompoundHandler,
 } from "./Compound";
-import type { FieldConfig, SchemaRenderer } from "../types";
+import type { FieldConfig } from "../types";
 import * as yup from "yup";
+import Tree from "../components/Tree";
 
 interface NameWidgetConfig extends FieldConfig {
   type: "name";
@@ -25,14 +26,16 @@ const builder: CompoundBuilder<NameWidgetConfig> = (
   return schema;
 };
 
-const renderer: SchemaRenderer = jest.fn((props) => (
-  <div className="name-widget">{props.children}</div>
-));
+const renderer = jest.fn(Tree);
+const tester = new FieldTester(
+  new CompoundFieldHandler(["name"], builder, renderer),
+  {
+    handlers: [new DummyHandler()],
+  }
+);
 
 describe("CompoundFieldHandler", function () {
-  const tester = new FieldTester(new CompoundFieldHandler(["name"], builder), {
-    handlers: [new DummyHandler()],
-  });
+  beforeEach(jest.clearAllMocks);
 
   it("Should render compound fields", () => {
     const { getByTestId } = tester.render({ name: "your_name", type: "name" });
@@ -54,12 +57,22 @@ describe("CompoundFieldHandler", function () {
   });
 
   it("Should allow a custom renderer", function () {
-    const tester = new FieldTester(
-      new CompoundFieldHandler(["name"], builder, renderer),
-      { handlers: [new DummyHandler()] }
+    renderer.mockImplementation(() => <span data-testid="foo" />);
+    const config = { name: "your_name", type: "name" };
+    const { getByTestId } = tester.render({ name: "your_name", type: "name" });
+    getByTestId("foo");
+    expect(renderer).toHaveBeenCalledWith(
+      expect.objectContaining({
+        fields: expect.objectContaining({
+          first: expect.anything(),
+          middle: expect.anything(),
+          last: expect.anything(),
+        }),
+        context: expect.anything(),
+        config,
+      }),
+      {}
     );
-    const { container } = tester.render({ name: "your_name", type: "name" });
-    expect(container.querySelectorAll(".name-widget")).toHaveLength(1);
   });
 
   it("Should validate child fields", async () => {

@@ -1,7 +1,7 @@
 export { makeArrayHandler } from "./Array";
 export type { ArrayRenderer, ArrayConfig } from "./Array";
 
-export type { makeContainerHandler } from "./Container";
+export { makeContainerHandler } from "./Container";
 export type { ContainerRenderer, ContainerConfig } from "./Container";
 
 export { makeCompoundHandler } from "./Compound";
