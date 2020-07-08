@@ -6,6 +6,8 @@ export type { UseSmartFormOptions, UseSmartFormResult } from "./useSmartForm";
 export { default as withSmartForm } from "./withSmartForm";
 export type { WithSmartFormProps } from "./withSmartForm";
 
+export { default as Tree } from "./components/Tree";
+
 // Utilities.
 export { makeElementName, makeElementId } from "./util";
 
