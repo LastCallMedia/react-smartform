@@ -1,9 +1,16 @@
 [
   {
+    "type": "number",
+    "name": "numberOfItems",
+    "label": "Number of Items",
+    "help": "Arrays can either have a static count or a count that is derived from a field that has a number value."
+  },
+  {
     "type": "array",
     "name": "array-simple",
     "label": "Simple Arrays",
-    "count": 2,
+    "help": "Simple arrays consist of a single field",
+    "count": "ref('numberOfItems')",
     "of": {
       "type": "text",
       "label": "Text Field"
@@ -13,8 +20,9 @@
     "type": "array",
     "name": "myarray",
     "label": "Complex Arrays",
+    "help": "Complex arrays consist of many fields",
     "itemLabel": "Item {{index}}",
-    "count": 2,
+    "count": "ref('numberOfItems')",
     "of": [
       {
         "type": "text",
