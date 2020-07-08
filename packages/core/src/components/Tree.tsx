@@ -1,7 +1,9 @@
 import React from "react";
-import { SchemaRenderProps } from "../types";
+import { RenderChildren } from "../types";
 
-export default function Tree(props: SchemaRenderProps): React.ReactElement {
+export default function Tree(props: {
+  fields: RenderChildren;
+}): React.ReactElement {
   return (
     <>
       {Object.entries(props.fields).map(([name, child]) => {

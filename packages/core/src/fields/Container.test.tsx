@@ -59,12 +59,8 @@ describe("ContainerHandler", function () {
         fields: expect.objectContaining({
           "the-field": expect.anything(),
         }),
-        context: expect.objectContaining({
-          parent: {
-            config: containerConfig,
-            parents: [],
-          },
-        }),
+        context: expect.any(Object),
+        config: containerConfig,
       }),
       {}
     );

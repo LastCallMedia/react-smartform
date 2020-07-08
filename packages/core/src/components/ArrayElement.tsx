@@ -1,12 +1,15 @@
-import Tree from "./Tree";
 import React from "react";
-import { ArrayRenderer } from "../fields";
+import Tree from "./Tree";
+import { FieldRenderContext, RenderChildren } from "../types";
 
-const RenderArray: ArrayRenderer = (props) => {
+const RenderArray = (props: {
+  items: RenderChildren[];
+  context: FieldRenderContext;
+}): React.ReactElement => {
   return (
     <>
       {props.items.map((item, i) => (
-        <Tree key={i} fields={item} context={props.context} />
+        <Tree key={i} fields={item} />
       ))}
     </>
   );

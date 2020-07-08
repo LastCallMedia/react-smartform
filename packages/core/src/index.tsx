@@ -20,4 +20,5 @@ export type {
   ValidationContext,
   FieldValidationContext,
   Schema,
+  RenderChildren,
 } from "./types";
