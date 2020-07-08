@@ -38,9 +38,8 @@ const builder: CompoundBuilder<NameConfig> = (config) => {
 // Compound fields may use a "renderer" to customize the output of their subfields.
 // For example, in this case, we display the name parts side by side.
 const renderer: CompoundRenderer<NameConfig> = (props) => {
-  const {fields, context} = props;
-  const {t, parent} = context;
-  const {config} = parent
+  const {fields, context, config} = props;
+  const {t} = context;
   return (
     <FormControl component="fieldset">
       <FormLabel>{t(config.label)}</FormLabel>
