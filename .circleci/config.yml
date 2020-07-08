@@ -46,7 +46,7 @@ jobs:
       - run: yarn config set npmAuthToken '${NPM_PUBLISH_TOKEN}'
       - run:
           name: "Publish packages"
-          command: yarn workspaces foreach --exclude root example npm publish
+          command: yarn workspaces foreach --exclude root --exclude example npm publish
 workflows:
   version: 2
   test:
