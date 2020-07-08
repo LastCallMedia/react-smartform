@@ -3,7 +3,6 @@ import type {
   FieldHandler,
   FieldRenderContext,
   FieldValidationContext,
-  RenderContext,
   Constructor,
   RenderChildren,
 } from "../types";
@@ -24,14 +23,13 @@ export interface ArrayConfig extends FieldConfig {
   of: UnnamedFieldConfig | FieldConfig[];
 }
 
-type ArrayRendererProps<Config extends ArrayConfig> = {
-  items: RenderChildren[];
-  context: RenderContext;
-  config: Config;
-};
 export type ArrayRenderer<
   Config extends ArrayConfig = ArrayConfig
-> = React.ComponentType<ArrayRendererProps<Config>>;
+> = React.ComponentType<{
+  items: RenderChildren[];
+  context: FieldRenderContext;
+  config: Config;
+}>;
 
 export default class ArrayHandler<Config extends ArrayConfig = ArrayConfig>
   implements FieldHandler<Config> {
@@ -39,7 +37,7 @@ export default class ArrayHandler<Config extends ArrayConfig = ArrayConfig>
   renderer: ArrayRenderer<Config> | ArrayRenderer;
   constructor(
     types: string[] = ["array"],
-    renderer: ArrayRenderer<Config> | ArrayRenderer = ArrayElement
+    renderer: ArrayRenderer<Config> = ArrayElement
   ) {
     this.types = types;
     this.renderer = renderer;

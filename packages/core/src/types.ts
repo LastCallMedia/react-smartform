@@ -107,10 +107,3 @@ export type SchemaFromSchemaHandler<T extends SchemaBuilder> = Parameters<
 >[0];
 
 export type RenderChildren = Record<FieldName, React.ReactElement>;
-export type SchemaRenderProps<Context extends RenderContext = RenderContext> = {
-  fields: RenderChildren;
-  context: Context;
-};
-export type SchemaRenderer<
-  Context extends RenderContext = RenderContext
-> = React.ComponentType<SchemaRenderProps<Context>>;
