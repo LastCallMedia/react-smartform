@@ -2,11 +2,15 @@ import React from "react";
 import ArrayHandler from "./Array";
 import { FieldTester, DummyHandler } from "../testing";
 import * as yup from "yup";
+import ArrayElement from "../components/ArrayElement";
 
 describe("ArrayHandler", () => {
-  const tester = new FieldTester(new ArrayHandler(), {
+  const renderer = jest.fn(ArrayElement);
+  const tester = new FieldTester(new ArrayHandler(["array"], renderer), {
     handlers: [new DummyHandler()],
   });
+
+  beforeEach(jest.clearAllMocks);
 
   it("Should render complex array items", () => {
     const { queryAllByTestId } = tester.render({
@@ -39,6 +43,18 @@ describe("ArrayHandler", () => {
     };
     const { container } = tester.render(config, { anotherField: 2 });
     expect(container.querySelectorAll(".dummy-input")).toHaveLength(2);
+  });
+
+  it("Should render nothing when count is 0", () => {
+    const config = {
+      type: "array",
+      name: "myarr",
+      count: 0,
+      of: { type: "dummy" },
+    };
+    const { getByTestId } = tester.render(config);
+    expect(getByTestId("the-form").children).toHaveLength(0);
+    expect(renderer).not.toHaveBeenCalled();
   });
 
   it("Should validate simple arrays", () => {

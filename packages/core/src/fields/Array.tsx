@@ -11,7 +11,7 @@ import type { Schema as YupSchema } from "yup";
 import React from "react";
 import { compile } from "expression-eval";
 import { getReactEvalContext } from "../eval";
-import Tree from "../components/Tree";
+import ArrayElement from "../components/ArrayElement";
 
 // @todo: I'd like to use Omit<FieldConfig, "name"> here, but it's not working with the
 // additional properties.
@@ -33,23 +33,13 @@ export type ArrayRenderer<
   Config extends ArrayConfig = ArrayConfig
 > = React.ComponentType<ArrayRendererProps<Config>>;
 
-const RenderArray: ArrayRenderer = (props) => {
-  return (
-    <>
-      {props.items.map((item, i) => (
-        <Tree key={i} fields={item} context={props.context} />
-      ))}
-    </>
-  );
-};
-
 export default class ArrayHandler<Config extends ArrayConfig = ArrayConfig>
   implements FieldHandler<Config> {
   types: string[];
   renderer: ArrayRenderer<Config> | ArrayRenderer;
   constructor(
     types: string[] = ["array"],
-    renderer: ArrayRenderer<Config> | ArrayRenderer = RenderArray
+    renderer: ArrayRenderer<Config> | ArrayRenderer = ArrayElement
   ) {
     this.types = types;
     this.renderer = renderer;
@@ -74,8 +64,11 @@ export default class ArrayHandler<Config extends ArrayConfig = ArrayConfig>
         });
       }
     });
-    const Renderer = this.renderer;
-    return <Renderer items={items} context={context} config={config} />;
+    if (items.length > 0) {
+      const Renderer = this.renderer;
+      return <Renderer items={items} context={context} config={config} />;
+    }
+    return <></>;
   }
 
   buildYupSchema(
