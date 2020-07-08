@@ -17,7 +17,7 @@ commands:
             - v1-yarn-{{ arch }}-
       - run:
           name: "Install"
-          command: "yarn install"
+          command: "yarn install --immutable"
       - save_cache:
           key: v1-yarn-{{ arch }}-{{ checksum "yarn.lock" }}
           paths:
