@@ -2,7 +2,6 @@ import React from "react";
 import {
   FieldConfig,
   FieldHandler,
-  OptionList,
   FieldRenderContext,
   FieldValidationContext,
   makeElementName,
@@ -19,18 +18,27 @@ import {
 } from "@material-ui/core";
 import get from "lodash/get";
 import * as yup from "yup";
-import { extractOptionValues } from "../util";
+import { prepareOptions } from "../util";
+import { Option, OptionsFactory } from "../types";
 
 export interface MaterialCheckboxesConfig extends FieldConfig {
   type: "checkboxes";
   label: string;
-  options: OptionList;
+  options: string | Option[];
   required?: boolean;
   help?: string;
 }
 
+type ConstructorConfig = {
+  optionsFactory?: OptionsFactory;
+};
+
 class MaterialCheckboxesHandler
   implements FieldHandler<MaterialCheckboxesConfig> {
+  optionsFactory?: OptionsFactory;
+  constructor(config: ConstructorConfig = {}) {
+    this.optionsFactory = config.optionsFactory;
+  }
   handles(): string[] {
     return ["checkboxes"];
   }
@@ -40,19 +48,24 @@ class MaterialCheckboxesHandler
     context: FieldRenderContext
   ): React.ReactElement {
     const fqp = context.parents.concat([config.name]);
-    const error = get(context.form.errors, `${fqp}.message`);
+    const name = makeElementName(fqp);
+    const error = get(context.form.errors, `${name}.message`);
     const t = (key: string | undefined) => (key ? context.t(key) : undefined);
 
     return (
-      <FormControl component="fieldset" error={!!error}>
+      <FormControl
+        component="fieldset"
+        error={!!error}
+        required={!!config.required}
+      >
         <FormLabel component="legend">{t(config.label)}</FormLabel>
         <FormGroup>
-          {config.options.map((option) => (
+          {this.options(config).map((option) => (
             <FormControlLabel
               key={option.value}
               control={
                 <Checkbox
-                  name={makeElementName(fqp)}
+                  name={name}
                   value={option.value}
                   inputRef={context.form.register}
                 />
@@ -75,12 +88,15 @@ class MaterialCheckboxesHandler
   ): yup.Schema<unknown> {
     const itemSchema = context.yup
       .string()
-      .oneOf(extractOptionValues(config.options));
+      .oneOf(["", ...this.options(config).map(({ value }) => value)]);
     let schema = yup.array().of(itemSchema).label(config.label);
     if (config.required) {
       schema = schema.required();
     }
     return schema;
+  }
+  private options(config: MaterialCheckboxesConfig): Option[] {
+    return prepareOptions(config.options, this.optionsFactory);
   }
 }
 

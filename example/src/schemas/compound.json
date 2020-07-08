@@ -2,6 +2,7 @@
   {
     "name": "yourname",
     "type": "name",
-    "label": "Your Name"
+    "label": "Your Name",
+    "help": "This is an example of a compound field"
   }
 ]

@@ -2,6 +2,7 @@ import React from "react";
 import {withSmartForm, WithSmartFormProps} from "@lastcall/react-smartform";
 import registry from "../registry";
 import {Button} from "@material-ui/core";
+import {Tree} from "@lastcall/react-smartform-material-ui";
 
 /**
  * This is an example of using the withSmartForm() HOC to inject SmartForm properties
@@ -15,8 +16,8 @@ type ComponentProps = WithSmartFormProps;
 function Component(props: ComponentProps) {
   const submit = (values: unknown) => console.log(values);
   return (
-    <form onSubmit={props.handleSubmit(submit)}>
-      {Object.values(props.fields)}
+    <form noValidate onSubmit={props.handleSubmit(submit)}>
+      <Tree fields={props.fields} />
       <Button type="submit">Submit</Button>
     </form>
   )

@@ -15,7 +15,7 @@ import get from "lodash/get";
 
 export interface MaterialInputConfig extends FieldConfig {
   name: string | number;
-  type: "text" | "password";
+  type: "text" | "password" | "email" | "number";
   label: string;
   required?: boolean;
   placeholder?: string;
@@ -25,19 +25,20 @@ export interface MaterialInputConfig extends FieldConfig {
 
 class MaterialInputHandler implements FieldHandler<MaterialInputConfig> {
   handles(): string[] {
-    return ["text", "password", "email"];
+    return ["text", "password", "email", "number"];
   }
   render(
     config: MaterialInputConfig,
     context: FieldRenderContext
   ): React.ReactElement {
     const fqp = context.parents.concat([config.name]);
-    const error = get(context.form.errors, `${fqp}.message`);
+    const name = makeElementName(fqp);
+    const error = get(context.form.errors, `${name}.message`);
     const t = (key: string | undefined) => (key ? context.t(key) : undefined);
     return (
       <TextField
         id={makeElementId(fqp)}
-        name={makeElementName(fqp)}
+        name={name}
         type={config.type}
         label={t(config.label)}
         required={config.required}

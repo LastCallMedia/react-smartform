@@ -114,11 +114,3 @@ export type SchemaRenderProps<Context extends RenderContext = RenderContext> = {
 export type SchemaRenderer<
   Context extends RenderContext = RenderContext
 > = React.ComponentType<SchemaRenderProps<Context>>;
-
-// Defines the shape of a single option (eg: to be used in select lists).
-export interface Option {
-  value: string;
-  label: string;
-}
-// Defines the shape of a list of options (eg: to be used in select lists).
-export type OptionList = Option[];

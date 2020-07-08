@@ -19,6 +19,5 @@ export type {
   FieldRenderContext,
   ValidationContext,
   FieldValidationContext,
-  OptionList,
   Schema,
 } from "./types";

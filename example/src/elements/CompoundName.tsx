@@ -5,11 +5,12 @@ import {
   CompoundBuilder,
   CompoundRenderer
 } from "@lastcall/react-smartform";
-import {FormControl, FormLabel, Grid} from "@material-ui/core";
+import {FormControl, FormLabel, Grid, FormHelperText} from "@material-ui/core";
 
 interface NameConfig extends FieldConfig {
   type: 'name'
   label: string
+  help?: string
 }
 
 // Compound fields use a "builder" to produce the schema for subfields.
@@ -29,6 +30,7 @@ const builder: CompoundBuilder<NameConfig> = (config) => {
       name: "last",
       type: "text",
       label: "Last Name",
+      required: true,
     }
   ];
 };
@@ -47,6 +49,7 @@ const renderer: CompoundRenderer<NameConfig> = (props) => {
         <Grid item>{fields.middle}</Grid>
         <Grid item>{fields.last}</Grid>
       </Grid>
+      {config.help && <FormHelperText>{config.help}</FormHelperText>}
     </FormControl>
   )
 }
