@@ -55,8 +55,12 @@ class MaterialSelectHandler implements FieldHandler<MaterialSelectConfig> {
         </MenuItem>
       );
     });
-    if(config.placeholder) {
-      opts.unshift(<MenuItem key="__empty" value="" disabled={true}>{t(config.placeholder)}</MenuItem>);
+    if (config.placeholder) {
+      opts.unshift(
+        <MenuItem key="__empty" value="" disabled={true}>
+          {t(config.placeholder)}
+        </MenuItem>
+      );
     }
 
     return (

@@ -1,12 +1,13 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormLabel from "@material-ui/core/FormLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import {Grid} from "@material-ui/core";
-import Radio from "@material-ui/core/Radio";
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  FormHelperText,
+  RadioGroup,
+  Radio,
+} from "@material-ui/core";
 import {
   makeElementId,
   makeElementName,
@@ -28,7 +29,7 @@ export interface MaterialRadiosConfig extends FieldConfig {
   options: string | Option[];
   required?: boolean;
   help?: string;
-  inline?: boolean
+  inline?: boolean;
 }
 
 type ConstructorConfig = {
@@ -61,14 +62,22 @@ class MaterialRadiosHandler implements FieldHandler<MaterialRadiosConfig> {
       />
     ));
     return (
-      <FormControl component="fieldset" error={!!error} required={!!config.required}>
+      <FormControl
+        component="fieldset"
+        error={!!error}
+        required={!!config.required}
+      >
         <FormLabel component="legend">{t(config.label)}</FormLabel>
         <Controller
           id={makeElementId(fqp)}
           name={name}
           control={context.form.control}
           defaultValue={""}
-          as={<RadioGroup row={!!config.inline} aria-label={t(config.label)}>{options}</RadioGroup>}
+          as={
+            <RadioGroup row={!!config.inline} aria-label={t(config.label)}>
+              {options}
+            </RadioGroup>
+          }
         />
         {error && <FormHelperText error={true}>{error}</FormHelperText>}
         {!error && config.help && (

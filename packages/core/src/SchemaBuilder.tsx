@@ -41,12 +41,11 @@ export default class SmartFormSchemaBuilder<
   }
 
   renderField(config: Config, context: RenderContext): React.ReactElement {
-    const element = this.registry.getHandler(config.type).render(config, {
+    return this.registry.getHandler(config.type).render(config, {
       parents: [], // Parents will be overridden if set on context.
       ...context,
       builder: this,
     });
-    return React.cloneElement(element, { key: config.name });
   }
 
   buildYupSchema(

@@ -5,27 +5,27 @@ import MaterialInputHandler from "./fields/Input";
 import MaterialCheckboxesHandler from "./fields/Checkboxes";
 import MaterialRadiosHandler from "./fields/Radios";
 import MaterialSelectHandler from "./fields/Select";
-import {OptionsFactory} from "./types";
+import { OptionsFactory } from "./types";
 
 type MakeRegistryOptions = {
-  optionsFactory?: OptionsFactory
-}
-export function makeRegistry(options: MakeRegistryOptions = {}) {
-  const {optionsFactory} = options;
+  optionsFactory?: OptionsFactory;
+};
+export function makeRegistry(options: MakeRegistryOptions = {}): Registry {
+  const { optionsFactory } = options;
   return new Registry([
     new MaterialArrayHandler(),
     new MaterialInputHandler(),
-    new MaterialCheckboxesHandler({optionsFactory}),
-    new MaterialRadiosHandler({optionsFactory}),
-    new MaterialSelectHandler({optionsFactory})
-  ])
+    new MaterialCheckboxesHandler({ optionsFactory }),
+    new MaterialRadiosHandler({ optionsFactory }),
+    new MaterialSelectHandler({ optionsFactory }),
+  ]);
 }
 export const registry = new Registry([
   new MaterialArrayHandler(),
   new MaterialInputHandler(),
   new MaterialCheckboxesHandler(),
   new MaterialRadiosHandler(),
-  new MaterialSelectHandler()
+  new MaterialSelectHandler(),
 ]);
 
-export {default as Tree} from "./components/Tree"
+export { default as Tree } from "./components/Tree";

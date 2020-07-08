@@ -53,7 +53,11 @@ class MaterialCheckboxesHandler
     const t = (key: string | undefined) => (key ? context.t(key) : undefined);
 
     return (
-      <FormControl component="fieldset" error={!!error} required={!!config.required}>
+      <FormControl
+        component="fieldset"
+        error={!!error}
+        required={!!config.required}
+      >
         <FormLabel component="legend">{t(config.label)}</FormLabel>
         <FormGroup>
           {this.options(config).map((option) => (
