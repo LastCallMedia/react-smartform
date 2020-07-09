@@ -25,13 +25,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hookform/resolvers": "^0.0.6",
     "expression-eval": "^3.1.1",
     "jsep": "^0.3.4",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "react-hook-form": "^6.0.2"
   },
   "peerDependencies": {
     "react": "^16.2.0",
-    "react-hook-form": "^5.7.2",
     "yup": "^0.29.1"
   },
   "devDependencies": {
@@ -55,7 +56,6 @@
     "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-hook-form": "^5.7.2",
     "react-test-renderer": "^16.13.1",
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.5",
