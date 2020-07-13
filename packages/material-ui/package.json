@@ -18,11 +18,11 @@
   },
   "peerDependencies": {
     "@material-ui/core": "^4.11.0",
-    "react": "^16.13.1"
+    "react": "^16.13.1",
+    "react-hook-form": "^6.0.4"
   },
   "dependencies": {
-    "@lastcall/react-smartform": "workspace:packages/core",
-    "react-hook-form": "^6.0.2"
+    "@lastcall/react-smartform": "workspace:packages/core"
   },
   "scripts": {
     "test": "jest",
@@ -57,7 +57,7 @@
     "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-hook-form": "^6.0.2",
+    "react-hook-form": "^6.0.4",
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.5",
     "yup": "^0.29.1"

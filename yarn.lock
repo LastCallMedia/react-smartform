@@ -2107,13 +2107,14 @@ __metadata:
     prettier: ^2.0.5
     react: ^16.13.1
     react-dom: ^16.13.1
-    react-hook-form: ^6.0.2
+    react-hook-form: ^6.0.4
     ts-jest: ^26.1.0
     typescript: ^3.9.5
     yup: ^0.29.1
   peerDependencies:
     "@material-ui/core": ^4.11.0
     react: ^16.13.1
+    react-hook-form: ^6.0.4
   languageName: unknown
   linkType: soft
 
@@ -2145,7 +2146,7 @@ __metadata:
     prettier: ^2.0.5
     react: ^16.13.1
     react-dom: ^16.13.1
-    react-hook-form: ^6.0.2
+    react-hook-form: ^6.0.4
     react-test-renderer: ^16.13.1
     ts-jest: ^26.1.0
     typescript: ^3.9.5
@@ -13541,12 +13542,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^6.0.2":
-  version: 6.0.2
-  resolution: "react-hook-form@npm:6.0.2"
+"react-hook-form@npm:^6.0.4":
+  version: 6.0.4
+  resolution: "react-hook-form@npm:6.0.4"
   peerDependencies:
     react: ^16.8.0
-  checksum: 2d8429d102e77a96cc3b78f035a29b02902f10754dcd51f240d8409df16c3b6828ddfcc8b0d0642435d1c1a2cb608be2ee8d9ea459884c57f24000c5ee1c8e3e
+  checksum: 76a1221b2c015b4cd145bbf7a90c1449a73e2f67ffd9873b4818e33a4c94818e057df12ee69df0c673795f03aacb1118932d84a05c92b1eed36db3d610c238f7
   languageName: node
   linkType: hard
 
