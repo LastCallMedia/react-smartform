@@ -1682,6 +1682,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "@hookform/resolvers@npm:0.0.6"
+  peerDependencies:
+    react-hook-form: ">=6.0.0"
+  checksum: d95d00a3577677e052040a29352dfcdb5f89398d4136a98ea6a3288628a9435998bcf6092a827ebba69493de8db7e5e30ce2685e04c0bcb102424d8f85b1e38e
+  languageName: node
+  linkType: hard
+
 "@istanbuljs/load-nyc-config@npm:^1.0.0":
   version: 1.1.0
   resolution: "@istanbuljs/load-nyc-config@npm:1.1.0"
@@ -2098,13 +2107,14 @@ __metadata:
     prettier: ^2.0.5
     react: ^16.13.1
     react-dom: ^16.13.1
-    react-hook-form: ^5.7.2
+    react-hook-form: ^6.0.4
     ts-jest: ^26.1.0
     typescript: ^3.9.5
     yup: ^0.29.1
   peerDependencies:
     "@material-ui/core": ^4.11.0
     react: ^16.13.1
+    react-hook-form: ^6.0.4
   languageName: unknown
   linkType: soft
 
@@ -2117,6 +2127,7 @@ __metadata:
     "@babel/preset-env": ^7.10.2
     "@babel/preset-react": ^7.10.1
     "@babel/preset-typescript": ^7.10.1
+    "@hookform/resolvers": ^0.0.6
     "@testing-library/react": ^10.2.1
     "@types/jest": ^26.0.0
     "@types/lodash": ^4.14.155
@@ -2135,14 +2146,13 @@ __metadata:
     prettier: ^2.0.5
     react: ^16.13.1
     react-dom: ^16.13.1
-    react-hook-form: ^5.7.2
+    react-hook-form: ^6.0.4
     react-test-renderer: ^16.13.1
     ts-jest: ^26.1.0
     typescript: ^3.9.5
     yup: ^0.29.1
   peerDependencies:
     react: ^16.2.0
-    react-hook-form: ^5.7.2
     yup: ^0.29.1
   languageName: unknown
   linkType: soft
@@ -13532,12 +13542,12 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^5.7.2":
-  version: 5.7.2
-  resolution: "react-hook-form@npm:5.7.2"
+"react-hook-form@npm:^6.0.4":
+  version: 6.0.4
+  resolution: "react-hook-form@npm:6.0.4"
   peerDependencies:
     react: ^16.8.0
-  checksum: 611e743029f24cb63bcba66ec76becba9894d96d6cb2710a584529cec3bc49e6525ad7daaaab403f3a8f233277ccd160c9c76a951d28ac7db0515c7018eed712
+  checksum: 76a1221b2c015b4cd145bbf7a90c1449a73e2f67ffd9873b4818e33a4c94818e057df12ee69df0c673795f03aacb1118932d84a05c92b1eed36db3d610c238f7
   languageName: node
   linkType: hard
 

@@ -68,11 +68,15 @@ class MaterialSelectHandler implements FieldHandler<MaterialSelectConfig> {
         control={context.form.control}
         name={name}
         defaultValue=""
-        as={
+        render={({ onChange, onBlur, value }) => (
           <TextField
+            name={name}
             id={makeElementId(fqp)}
             label={t(config.label)}
             required={config.required}
+            onChange={onChange}
+            onBlur={onBlur}
+            value={value}
             error={!!error}
             // Error text is displayed in place of helper text, if an error is present.
             // As per the material design spec: https://material.io/components/text-fields#anatomy
@@ -81,7 +85,7 @@ class MaterialSelectHandler implements FieldHandler<MaterialSelectConfig> {
           >
             {opts}
           </TextField>
-        }
+        )}
       />
     );
   }
