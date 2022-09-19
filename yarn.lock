@@ -2174,6 +2174,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:^2.9.8":
+  version: 2.9.8
+  resolution: "@hookform/resolvers@npm:2.9.8"
+  peerDependencies:
+    react-hook-form: ^7.0.0
+  checksum: 3b8389a32baa784916d75565db3a13979cf776cc5552055f851c99283070f76e9b70d760a3222031b79610cde033d8417d63408a3e02577651f899b228d544ef
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.5.0":
   version: 0.5.0
   resolution: "@humanwhocodes/config-array@npm:0.5.0"
@@ -2648,6 +2657,7 @@ __metadata:
     "@babel/preset-env": ^7.10.2
     "@babel/preset-react": ^7.10.1
     "@babel/preset-typescript": ^7.10.1
+    "@hookform/resolvers": ^2.9.8
     "@lastcall/react-smartform": "workspace:packages/core"
     "@material-ui/core": ^4.11.0
     "@testing-library/react": ^10.2.1
@@ -2665,13 +2675,14 @@ __metadata:
     prettier: ^2.0.5
     react: ^16.13.1
     react-dom: ^16.13.1
-    react-hook-form: ^5.7.2
+    react-hook-form: ^7.35.0
     ts-jest: ^26.1.0
     typescript: ^3.9.5
     yup: ^0.29.1
   peerDependencies:
     "@material-ui/core": ^4.11.0
     react: ^16.13.1
+    react-hook-form: ^6.0.4
   languageName: unknown
   linkType: soft
 
@@ -2684,6 +2695,7 @@ __metadata:
     "@babel/preset-env": ^7.10.2
     "@babel/preset-react": ^7.10.1
     "@babel/preset-typescript": ^7.10.1
+    "@hookform/resolvers": ^2.9.8
     "@testing-library/react": ^10.2.1
     "@types/jest": ^26.0.0
     "@types/lodash": ^4.14.155
@@ -2702,14 +2714,13 @@ __metadata:
     prettier: ^2.0.5
     react: ^16.13.1
     react-dom: ^16.13.1
-    react-hook-form: ^5.7.2
+    react-hook-form: ^7.35.0
     react-test-renderer: ^16.13.1
     ts-jest: ^26.1.0
     typescript: ^3.9.5
     yup: ^0.29.1
   peerDependencies:
     react: ^16.2.0
-    react-hook-form: ^5.7.2
     yup: ^0.29.1
   languageName: unknown
   linkType: soft
@@ -15118,12 +15129,12 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^5.7.2":
-  version: 5.7.2
-  resolution: "react-hook-form@npm:5.7.2"
+"react-hook-form@npm:^7.35.0":
+  version: 7.35.0
+  resolution: "react-hook-form@npm:7.35.0"
   peerDependencies:
-    react: ^16.8.0
-  checksum: 546791994a2779b02114147cbb291bcb524b129846306c6c4aad71d727fe630da0af6971a2f75136534de363d2241765199bc1d603c59372efce3aaa502be358
+    react: ^16.8.0 || ^17 || ^18
+  checksum: e0e78de4a08fdae9eebf248ddefd99ff35d4964ef2815006704ae4a43972786f62dede3847b41e29d3e89ea6cb16c8f5837b1e00238aa65f7c38cb52aabcaf5b
   languageName: node
   linkType: hard
 

@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import type * as yup from "yup";
-import type { FormContextValues } from "react-hook-form";
+import type { UseFormReturn } from "react-hook-form";
 
 export type FieldName = string | number;
 export type TranslationFunction = (key: string, ...args: unknown[]) => string;
@@ -25,7 +25,7 @@ export type Schema<T extends FieldConfig = FieldConfig> = T[];
  * Context for React rendering, passed to the schema builder.
  */
 export interface RenderContext {
-  form: FormContextValues;
+  form: UseFormReturn;
   t: TranslationFunction;
   parents?: FieldName[];
 }

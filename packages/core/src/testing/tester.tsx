@@ -6,12 +6,13 @@ import {
 } from "../types";
 import * as yup from "yup";
 import SmartFormSchemaBuilder from "../SchemaBuilder";
-import { FieldValues, useForm, UseFormOptions } from "react-hook-form";
+import { useForm, UseFormProps, SubmitHandler } from "react-hook-form";
 import { act, fireEvent } from "@testing-library/react";
 import React from "react";
 import { render } from "./index";
 import Registry from "../Registry";
 import { neverTranslate } from "../util";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 type Options = {
   handlers?: FieldHandler[];
@@ -32,10 +33,14 @@ export class FieldTester<
   }
   render(
     config: C,
-    defaultValues?: FieldValues
-  ): ReturnType<typeof render> & { submit: () => Promise<FieldValues> } {
+    defaultValues?: UseFormProps["defaultValues"]
+  ): ReturnType<typeof render> & {
+    submit: () => Promise<Record<string, unknown>>;
+  } {
     let values: Record<string, unknown>;
-    const onSubmit = (data: Record<string, unknown>) => (values = data);
+    const onSubmit = (data: Record<string, unknown>) => {
+      values = data;
+    };
     const rendered = render(
       <TestForm
         submit={onSubmit}
@@ -66,16 +71,18 @@ export class FieldTester<
 }
 
 type TestFormProps = {
-  submit?: (data: Record<string, unknown>) => void;
+  submit?: SubmitHandler<Record<string, unknown>>;
   schema: Schema;
   handler: SchemaBuilder;
-  defaultValues?: UseFormOptions["defaultValues"];
+  defaultValues?: UseFormProps["defaultValues"];
 };
 export function TestForm(props: TestFormProps): React.ReactElement {
   const t = neverTranslate;
   const form = useForm({
     defaultValues: props.defaultValues,
-    validationSchema: props.handler.buildYupSchema(props.schema, { yup, t }),
+    resolver: yupResolver(
+      props.handler.buildYupSchema(props.schema, { yup, t })
+    ),
   });
   const onSubmit = form.handleSubmit(
     props.submit ??

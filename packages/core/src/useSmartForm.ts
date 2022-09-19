@@ -8,17 +8,18 @@ import {
   RenderChildren,
 } from "./types";
 import { neverTranslate } from "./util";
-import { useForm, UseFormOptions, FormContextValues } from "react-hook-form";
+import { useForm, UseFormProps, UseFormReturn } from "react-hook-form";
 import * as importedYup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export type UseSmartFormOptions = {
   registry: Registry;
   schema: Schema;
-  formOptions?: UseFormOptions;
+  formOptions?: UseFormProps;
   renderContext?: Partial<RenderContext>;
   validationContext?: Partial<ValidationContext>;
 };
-export type UseSmartFormResult = FormContextValues & { fields: RenderChildren };
+export type UseSmartFormResult = UseFormReturn & { fields: RenderChildren };
 
 export default function useSmartForm(
   options: UseSmartFormOptions
@@ -35,11 +36,20 @@ export default function useSmartForm(
   }, [registry]);
   const form = useForm({
     ...formOptions,
-    validationSchema: builder.buildYupSchema(schema, {
-      yup: importedYup,
-      t: neverTranslate,
-      ...validationContext,
-    }),
+    // Wrap the default yup resolver to lazily extract the schema from the builder.
+    // This saves us from having to do it at runtime.
+    resolver: (values, context, validateAllFieldCriteria) => {
+      const validationSchema = builder.buildYupSchema(schema, {
+        yup: importedYup,
+        t: neverTranslate,
+        ...validationContext,
+      });
+      return yupResolver(validationSchema)(
+        values,
+        context,
+        validateAllFieldCriteria
+      );
+    },
   });
   return {
     ...form,
