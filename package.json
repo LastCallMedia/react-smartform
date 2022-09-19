@@ -1,6 +1,7 @@
 {
   "name": "root",
   "version": "0.0.0",
+  "packageManager": "yarn@3.2.3",
   "private": true,
   "workspaces": [
     "packages/*",
@@ -14,5 +15,9 @@
     "lint": "yarn workspaces foreach -p --exclude example run lint",
     "lint:fix": "yarn workspaces foreach -p --exclude example run lint:js --fix",
     "test": "yarn workspaces foreach -p --exclude example run test"
+  },
+  "volta": {
+    "node": "16.16.0",
+    "yarn": "1.22.19"
   }
 }
