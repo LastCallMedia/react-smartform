@@ -1,4 +1,5 @@
 import { Option, OptionsFactory } from "./types";
+import { RegisterOptions, UseFormRegisterReturn } from "react-hook-form";
 
 function prepareOption(option: string | Option): Option {
   if (typeof option === "string") {
@@ -33,4 +34,8 @@ export function prepareOptions(
   }
 
   return preparedOptions.map(prepareOption);
+}
+
+export function adaptRegister({ref, ...rest} : UseFormRegisterReturn) {
+  return {innerRef: ref, ...rest};
 }

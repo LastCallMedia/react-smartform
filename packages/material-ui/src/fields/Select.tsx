@@ -45,7 +45,7 @@ class MaterialSelectHandler implements FieldHandler<MaterialSelectConfig> {
   ): React.ReactElement {
     const fqp = context.parents.concat([config.name]);
     const name = makeElementName(fqp);
-    const error = get(context.form.errors, `${name}.message`);
+    const error = get(context.form.formState.errors, `${name}.message`) as string | undefined;
     const t = (key: string | undefined) => (key ? context.t(key) : undefined);
 
     const opts = this.options(config).map((o) => {
@@ -68,20 +68,21 @@ class MaterialSelectHandler implements FieldHandler<MaterialSelectConfig> {
         control={context.form.control}
         name={name}
         defaultValue=""
-        render={({ onChange, onBlur, value }) => (
+        render={({field}) => (
           <TextField
-            name={name}
+            // name={name}
             id={makeElementId(fqp)}
             label={t(config.label)}
             required={config.required}
-            onChange={onChange}
-            onBlur={onBlur}
-            value={value}
+            // onChange={onChange}
+            // onBlur={onBlur}
+            // value={value}
             error={!!error}
             // Error text is displayed in place of helper text, if an error is present.
             // As per the material design spec: https://material.io/components/text-fields#anatomy
             helperText={error || t(config.help)}
             select
+            {...field}
           >
             {opts}
           </TextField>

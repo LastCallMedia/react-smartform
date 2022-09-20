@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { FieldTester, fireEvent } from "@lastcall/react-smartform/lib/testing";
 import MaterialCheckboxesHandler from "./Checkboxes";
 

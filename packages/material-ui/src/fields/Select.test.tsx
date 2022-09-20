@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import MaterialSelectHandler from "./Select";
 import {
   FieldTester,

@@ -27,13 +27,12 @@ class InputHandler implements FieldHandler<InputConfig> {
     const fqp = context.parents.concat([config.name]);
     const name = makeElementName(fqp);
     const id = makeElementId(fqp);
-    const error = get(context.form.errors, `${fqp}.message`);
+    const error = get(context.form.formState.errors, `${fqp}.message`) as string|undefined;
     return (
       <div>
         <label htmlFor={id}>{config.label}</label>
         <input
           id={id}
-          name={name}
           placeholder={
             config.placeholder
               ? makeElementLabel(
@@ -43,7 +42,7 @@ class InputHandler implements FieldHandler<InputConfig> {
               : undefined
           }
           type={config.type}
-          ref={context.form.register}
+          {...context.form.register(name)}
         />
         {error && <p>{error}</p>}
       </div>

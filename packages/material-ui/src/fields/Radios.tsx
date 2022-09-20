@@ -50,7 +50,7 @@ class MaterialRadiosHandler implements FieldHandler<MaterialRadiosConfig> {
   ): React.ReactElement {
     const fqp = context.parents.concat([config.name]);
     const name = makeElementName(fqp);
-    const error = get(context.form.errors, `${name}.message`);
+    const error = get(context.form.formState.errors, `${name}.message`) as string|undefined;
     const t = (key: string | undefined) => (key ? context.t(key) : undefined);
 
     const options = this.options(config).map((option) => (
@@ -69,15 +69,17 @@ class MaterialRadiosHandler implements FieldHandler<MaterialRadiosConfig> {
       >
         <FormLabel component="legend">{t(config.label)}</FormLabel>
         <Controller
-          id={makeElementId(fqp)}
           name={name}
           control={context.form.control}
           defaultValue={""}
-          as={
-            <RadioGroup row={!!config.inline} aria-label={t(config.label)}>
-              {options}
-            </RadioGroup>
-          }
+          render={({field}) => (
+            <RadioGroup
+              id={makeElementId(fqp)}
+              row={!!config.inline}
+              aria-label={t(config.label)}
+              {...field}
+            >{options}</RadioGroup>
+          )}
         />
         {error && <FormHelperText error={true}>{error}</FormHelperText>}
         {!error && config.help && (

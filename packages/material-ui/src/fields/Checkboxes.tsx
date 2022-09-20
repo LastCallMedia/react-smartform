@@ -49,7 +49,7 @@ class MaterialCheckboxesHandler
   ): React.ReactElement {
     const fqp = context.parents.concat([config.name]);
     const name = makeElementName(fqp);
-    const error = get(context.form.errors, `${name}.message`);
+    const error = get(context.form.formState.errors, `${name}.message`) as string|undefined;
     const t = (key: string | undefined) => (key ? context.t(key) : undefined);
 
     return (
@@ -65,7 +65,6 @@ class MaterialCheckboxesHandler
               key={option.value}
               control={
                 <Checkbox
-                  name={name}
                   value={option.value}
                   inputRef={context.form.register}
                 />

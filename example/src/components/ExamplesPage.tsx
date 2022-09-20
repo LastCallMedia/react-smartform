@@ -8,7 +8,7 @@ import UsingHOC from "../usage/UsingHOC";
 export default function ExamplePage() {
   const {schemaName} = useParams();
 
-  if(!(schemaName in schemas)) {
+  if(!schemaName || !(schemaName in schemas)) {
     throw new Error(`Invalid schema selected: ${schemaName}`)
   }
   const schema = schemas[schemaName];
